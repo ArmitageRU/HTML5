@@ -28,6 +28,7 @@ Application.prototype = {
         this.ctx = this.canvas.getContext('2d');
         var globalCenter = new Point(this.canvas.width / 2, this.canvas.height / 2);
 		this.Star = new Star(globalCenter, 50).setProperty({ctx:this.ctx}, true);
+		this.render(new Date());
 	},
 	render: function(lastTime) {
         var curTime = new Date();
@@ -37,6 +38,6 @@ Application.prototype = {
             self.render(curTime);
         });
         ctx.clearRect(0, 0, this.width, this.height);
-		self.Star.draw();
+		self.Star.Draw(curTime-lastTime);
     }
 };
