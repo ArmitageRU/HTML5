@@ -5,6 +5,7 @@ var Application = function(){
 	//this.canvasCentre;
 	this.Star;
 	this.Orbits = [];
+	this.mouse;
 	
 	this.pre_init();
 };
@@ -26,7 +27,7 @@ Application.prototype = {
 		this.canvas.width  = 1440;
         this.canvas.height = 900;
         this.ctx = this.canvas.getContext('2d');
-        var globalCenter = new Point(this.canvas.width / 2, this.canvas.height / 2);
+        var globalCenter = new Point(this.canvas.height / 2, this.canvas.height / 2);
 		this.Star = new Star(globalCenter, 50).setProperty({ctx:this.ctx}, true);
 		for(var i = 0; i < 8; ++i){
 			var nextOrbit = this.generateOrbit();
@@ -37,6 +38,7 @@ Application.prototype = {
 				this.Orbits.push(orbit);
 			}
 		}
+		this.mouse = new MouseController(this.canvas);
 		console.warn(this.Orbits.length);
 		this.render(new Date());
 	},
@@ -49,7 +51,12 @@ Application.prototype = {
         });
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 		self.Star.Draw(curTime-lastTime);
-		for(var j = 0;j<this.Orbits.length;j++)this.Orbits[j].Draw(curTime-lastTime);
+		for(var j = 0;j<this.Orbits.length;j++){
+			this.Orbits[j].Draw(curTime-lastTime);
+			if(this.mouse.pressed && Math.abs(this.mouse.pos.x -this.Orbits[j].planet.position.x)<25 && Math.abs(this.mouse.pos.y-this.Orbits[j].planet.position.y)<25){
+				this.Orbits[j].planet.selected = this.Orbits[j].planet.selected?false:true;
+			}
+		}
     },
 	
 	generateOrbit: function(){
