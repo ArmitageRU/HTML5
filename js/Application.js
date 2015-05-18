@@ -4,7 +4,7 @@ var Application = function(){
 	this.ctx;
 	//this.canvasCentre;
 	this.Star;
-	this.Planets = [];
+	this.Orbits = [];
 	
 	this.pre_init();
 };
@@ -28,6 +28,16 @@ Application.prototype = {
         this.ctx = this.canvas.getContext('2d');
         var globalCenter = new Point(this.canvas.width / 2, this.canvas.height / 2);
 		this.Star = new Star(globalCenter, 50).setProperty({ctx:this.ctx}, true);
+		for(var i = 0; i < 8; ++i){
+			var nextOrbit = this.generateOrbit();
+			if(nextOrbit!=-1){
+				var orbit = new Orbit(nextOrbit, null, null);
+				orbit.setProperty({ctx:this.ctx}, true);
+				orbit.setProperty({centre:globalCenter}, true);
+				this.Orbits.push(orbit);
+			}
+		}
+		console.warn(this.Orbits.length);
 		this.render(new Date());
 	},
 	render: function(lastTime) {
@@ -37,7 +47,29 @@ Application.prototype = {
         requestAnimationFrame(function(){
             self.render(curTime);
         });
-        ctx.clearRect(0, 0, this.width, this.height);
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 		self.Star.Draw(curTime-lastTime);
-    }
+		for(var j = 0;j<this.Orbits.length;j++)this.Orbits[j].Draw();
+    },
+	
+	generateOrbit: function(){
+		var min = 50;
+		var max = 450;
+		var randomOrbit = ~~(getRandomArbitrary(min, max));
+		var finalOrbit = Math.ceil(randomOrbit/50)*50-25;
+		if(finalOrbit==25)finalOrbit=-1;
+		else{
+			for(var i = 0;i<this.Orbits.length;i++){
+				if(this.Orbits[i].radius==finalOrbit){
+					finalOrbit = -1;
+					break;
+				}
+			}
+		}
+		return finalOrbit;
+	}
 };
+
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}

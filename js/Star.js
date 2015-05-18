@@ -8,11 +8,14 @@ function Star(centre, radius){
 Star.prototype = {
 	Draw: function(elapsedTime){
 		var ctx = this.ctx;
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = 'rgb(0,192,255)';
+        ctx.lineWidth = 1;
+        //ctx.strokeStyle = 'rgb(0,192,255)';
+		ctx.strokeStyle = 'yellow';
         ctx.beginPath();
         ctx.arc(this.centre.x, this.centre.y, this.radius, 0, Math.PI * 2, true);
-        ctx.closePath();
+        ctx.fillStyle = 'yellow';
+		ctx.fill();
+		ctx.closePath();
         ctx.stroke();
 	}
 };

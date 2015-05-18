@@ -5,3 +5,9 @@
     margin-right: auto;
     display: block;
 }
+html, body {
+    overflow: hidden;
+    height: 100%;
+    font-family: monospace;
+    background-color: black;
+}
