@@ -31,7 +31,7 @@ Application.prototype = {
 		for(var i = 0; i < 8; ++i){
 			var nextOrbit = this.generateOrbit();
 			if(nextOrbit!=-1){
-				var orbit = new Orbit(nextOrbit, null, null);
+				var orbit = new Orbit(nextOrbit, 'text');
 				orbit.setProperty({ctx:this.ctx}, true);
 				orbit.setProperty({centre:globalCenter}, true);
 				this.Orbits.push(orbit);
@@ -49,7 +49,7 @@ Application.prototype = {
         });
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 		self.Star.Draw(curTime-lastTime);
-		for(var j = 0;j<this.Orbits.length;j++)this.Orbits[j].Draw();
+		for(var j = 0;j<this.Orbits.length;j++)this.Orbits[j].Draw(curTime-lastTime);
     },
 	
 	generateOrbit: function(){
