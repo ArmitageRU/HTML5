@@ -55,6 +55,7 @@ Application.prototype = {
 			this.Orbits[j].Draw(curTime-lastTime);
 			if(this.mouse.pressed && Math.abs(this.mouse.pos.x -this.Orbits[j].planet.position.x)<25 && Math.abs(this.mouse.pos.y-this.Orbits[j].planet.position.y)<25){
 				this.Orbits[j].planet.selected = this.Orbits[j].planet.selected?false:true;
+				console.log(this.Orbits[j].planet.selected+" pa");
 			}
 		}
     },
