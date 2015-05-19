@@ -28,5 +28,7 @@ Planet.prototype = {
 		ctx.fill();
 		ctx.closePath();
         ctx.stroke();
+		
+		//if(this.selected)this.Infobox.Show(this.title);
 	}
 };

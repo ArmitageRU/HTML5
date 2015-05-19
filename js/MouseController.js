@@ -16,7 +16,8 @@ MouseController.prototype = {
             self.move(e);
         }, true);
 		this.element.addEventListener('mousedown', function(e) {
-            self.down(e);
+            console.log(e.button);
+			self.down(e);
         }, true);
         this.element.addEventListener('mouseup', function(e) {
             self.up(e);
