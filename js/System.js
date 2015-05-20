@@ -33,3 +33,11 @@ function shuffle(array) {
     }
     return true;
 }
+
+function textWidth(ctx, font, text){
+	if(font!=null)ctx.font = font;
+	else ctx.font = '12pt Courier New';
+	var metrics = ctx.measureText(text);
+	var text_width = ~~(metrics.width);
+	return 	text_width;
+}

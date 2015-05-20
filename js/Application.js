@@ -37,8 +37,7 @@ Application.prototype = {
 			}
 		}
 		this.mouse = new MouseController(this.canvas);
-		this.Infobox = new Infobox(this.canvas.width, this.canvas.height).setProperty({ctx:this.ctx}, true);
-		console.warn(this.Orbits.length);
+		this.Infobox = new Infobox(this.canvas.width, this.canvas.height, this.ctx);
 		this.render(new Date());
 	},
 	render: function(lastTime) {
@@ -59,6 +58,7 @@ Application.prototype = {
 			}
 		}
 		this.Infobox.DrawForm();
+		this.Infobox.ClickHandler(this.mouse);
 		if(showInfo>-1)this.Infobox.Show(this.Orbits[showInfo].planet.title);
 		this.mouse.pressed = false;
 	},
