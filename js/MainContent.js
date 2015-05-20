@@ -1,5 +1,4 @@
 function MainContent(){
 	this.title;
-	
-	this.
+	this.textData = [];
 }
