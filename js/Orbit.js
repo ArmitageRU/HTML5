@@ -1,7 +1,7 @@
 "use strict";
-function Orbit(radius, centre, title, ctx){
+function Orbit(radius, centre, title, ctx, infobox){
 	this.radius = radius;
-	this.planet = new Planet(title).setProperty({'orbit':this}, true);
+	this.planet = new Planet(title, infobox).setProperty({'orbit':this}, true);
 	this.ctx=ctx;
 	this.centre=centre;
 	//this.Infobox=new Infobox(this.centre).setProperty({'ctx':this.ctx}, true);

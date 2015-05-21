@@ -32,7 +32,7 @@ Application.prototype = {
 		for(var i = 0; i < 8; ++i){
 			var nextOrbit = this.generateOrbit();
 			if(nextOrbit!=-1){
-				var orbit = new Orbit(nextOrbit, globalCenter, 'Планета — '+nextOrbit,this.ctx);
+				var orbit = new Orbit(nextOrbit, globalCenter, 'Планета — '+nextOrbit,this.ctx, this.Infobox);
 				this.Orbits.push(orbit);
 			}
 		}
@@ -49,17 +49,19 @@ Application.prototype = {
         });
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 		self.Star.Draw(curTime-lastTime);
-		var showInfo= -1;
+		//var showInfo= -1;
+		var selectedPlanet = null;
 		for(var j = 0;j<this.Orbits.length;j++){
-			if(this.Orbits[j].planet.selected)showInfo = j;
+			//if(this.Orbits[j].planet.selected)showInfo = j;
 			this.Orbits[j].Draw(curTime-lastTime);
 			if(this.mouse.pressed && Math.abs(this.mouse.pos.x -this.Orbits[j].planet.position.x)<25 && Math.abs(this.mouse.pos.y-this.Orbits[j].planet.position.y)<25){
 				this.selectPlanet(this.Orbits[j]);
 			}
+			if(this.Orbits[j].planet.selected)selectedPlanet = this.Orbits[j].planet;	
 		}
-		this.Infobox.DrawForm();
-		this.Infobox.ClickHandler(this.mouse);
-		if(showInfo>-1)this.Infobox.Show(this.Orbits[showInfo].planet.title);
+		this.Infobox.DrawForm(selectedPlanet, this.mouse);
+		//this.Infobox.ClickHandler(this.mouse);
+		//if(showInfo>-1)this.Infobox.Show(selectedPlanet, this.mouse);
 		this.mouse.pressed = false;
 	},
 	
@@ -85,9 +87,6 @@ Application.prototype = {
 		for(var i = 0;i<this.Orbits.length;i++){
 			if(this.Orbits[i]!=orbit)this.Orbits[i].planet.selected = false;
 		}
+		
 	}
 };
-
-function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
-}

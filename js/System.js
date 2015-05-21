@@ -41,3 +41,7 @@ function textWidth(ctx, font, text){
 	var text_width = ~~(metrics.width);
 	return 	text_width;
 }
+
+function getRandomArbitrary(min, max) {
+  return Math.random() * (max - min) + min;
+}

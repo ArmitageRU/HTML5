@@ -22,7 +22,7 @@ Infobox.prototype = {
         ctx.fillText(text, this.width-395, 15);
 	},
 	
-	DrawForm:function(){
+	DrawForm:function(object, mouse){
 		this.ctx.beginPath();
 		this.ctx.rect(this.left_upper.x-0.5, this.left_upper.y-0.5, this.width, this.height);
 		this.ctx.fillStyle = '#002244';
@@ -30,10 +30,10 @@ Infobox.prototype = {
 		this.ctx.lineWidth = 1;
 		this.ctx.strokeStyle = 'white';
 		this.ctx.stroke();
-		this.DrawTabs();
+		this.DrawTabs(object, mouse);
 	},
 	
-	DrawTabs:function(){
+	DrawTabs:function(object, mouse){
 		//set line color
 		this.ctx.beginPath();
 		this.ctx.lineWidth = 1;
@@ -56,12 +56,14 @@ Infobox.prototype = {
 		this.ctx.moveTo(currentX-0.5, this.left_upper.y+20.5);
 		this.ctx.lineTo(this.left_upper.x+this.width-0.5, this.left_upper.y+20.5);
 		this.ctx.stroke();
+		
+		if(object!=null)this.DrawInfoPanels(object, mouse)
+		if(mouse.pressed)this.ClickHandler(mouse);	
 	},
 	
 	ClickHandler:function(mouse){
 		
-		if(!mouse.pressed)return;
-		
+		//if(!mouse.pressed)return;
 		for(var i = 0;i<this.tabs.length;i++){
 			var x_min = this.left_upper.x+this.tabs[i].offset;
 			var x_max = this.left_upper.x+this.tabs[i].offset+this.tabs[i].width;
@@ -74,12 +76,20 @@ Infobox.prototype = {
 				console.log('tab '+i);
 			}
 		}
+		
 	},
 	
 	selectOneTab: function(infotab){
 		for(var i = 0;i<this.tabs.length;i++){
 			if(this.tabs[i]==infotab)this.tabs[i].selected = true;
 			else this.tabs[i].selected = false;
+		}
+	},
+	
+	DrawInfoPanels: function(object, mouse){
+		if(this.tabs[0].selected){
+			//ctx, mouse, uppder_left, lower_right
+			object.MainContent.Render(this.ctx, mouse, new Point(this.left_upper.x, this.left_upper.y+35), this.right_lower);//на глазок
 		}
 	}
 };
