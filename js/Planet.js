@@ -6,6 +6,8 @@ function Planet(title){
 	//this.title = title;
 	this.orbit;
 	this.selected = false;
+	this.from = false;
+	this.to = false;
 	this.Infobox;
 	this.MainContent = new MainContent();
 	this.StoreContent = /*new StoreContent()*/null;
@@ -15,9 +17,9 @@ function Planet(title){
 Planet.prototype = {
 	Init: function(title){
 			this.MainContent.title=title;
-			this.MainContent.textData.push("This week we're coming to you a day early to take the wraps off our third major content update. This ");
-			this.MainContent.textData.push("announcement means a lot to us, so in this special newsletter our team will talk through the new features of ");
-			this.MainContent.textData.push("Powerplay in their own words, and we'll reveal how you'll be able to make your own powerplay in the Elite: ");
+			this.MainContent.textData.push("This week we're coming to you a day earl");//y to take the wraps off our third major content update. This ");  /*методом подбора ограничение длины*/
+			this.MainContent.textData.push("announcement means a lot to us, so in th");//is special newsletter our team will talk through the new features of ");
+			this.MainContent.textData.push("Powerplay in their own words, and we'll");// reveal how you'll be able to make your own powerplay in the Elite: ");
 			this.MainContent.textData.push("Dangerous galaxy.");
 	},
 	
@@ -31,7 +33,10 @@ Planet.prototype = {
 			ctx.strokeStyle = 'white';
 		}
 		else {
-			ctx.strokeStyle = 'blue';
+			
+			if(this.from)ctx.strokeStyle = 'green';
+			else if(this.to)ctx.strokeStyle = 'red';
+			else ctx.strokeStyle = 'blue';
 			ctx.lineWidth = 1;
 		}
         ctx.beginPath();

@@ -3,6 +3,8 @@ function MouseController(element){
 	this.element = null;
 	this.pos = new Point(0,0);
 	this.pressed = false;
+	this.doublePressed = false;
+	this.prevTime = new Date();
 	if (typeof element !== 'undefined') {
         this.watch(element);
     }
@@ -29,10 +31,16 @@ MouseController.prototype = {
 	},
 	down:function(e){
 		this.pressed = true;
+		var curTime = new Date();
+		var timeDiff = curTime-prevTime;
+		if(timeDiff<1000)this.doublePressed = true;
+		else this.doublePressed = false;
+		this.prevTime = curTime;
 		this.move(e);
 	},
 	up:function(e){
 		this.pressed = false;
 		this.move(e);
-	}
+	},
+	
 };

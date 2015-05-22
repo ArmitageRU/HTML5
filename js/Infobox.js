@@ -10,9 +10,9 @@ function Infobox(width, height, ctx){
 	var offset = 0;
 	this.tabs.push(new Infotab("Общее", this.ctx, offset).setProperty({selected:true},true));
 	offset += this.tabs[0].width;
-	this.tabs.push(new Infotab("Корабль", this.ctx, offset));
-	offset += this.tabs[1].width;
 	this.tabs.push(new Infotab("Рынок", this.ctx, offset));
+	//offset += this.tabs[1].width;
+	//this.tabs.push(new Infotab("Рынок", this.ctx, offset));
 };
 
 Infobox.prototype = {
