@@ -10,7 +10,6 @@ html, body {
     /*overflow: hidden;*/
     height: 100%;
     font-family: monospace;
-	/*background-image: url(../img/1.jpg);*/
+	background-image: url(../img/1.jpg);
 	background-size: 250px;
-	background-color: black;
 }

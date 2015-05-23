@@ -32,8 +32,9 @@ MouseController.prototype = {
 	down:function(e){
 		this.pressed = true;
 		var curTime = new Date();
-		var timeDiff = curTime-prevTime;
-		if(timeDiff<1000)this.doublePressed = true;
+		var timeDiff = curTime-this.prevTime;
+		if(timeDiff<500)
+			this.doublePressed = true;
 		else this.doublePressed = false;
 		this.prevTime = curTime;
 		this.move(e);

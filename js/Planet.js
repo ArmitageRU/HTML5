@@ -34,19 +34,23 @@ Planet.prototype = {
 		}
 		else {
 			
-			if(this.from)ctx.strokeStyle = 'green';
-			else if(this.to)ctx.strokeStyle = 'red';
-			else ctx.strokeStyle = 'blue';
+			ctx.strokeStyle = 'blue';
 			ctx.lineWidth = 1;
 		}
         ctx.beginPath();
-        ctx.arc(this.position.x, this.position.y, 25, 0, Math.PI * 2, true);
-		ctx.fillStyle = 'blue';
+		ctx.arc(this.position.x, this.position.y, 25, 0, Math.PI * 2, true);
+		if(this.to)ctx.fillStyle = 'red';
+		else if(this.from)ctx.fillStyle = 'green';
+		else ctx.fillStyle = 'blue';
 		ctx.fill();
 		ctx.closePath();
         ctx.stroke();
 		
 		//if(this.selected)this.Infobox.Show(this.title);
+	},
+	
+	setTo:function(){
+		if(!this.from)this.to= !this.to;
 	},
 	
 	DrawInfo: function(){
