@@ -41,7 +41,6 @@ Application.prototype = {
 		}
 		this.mouse = new MouseController(this.canvas);
 		this.Infobox = new Infobox(this.canvas.width, this.canvas.height, this.ctx);
-		this.route = new Route(new Point(this.canvas.width-5, this.canvas.height / 2));
 		var IM = {
             store: this._images,
             imagesAdded: 0,
@@ -53,7 +52,7 @@ Application.prototype = {
                     self.imagesLoaded++;
                     if (self.imagesAdded == self.imagesLoaded) {
                         self.app.render(new Date());
-                        console.log('init complete over ' + (new Date() - initRunTime) + 'ms');
+                        //console.log('init complete over ' + (new Date() - initRunTime) + 'ms');
                     }
                 }
                 image.src = url;
@@ -65,9 +64,8 @@ Application.prototype = {
         //IM.add('img/sun.png', 'sun');
         //IM.add('img/planets.png', 'planets');
 		IM.add('img/ships.png', 'ships');
-		
-		this.ship = new Ship(this.ctx, this._images['ships']).setProperty({position:new Point(this.canvas.width-200, this.canvas.height/2)}, true);
-		
+		this.ship = new Ship(this.ctx, this._images['ships']).setProperty({position:new Point(this.canvas.width-100, this.canvas.height/2)}, true);
+		this.route = new Route(this.ship.position);
 		this.render(new Date());
 	},
 	render: function(lastTime) {
@@ -95,6 +93,17 @@ Application.prototype = {
 		this.route.RenderPath(this.ctx, curTime-lastTime);
 		this.ship.render();
 		this.mouse.pressed = false;
+		
+		/*GRID*/
+		ctx.beginPath();
+		ctx.moveTo(this.canvas.width/2, 0);
+		ctx.lineTo(this.canvas.width/2, this.canvas.height);
+		ctx.moveTo(0, this.canvas.height/2);
+		ctx.lineTo(this.canvas.width, this.canvas.height/2);
+		ctx.strokeStyle = "yellow";
+		ctx.lineWidth = 2;
+		ctx.stroke();
+		/**/
 	},
 	
 	generateOrbit: function(){

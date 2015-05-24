@@ -13,6 +13,8 @@ Tile.prototype = {
 		this.ctx.save();
         this.ctx.translate(pos.x, pos.y);
         //ctx.rotate(Math.atan2(p.y - y, p.x - x) + Math.PI / 2);
+		this.ctx.rotate(-Math.PI / 2);
+		this.ctx.scale(0.3,0.3);
         this.ctx.drawImage(this.img, this.sx, this.sy, this.sWidth, this.sHeight,-this.sWidth / 2, -this.sHeight / 2, this.sWidth, this.sHeight);
         this.ctx.restore();
 	
