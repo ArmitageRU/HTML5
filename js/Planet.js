@@ -18,10 +18,9 @@ function Planet(title, image, ctx){
 Planet.prototype = {
 	Init: function(title){
 			this.MainContent.title=title;
-			this.MainContent.textData.push("This week we're coming to you a day earl");//y to take the wraps off our third major content update. This ");  /*методом подбора ограничение длины*/
-			this.MainContent.textData.push("announcement means a lot to us, so in th");//is special newsletter our team will talk through the new features of ");
-			this.MainContent.textData.push("Powerplay in their own words, and we'll");// reveal how you'll be able to make your own powerplay in the Elite: ");
-			this.MainContent.textData.push("Dangerous galaxy.");
+			this.MainContent.owner = "Owwwwnnner!";
+			this.MainContent.avatar = "img/avatar.png";
+			this.MainContent.textData.push("An enigmatic terrestrial planet, Zayarter has a hazy atmosphere of nitrogen and argon. The surface is scorching hot, and mainly composed of calcium with deposits of sodium. Three times in the last century, ships stopping to discharge at Treyarmus reported geometric patterns of lights on the dark side of Zayarter. Attempts at further investigation proved fruitless; the lights disappear when ships approach the inner system.");
 	},
 	
 	Draw: function(deltaTime){

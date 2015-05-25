@@ -10,6 +10,8 @@ var Application = function(){
 	this.route;
 	this.ship;
 	this._images = {};
+	
+	this.currentMainInfo;
 };
 
 Application.prototype = {
@@ -23,7 +25,6 @@ Application.prototype = {
 		this.canvas = document.createElement('canvas');
         document.body.appendChild(this.canvas);
         if (!this.canvas.getContext('2d')) {
-            //document.body.innerHTML = '<center>No support 2d context.</center>';
 			document.getElementById("infobox").innerHTML = '<center>No support 2d context.</center>';
             return false;
         }

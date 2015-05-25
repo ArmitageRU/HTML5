@@ -1,10 +1,10 @@
 "use strict";
 function MainContent(){
 	this.title;
-	this.textData = [];
+	this.owner=null;
+	this.avatar=null;
 	
-	//this.upper_left = upper_left;
-	//this.lower_right = lower_right;
+	this.textData = [];
 };
 
 MainContent.prototype={
@@ -30,4 +30,4 @@ MainContent.prototype={
 			actual_y+=15;
 		}
 	}
-}
+};
