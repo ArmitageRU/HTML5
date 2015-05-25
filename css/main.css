@@ -1,8 +1,15 @@
 /*----------------- #Infoblock ---------------------- */
 #infobox {
-    padding: 8px 0;
+    /*padding: 8px 0;*/
     font-size: inherit;
 	width:425px;
+	position:absolute;
+	left:1110px;
+	padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 .page-title {
     font-size: 1.4em;
@@ -26,4 +33,8 @@
 {
     background: #e9e9da;
     text-align: left;
+}
+
+.dn {
+	display:none;
 }

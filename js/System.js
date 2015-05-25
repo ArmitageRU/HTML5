@@ -10,7 +10,7 @@
     })();
 }
 
-Object.prototype.setProperty = function(object, add) {
+/*Object.prototype.setProperty = function(object, add) {
     if (add !== true) add = false;
     for (var key in object) {
         if (object.hasOwnProperty(key)) {
@@ -19,8 +19,8 @@ Object.prototype.setProperty = function(object, add) {
             }
         }
     }
-    return this;
-}
+    return this; 
+}*/
 
 function shuffle(array) {
     var len = array.length;

@@ -1,4 +1,8 @@
-﻿canvas {
+﻿#application {
+	position:relative;
+}
+
+canvas {
     padding-left: 0;
     padding-right: 0;
     margin-left: auto;
@@ -6,10 +10,12 @@
     display: block;
 	/*border:solid 1px orange;*/
 }
+
 html, body {
     /*overflow: hidden;*/
     height: 100%;
     font-family: monospace;
 	background-image: url(../img/1.jpg);
 	background-size: 250px;
+	
 }

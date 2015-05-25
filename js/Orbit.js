@@ -1,7 +1,9 @@
 "use strict";
-function Orbit(radius, centre, title, ctx, infobox){
+function Orbit(radius, centre, title, ctx, images){
 	this.radius = radius;
-	this.planet = new Planet(title, infobox).setProperty({'orbit':this}, true);
+	var image_num = Math.floor(Math.random() * (18+1 - 1)) + 1; 
+	this.planet = new Planet(title, images['planet'+image_num], ctx);
+	this.planet.orbit=this;
 	this.ctx=ctx;
 	this.centre=centre;
 	//this.Infobox=new Infobox(this.centre).setProperty({'ctx':this.ctx}, true);

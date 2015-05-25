@@ -23,7 +23,8 @@ Application.prototype = {
 		this.canvas = document.createElement('canvas');
         document.body.appendChild(this.canvas);
         if (!this.canvas.getContext('2d')) {
-            document.body.innerHTML = '<center>No support 2d context.</center>';
+            //document.body.innerHTML = '<center>No support 2d context.</center>';
+			document.getElementById("infobox").innerHTML = '<center>No support 2d context.</center>';
             return false;
         }
 		this.canvas.width  = 1440;
@@ -31,16 +32,6 @@ Application.prototype = {
         this.ctx = this.canvas.getContext('2d');
         var globalCenter = new Point(this.canvas.height / 2, this.canvas.height / 2);
 		
-		this.Star = new Star(globalCenter, 50).setProperty({ctx:this.ctx}, true);
-		for(var i = 0; i < 8; ++i){
-			var nextOrbit = this.generateOrbit();
-			if(nextOrbit!=-1){
-				var orbit = new Orbit(nextOrbit, globalCenter, 'Планета — '+nextOrbit,this.ctx, this.Infobox);
-				this.Orbits.push(orbit);
-			}
-		}
-		this.mouse = new MouseController(this.canvas);
-		this.Infobox = new Infobox(this.canvas.width, this.canvas.height, this.ctx);
 		var IM = {
             store: this._images,
             imagesAdded: 0,
@@ -61,11 +52,43 @@ Application.prototype = {
             },
             app: this
         }
-        //IM.add('img/sun.png', 'sun');
-        //IM.add('img/planets.png', 'planets');
 		IM.add('img/ships.png', 'ships');
-		this.ship = new Ship(this.ctx, this._images['ships']).setProperty({position:new Point(this.canvas.width-100, this.canvas.height/2)}, true);
+		//planets
+		IM.add('img/planets/planet1.png', 'planet1');
+		IM.add('img/planets/planet2.png', 'planet2');
+		IM.add('img/planets/planet3.png', 'planet3');
+		IM.add('img/planets/planet4.png', 'planet4');
+		IM.add('img/planets/planet5.png', 'planet5');
+		IM.add('img/planets/planet6.png', 'planet6');
+		IM.add('img/planets/planet7.png', 'planet7');
+		IM.add('img/planets/planet8.png', 'planet8');
+		IM.add('img/planets/planet9.png', 'planet9');
+		IM.add('img/planets/planet10.png', 'planet10');
+		IM.add('img/planets/planet11.png', 'planet11');
+		IM.add('img/planets/planet12.png', 'planet12');
+		IM.add('img/planets/planet13.png', 'planet13');
+		IM.add('img/planets/planet14.png', 'planet14');
+		IM.add('img/planets/planet15.png', 'planet15');
+		IM.add('img/planets/planet16.png', 'planet16');
+		IM.add('img/planets/planet17.png', 'planet17');
+		IM.add('img/planets/planet18.png', 'planet18');
+		
+		this.Star = new Star(globalCenter, 50)
+		this.Star.ctx = this.ctx;
+		for(var i = 0; i < 8; ++i){
+			var nextOrbit = this.generateOrbit();
+			if(nextOrbit!=-1){
+				var orbit = new Orbit(nextOrbit, globalCenter, 'Планета — '+nextOrbit,this.ctx, this._images);
+				this.Orbits.push(orbit);
+			}
+		}
+		this.mouse = new MouseController(this.canvas);
+		//this.Infobox = new Infobox(this.canvas.width, this.canvas.height, this.ctx);
+		
+		this.ship = new Ship(this.ctx, this._images['ships'])
+		this.ship.position = new Point(this.canvas.width-100, this.canvas.height/2);
 		this.route = new Route(this.ship.position);
+		this.ship.route =this.route;
 		this.render(new Date());
 	},
 	render: function(lastTime) {
@@ -91,10 +114,11 @@ Application.prototype = {
 		}
 		//this.Infobox.DrawForm(selectedPlanet, this.mouse);
 		this.route.RenderPath(this.ctx, curTime-lastTime);
-		this.ship.render();
+		this.ship.render(curTime-lastTime);
 		this.mouse.pressed = false;
 		
 		/*GRID*/
+		/*
 		ctx.beginPath();
 		ctx.moveTo(this.canvas.width/2, 0);
 		ctx.lineTo(this.canvas.width/2, this.canvas.height);
@@ -103,6 +127,7 @@ Application.prototype = {
 		ctx.strokeStyle = "yellow";
 		ctx.lineWidth = 2;
 		ctx.stroke();
+		*/
 		/**/
 	},
 	
