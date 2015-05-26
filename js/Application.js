@@ -76,6 +76,7 @@ Application.prototype = {
 		
 		this.Star = new Star(globalCenter, 50)
 		this.Star.ctx = this.ctx;
+		this.currentMainInfo = this.Star.MainContent;
 		for(var i = 0; i < 8; ++i){
 			var nextOrbit = this.generateOrbit();
 			if(nextOrbit!=-1){
@@ -108,7 +109,8 @@ Application.prototype = {
 			//if(this.Orbits[j].planet.selected)showInfo = j;
 			this.Orbits[j].Draw(curTime-lastTime);
 			if(this.mouse.pressed && Math.abs(this.mouse.pos.x -this.Orbits[j].planet.position.x)<25 && Math.abs(this.mouse.pos.y-this.Orbits[j].planet.position.y)<25){
-				this.selectPlanet(this.Orbits[j]);
+				if(this.selectPlanet(this.Orbits[j]))this.currentMainInfo = this.Orbits[j].planet.MainContent;
+				else this.currentMainInfo = this.Star.MainContent;
 			}
 			if(this.Orbits[j].planet.selected)selectedPlanet = this.Orbits[j].planet;
 			if(this.Orbits[j].planet.to)this.route.to = this.Orbits[j].planet.position;
@@ -117,7 +119,8 @@ Application.prototype = {
 		this.route.RenderPath(this.ctx, curTime-lastTime);
 		this.ship.render(curTime-lastTime);
 		this.mouse.pressed = false;
-		
+
+		FillMainTab(this.currentMainInfo);
 		/*GRID*/
 		/*
 		ctx.beginPath();
@@ -129,7 +132,6 @@ Application.prototype = {
 		ctx.lineWidth = 2;
 		ctx.stroke();
 		*/
-		/**/
 	},
 	
 	generateOrbit: function(){
@@ -157,5 +159,7 @@ Application.prototype = {
 			if(this.Orbits[i]!=orbit)this.Orbits[i].planet.selected = false;
 			if(this.mouse.doublePressed && this.Orbits[i]!=orbit)this.Orbits[i].planet.to = false;
 		}
+
+		return orbit.planet.selected;
 	}
 };
