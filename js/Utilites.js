@@ -29,7 +29,8 @@ function FillTabs(maincontent, marketcontent) {
 		else $("#origin_avatar").addClass("dn");
 		prevMainContent = maincontent;
 	}
-	$("#market_goods > tbody").empty();
+	//не забыть раскоментировать
+	// $("#market_goods > tbody").empty();
 	if(marketcontent!=null && prevMarketContent!=marketcontent && marketcontent.Commodity.length>0){
 		for(var i = 0;i<marketcontent.Commodity.length;i++){
 			$('#market_goods> tbody').after("<tr><td>"+marketcontent.Commodity[0].name+

@@ -12,9 +12,23 @@
     display: block;
 }
 
-#market_table{
-    border:1px solid black;
+#marketplace{
+    font-size: inherit;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    background-color: #fff;   
+    position:absolute;
+    max-height: 800px;
+    overflow-y: auto;
 }
+
+#market_goods table, td, th{
+    border: 1px solid orange;
+}
+
 .page-title {
     font-size: 1.4em;
     padding: 3px 8px 8px;
