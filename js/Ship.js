@@ -3,8 +3,10 @@ function Ship(ctx, image){
 	this.position;
 	this.tile = new Tile(ctx, image, 28, 804, 199, 163, 0.3);
 	this.route;
-	this.rot = -Math.PI / 2;;
+	this.rot = -Math.PI / 2;
 	this.speed= 90; //pixel per second e.g.
+
+	this.money;
 };
 
 Ship.prototype = {

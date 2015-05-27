@@ -11,7 +11,10 @@ var Application = function(){
 	this.ship;
 	this._images = {};
 	
-	this.currentMainInfo;
+	//system screen
+	this.currentMainContent;
+	this.currentMarketContent = null;
+	this.curentShipContent = null;
 };
 
 Application.prototype = {
@@ -44,7 +47,6 @@ Application.prototype = {
                     self.imagesLoaded++;
                     if (self.imagesAdded == self.imagesLoaded) {
                         self.app.render(new Date());
-                        //console.log('init complete over ' + (new Date() - initRunTime) + 'ms');
                     }
                 }
                 image.src = url;
@@ -76,7 +78,8 @@ Application.prototype = {
 		
 		this.Star = new Star(globalCenter, 50)
 		this.Star.ctx = this.ctx;
-		this.currentMainInfo = this.Star.MainContent;
+		this.currentMainContent = this.Star.MainContent;
+		//system screen
 		for(var i = 0; i < 8; ++i){
 			var nextOrbit = this.generateOrbit();
 			if(nextOrbit!=-1){
@@ -103,16 +106,19 @@ Application.prototype = {
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 		self.Star.Draw(curTime-lastTime);
 		//var showInfo= -1;
-		var selectedPlanet = null;
 		this.route.to = null;
+		this.currentMainContent = this.Star.MainContent;
+		this.currentMarketContent = null;
 		for(var j = 0;j<this.Orbits.length;j++){
 			//if(this.Orbits[j].planet.selected)showInfo = j;
 			this.Orbits[j].Draw(curTime-lastTime);
 			if(this.mouse.pressed && Math.abs(this.mouse.pos.x -this.Orbits[j].planet.position.x)<25 && Math.abs(this.mouse.pos.y-this.Orbits[j].planet.position.y)<25){
-				if(this.selectPlanet(this.Orbits[j]))this.currentMainInfo = this.Orbits[j].planet.MainContent;
-				else this.currentMainInfo = this.Star.MainContent;
+				this.selectPlanet(this.Orbits[j])
 			}
-			if(this.Orbits[j].planet.selected)selectedPlanet = this.Orbits[j].planet;
+			if(this.Orbits[j].planet.selected){
+				this.currentMainContent = this.Orbits[j].planet.MainContent;
+				this.currentMarketContent = this.Orbits[j].planet.MarketContent;
+			}
 			if(this.Orbits[j].planet.to)this.route.to = this.Orbits[j].planet.position;
 		}
 		//this.Infobox.DrawForm(selectedPlanet, this.mouse);
@@ -120,7 +126,8 @@ Application.prototype = {
 		this.ship.render(curTime-lastTime);
 		this.mouse.pressed = false;
 
-		FillMainTab(this.currentMainInfo);
+		FillTabs(this.currentMainContent, this.currentMarketContent);
+		
 		/*GRID*/
 		/*
 		ctx.beginPath();

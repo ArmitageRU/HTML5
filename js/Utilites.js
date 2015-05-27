@@ -3,8 +3,11 @@ function ShowHideInfopanel() {
 	else $("#container").addClass("dn");
 }
 
-function FillMainTab(maincontent, marketcontent) {
-	if(maincontent!=null) {
+var prevMainContent = null;
+var prevMarketContent = null
+
+function FillTabs(maincontent, marketcontent) {
+	if(maincontent!=null && prevMainContent!=maincontent) {
 		$("#origin_title").removeClass("dn");
 		$("#origin_avatar").removeClass("dn");
 
@@ -24,9 +27,19 @@ function FillMainTab(maincontent, marketcontent) {
 
 		if (maincontent.avatar != null)$("#origin_avatar").attr("src", maincontent.avatar);
 		else $("#origin_avatar").addClass("dn");
+		prevMainContent = maincontent;
 	}
-
-	if(marketcontent!=null){
-
+	$("#market_goods > tbody").empty();
+	if(marketcontent!=null && prevMarketContent!=marketcontent && marketcontent.Commodity.length>0){
+		for(var i = 0;i<marketcontent.Commodity.length;i++){
+			$('#market_goods> tbody').after("<tr><td>"+marketcontent.Commodity[0].name+
+											  "</td><td>"+marketcontent.Commodity[0].buy+
+											  "</td><td>"+marketcontent.Commodity[0].sell+
+											  "</td><td>"+marketcontent.Commodity[0].quantity+
+											  "</td><td><button>-</button></td>"+
+											  "<td>88</td>"+
+											  "<td><button>+</button></td></tr>");
+		}
+	prevMarketContent = marketcontent;
 	}
 }
