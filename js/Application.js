@@ -26,9 +26,10 @@ Application.prototype = {
 	},
 	init:function(){
 		this.canvas = document.createElement('canvas');
-        document.body.appendChild(this.canvas);
+        //document.body.appendChild(this.canvas);
+        document.getElementById("application").appendChild(this.canvas);
         if (!this.canvas.getContext('2d')) {
-			document.getElementById("infobox").innerHTML = '<center>No support 2d context.</center>';
+			document.getElementById("application").innerHTML = '<center>No support 2d context.</center>';
             return false;
         }
 		this.canvas.width  = 1440;
