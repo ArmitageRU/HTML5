@@ -6,7 +6,8 @@ function Ship(ctx, image){
 	this.rot = -Math.PI / 2;
 	this.speed= 90; //pixel per second e.g.
 
-	this.money;
+	this.money=1000;
+	this.cargoCapacity=10;
 };
 
 Ship.prototype = {
