@@ -46,14 +46,14 @@ function FillTabs(maincontent, marketcontent) {
 		prevMainContent = maincontent;
 	}
 	
-	$("#market_goods > tbody").empty();
+	$('#market_goods> tbody').html('');
 	if(prevMarketContent!=marketcontent){
 		if(marketcontent!=null){
 			for(var i = 0;i<marketcontent.Commodity.length;i++){
-				$('#market_goods> tbody').after("<tr><td>"+marketcontent.Commodity[0].name+
-											  "</td><td>"+marketcontent.Commodity[0].buy+
-											  "</td><td>"+marketcontent.Commodity[0].sell+
-											  "</td><td>"+marketcontent.Commodity[0].quantity+
+				$('#market_goods> tbody').after("<tr><td>"+marketcontent.Commodity[i].item.title+
+											  "</td><td>"+marketcontent.Commodity[i].buy+
+											  "</td><td>"+marketcontent.Commodity[i].sell+
+											  "</td><td>"+marketcontent.Commodity[i].quantity+
 											  "</td><td><button>-</button></td>"+
 											  "<td>88</td>"+
 											  "<td><button>+</button></td></tr>");

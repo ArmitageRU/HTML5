@@ -95,7 +95,6 @@ Application.prototype = {
 		this.ship.position = new Point(this.canvas.width-100, this.canvas.height/2);
 		this.route = new Route(this.ship.position);
 		this.ship.route =this.route;
-		this.render(new Date());
 	},
 	render: function(lastTime) {
         var curTime = new Date();
@@ -119,6 +118,7 @@ Application.prototype = {
 			if(this.Orbits[j].planet.selected){
 				this.currentMainContent = this.Orbits[j].planet.MainContent;
 				this.currentMarketContent = this.Orbits[j].planet.MarketContent;
+				this.currentMarketContent.ship = this.ship;
 			}
 			if(this.Orbits[j].planet.to)this.route.to = this.Orbits[j].planet.position;
 		}

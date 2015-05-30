@@ -8,6 +8,7 @@ function Ship(ctx, image){
 
 	this.money=1000;
 	this.cargoCapacity=10;
+	this.items = [];
 };
 
 Ship.prototype = {
