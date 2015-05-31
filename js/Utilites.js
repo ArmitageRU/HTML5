@@ -46,11 +46,12 @@ function FillTabs(maincontent, marketcontent) {
 		prevMainContent = maincontent;
 	}
 	
-	$('#market_goods> tbody').html('');
 	if(prevMarketContent!=marketcontent){
+		$('#market_goods tbody').empty();
 		if(marketcontent!=null){
+			//$('#market_goods').append('<tbody></tbody>');
 			for(var i = 0;i<marketcontent.Commodity.length;i++){
-				$('#market_goods> tbody').after("<tr><td>"+marketcontent.Commodity[i].item.title+
+				$('#market_goods tbody').append("<tr onmouseover=\"ShowItemInfo(this);\"><td>"+marketcontent.Commodity[i].item.title+
 											  "</td><td>"+marketcontent.Commodity[i].buy+
 											  "</td><td>"+marketcontent.Commodity[i].sell+
 											  "</td><td>"+marketcontent.Commodity[i].quantity+
@@ -62,4 +63,8 @@ function FillTabs(maincontent, marketcontent) {
 	prevMarketContent = marketcontent;
 	DisableAppButtons();
 	}
+}
+
+function ShowItemInfo(this){
+	//prevMarketContent
 }

@@ -1,323 +1,108 @@
-﻿<!doctype html>
+﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-	<title>«TEST»</title>
-	<link href="css/form.css" rel="stylesheet" type="text/css">
-	<link href="css/main.css" rel="stylesheet" type="text/css">
-	<link href="css/style.css" rel="stylesheet" type="text/css">
-	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
-	<script src="js/default.scripts.js" type="text/javascript"></script>
-	<script src="js/jquery.rt.plugins.js" type="text/javascript"></script>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title> - jsFiddle demo</title>
+  
+  <script type='text/javascript' src='http://code.jquery.com/jquery-1.6.2.js'></script>
+  
+  <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+  
+  
+  <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+  
+  <style type='text/css'>
+    
+  </style>
+  
+
+
+<script type='text/javascript'>//<![CDATA[ 
+$(window).load(function(){
+$(function() {
+    $('#add').bind('click', function() {
+         $('#market_goods_tbody>tr').remove();
+        $('#market_goods_tbody').append("<tr><td>marketcontent.Commodity[i].item.title"+
+											  "</td><td>marketcontent.Commodity[i].buy"+
+											  "</td><td>marketcontent.Commodity[i].sell"+
+											  "</td><td>marketcontent.Commodity[i].quantity"+
+											  "</td><td><button>-</button></td>"+
+											  "<td>88</td>"+
+											  "<td><button>+</button></td></tr>");
+        var count = $('#market_goods_tbody').children('tr').length;
+        $('#counter').html(count);
+    });
+});
+});//]]>  
+
+</script>
+
+
 </head>
 <body>
-    <div id="application">
-		<div id="marketplace">
-				<div id="goods_div">
-					<table id ="market_goods">
-						<thead>
-							<tr>
-								<th>Wwwwwwwwwww</th>
-								<th>Wwwwwww</th>
-								<th>Wwwwwww</th>
-								<th>Wwwwwwwwww</th>
-								<th colspan="3">Ww wwwwwww</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Ggggg 1</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr style="background-color:orange;">
-								<td>Ggggg 5</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 1</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 10</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 10</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 1</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 5</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 1</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 10</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 10</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 1</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 5</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 1</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 10</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 10</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 1</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 5</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 1</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 10</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 10</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 1</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 5</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 1</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 10</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 10</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 10</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 10</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 10</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 10</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 10</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-							<tr>
-								<td>Ggggg 10</td>
-								<td>4500</td>
-								<td>4700</td>
-								<td>15000</td>
-								<td><button><</button></td>
-								<td>12</td>
-								<td><button>></button></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				<div id="marketplace_info">
-					Some information about selected item
-					<hr/>
-					one<br/>
-					two<br/>
-					three<br/>
-				</div>
-				<div id="marketplace_buttons">
-					<button>Выход</button><button>Подтвердить</button>
-				</div>
-		</div>
-	</div>	
+  <button id="add">Add row</button>
+<table id ="market_goods">
+					<thead>
+						<tr>
+							<th>Наименование</th>
+							<th>Покупка</th>
+							<th>Продажа</th>
+							<th>Количество</th>
+							<th colspan="3">На корабле</th>
+						</tr>
+					</thead>
+					<tbody id="market_goods_tbody">
+						<tr>
+							<td>Товар 1</td>
+							<td>4500</td>
+							<td>4700</td>
+							<td>15000</td>
+							<td><button><</button></td>
+							<td>12</td>
+							<td><button>></button></td>
+						</tr>
+						<tr style="background-color:orange;">
+							<td>Товар 1</td>
+							<td>4500</td>
+							<td>4700</td>
+							<td>15000</td>
+							<td><button><</button></td>
+							<td>12</td>
+							<td><button>></button></td>
+						</tr>
+						<tr>
+							<td>Товар 1</td>
+							<td>4500</td>
+							<td>4700</td>
+							<td>15000</td>
+							<td><button><</button></td>
+							<td>12</td>
+							<td><button>></button></td>
+						</tr>
+						<tr>
+							<td>Товар 1</td>
+							<td>4500</td>
+							<td>4700</td>
+							<td>15000</td>
+							<td><button><</button></td>
+							<td>12</td>
+							<td><button>></button></td>
+						</tr>
+						<tr>
+							<td>Товар 1</td>
+							<td>4500</td>
+							<td>4700</td>
+							<td>15000</td>
+							<td><button><</button></td>
+							<td>12</td>
+							<td><button>></button></td>
+						</tr>
+					</tbody>
+				</table>
+Number of rows: <span id="counter"></span>
+  
 </body>
+
+
 </html>
+

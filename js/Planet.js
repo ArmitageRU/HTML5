@@ -23,8 +23,11 @@ Planet.prototype = {
 			this.MainContent.owner = "Owwwwnnner!";
 			this.MainContent.avatar = "img/avatar.png";
 			this.MainContent.textData.push("An enigmatic terrestrial planet, Zayarter has a hazy atmosphere of nitrogen and argon. The surface is scorching hot, and mainly composed of calcium with deposits of sodium. Three times in the last century, ships stopping to discharge at Treyarmus reported geometric patterns of lights on the dark side of Zayarter. Attempts at further investigation proved fruitless; the lights disappear when ships approach the inner system.");
-
+			this.MainContent.textData.push("Сервисы:")
 			this.MarketContent.Fulfill(this);
+			if(this.MarketContent.Commodity.length>0){
+				this.MainContent.textData.push("Потребительский рынок")
+			}
 			//this.goods = 
 	},
 	

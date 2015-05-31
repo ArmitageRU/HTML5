@@ -51,6 +51,10 @@
     width:100%;
 }
 
+#market_goods tr:hover{
+	background-color: orange;
+}
+
 #goods_div{
     max-height: 760px;
     overflow-y: auto;
