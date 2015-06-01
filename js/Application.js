@@ -80,21 +80,20 @@ Application.prototype = {
 		this.Star = new Star(globalCenter, 50)
 		this.Star.ctx = this.ctx;
 		this.currentMainContent = this.Star.MainContent;
+		this.ship = new Ship(this.ctx, this._images['ships'])
+		this.ship.position = new Point(this.canvas.width-100, this.canvas.height/2);
+		this.route = new Route(this.ship.position);
+		this.ship.route =this.route;
 		//system screen
 		for(var i = 0; i < 8; ++i){
 			var nextOrbit = this.generateOrbit();
 			if(nextOrbit!=-1){
-				var orbit = new Orbit(nextOrbit, globalCenter, 'Планета — '+nextOrbit,this.ctx, this._images);
+				var orbit = new Orbit(nextOrbit, globalCenter, 'Планета — '+nextOrbit,this.ctx, this._images, this.ship);
 				this.Orbits.push(orbit);
 			}
 		}
 		this.mouse = new MouseController(this.canvas);
 		//this.Infobox = new Infobox(this.canvas.width, this.canvas.height, this.ctx);
-		
-		this.ship = new Ship(this.ctx, this._images['ships'])
-		this.ship.position = new Point(this.canvas.width-100, this.canvas.height/2);
-		this.route = new Route(this.ship.position);
-		this.ship.route =this.route;
 	},
 	render: function(lastTime) {
         var curTime = new Date();

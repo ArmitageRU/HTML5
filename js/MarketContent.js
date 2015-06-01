@@ -20,10 +20,22 @@ MarketContent.prototype = {
 				item: FakeGoods.items[c_item[i]],
 				quantity: c_q,
 				buy: c_b,
-				sell: c_s
+				sell: c_s,
+				in_cargo:0
 			}
 			this.Commodity.push(commodity);
 			i++;
+		}
+	},
+
+	ReCalculateInCargo: function(){
+		for(var i = 0;i<this.Commodity.length;i++){
+			this.Commodity[i].in_cargo = 0;
+			for(var j =0;j<this.ship.items.length;j++){
+				if(this.Commodity[i].item.id==this.ship.items[j]){
+					this.Commodity[i].in_cargo++;
+				}
+			}
 		}
 	}
 };

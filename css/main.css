@@ -65,6 +65,7 @@
 #marketplace_info{
     float:right;
     height: 790px;
+    width:345px;
     padding:5px;
     overflow-y: auto;
     border-left: solid 1px orange;
@@ -76,6 +77,11 @@
     bottom: 0;
     margin-top: 50px;
     padding:8px;
+    min-width: 830px;
+}
+
+#marketplace_ship{
+    float:right;
 }
 
 #marketplace_buttons button{
