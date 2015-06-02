@@ -29,7 +29,6 @@
 <body>
     <script>var StarSystem = new Application();</script>
 	<div id="application">
-		<div style="z-index:100; width:100%; height:100%; position:absolute; background-color: rgba(215, 44, 44, 0.5);"></div>
 		<div id="application_buttons">
 			<button onClick="ShowHideInfopanel();">Инфопанель</button>
 			<button onClick="ShowHideMarketPlace();" id="app_mrkt_btn" disabled>Рынок</button>
@@ -105,6 +104,34 @@
 			</div>
 		</div> -->
 		<div id="marketplace" class="dn">
+			<div id="marketplace_veil" class="dn"></div>			
+			<div id="marketplace_purchase" class="dn">
+				<div id="marketplace_purchase_buy" class="dn">
+					<div>Покупка</div>
+					<hr/>
+					<span id="marketplace_purchase_title"></span>
+					<div>
+					<input type="range" min="1" max="500" value="1" onchange="ShowQuantity(this.value);" id="marketplace_purchase_quantity"><output id="marketplace_purchase_input">1</output>
+					</div>
+					<div>
+						<span id="marketplace_purchase_money"></span>
+					</div>	
+					<div>
+						<button>Отмена</button>
+						<button>купить</button>
+						<button>купить максимум</button>
+					</div>
+				</div>
+				<div id="marketplace_purchase_sell" class="dn">
+					<span id="purchase_title"></span>
+					<span id="purchase_quantity"></span>
+					<button>продать все</button>
+					<button>купить максимум</button>
+					<button>+</button>
+					<button>-</button>
+					<div><button>Отмена</button><button>Подтвердить</button></div>
+				</div>
+			</div>
 			<div id="goods_div">
 				<table id ="market_goods">
 					<thead>

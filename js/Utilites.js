@@ -1,7 +1,9 @@
 var prevMainContent = null;
 var prevMarketContent = null;
 var currentCommodities = [];
+
 var moneyRest = 0;
+var currentSell = 0;
 
 function ShowHideInfopanel() {
 	if($("#infobox" ).hasClass( "dn" ))$("#infobox").removeClass("dn");
@@ -62,13 +64,15 @@ function FillTabs(maincontent, marketcontent) {
 			$('#ship_money').html(marketcontent.ship.money);
 			//$('#market_goods').append('<tbody></tbody>');
 			for(var i = 0;i<marketcontent.Commodity.length;i++){
+				var can_sell = marketcontent.Commodity[i].in_cargo==0?"disabled=\"disabled\"":"";
+				var can_buy = marketcontent.Commodity[i].sell>marketcontent.ship.money?"disabled=\"disabled\"":"";
 				$('#market_goods tbody').append("<tr onmouseover=\"ShowItemInfo(this);\" onmouseout=\"ClearItemInfo(this);\" id=\""+marketcontent.Commodity[i].item.id+"\"><td>"+marketcontent.Commodity[i].item.title+
 											  "</td><td id=\"B"+marketcontent.Commodity[i].item.id+"\">"+marketcontent.Commodity[i].buy+
 											  "</td><td id=\"S"+marketcontent.Commodity[i].item.id+"\">"+marketcontent.Commodity[i].sell+
 											  "</td><td id=\"MQ"+marketcontent.Commodity[i].item.id+"\">"+marketcontent.Commodity[i].quantity+
-											  "</td><td><button onclick=\"ItemSell(this);\">-</button></td>"+
-											  "<td id=\"Q"+marketcontent.Commodity[i].item.id+"\" class=\"market_\">"+marketcontent.Commodity[i].in_cargo+"</td>"+
-											  "<td><button onclick=\"ItemBuy(this);\">+</button></td></tr>");
+											  "</td><td><button onclick=\"ItemSell(this);\" "+can_sell+">-</button></td>"+
+											  "<td id=\"Q"+marketcontent.Commodity[i].item.id+"\">"+marketcontent.Commodity[i].in_cargo+"</td>"+
+											  "</td><td><button onclick=\"ItemBuy(this);\" "+can_buy+">+</button></td>");
 				for(var j = 0;j<marketcontent.Commodity[i].in_cargo;j++){
 					currentCommodities.push(marketcontent.Commodity[i].item.id);
 				}
@@ -96,18 +100,43 @@ function ShowItemInfo(obj){
 	}
 }
 
+function ShowQuantity(val){
+	$("#marketplace_purchase_input").html(val);
+	var money = prevMarketContent.ship.money - currentSell*val;
+	$("#marketplace_purchase_money").html(money);
+}
+
 function ItemBuy(obj){
 	var id = $(obj).closest('tr').attr('id');
-	var quantity = $("#Q"+id).html();
-	if(AddItemInCargo(id, '+'))$("#Q"+id).html(++quantity);
-	//console.warn('item id+: '+id);
+	var max_buy = 1;
+	//var quantity = $("#Q"+id).html();
+	//if(AddItemInCargo(id, '+'))$("#Q"+id).html(++quantity);
+	$("#marketplace_veil").removeClass("dn");
+	$("#marketplace_purchase").removeClass("dn");
+	$("#marketplace_purchase_buy").removeClass("dn");
+
+	for(var i = 0;i<prevMarketContent.Commodity.length;i++){
+			if(prevMarketContent.Commodity[i].item.id==id){
+				$("#marketplace_purchase_title").html(prevMarketContent.Commodity[i].item.title+" ["+prevMarketContent.Commodity[i].sell+"]");			
+				max_buy = Math.floor(prevMarketContent.ship.money/prevMarketContent.Commodity[i].sell);
+				currentSell = prevMarketContent.Commodity[i].sell;
+				$("#marketplace_purchase_quantity").attr('max',max_buy);
+				$("#marketplace_purchase_money").html(prevMarketContent.ship.money-currentSell);
+				break;
+			}
+		}
+	$("#marketplace_purchase_title").html(prevMarketContent.s);
 }
 
 function ItemSell(obj){
-	var id = $(obj).closest('tr').attr('id');
-	var quantity = $("#Q"+id).html();
-	if(AddItemInCargo(id, '-'))$("#Q"+id).html(--quantity);
-	console.warn('item id-: '+id);
+	//var id = $(obj).closest('tr').attr('id');
+	//var quantity = $("#Q"+id).html();
+	//if(AddItemInCargo(id, '-'))$("#Q"+id).html(--quantity);
+}
+
+function ItemPurchase(obj){
+	$("#marketplace_veil").removeClass("dn");
+	$("#marketplace_purchase").removeClass("dn");
 }
 
 function AddItemInCargo(id, operation){
