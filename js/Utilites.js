@@ -205,9 +205,14 @@ function ConfirmPurchase(option){
 	if(operation=='+')item_quantity = parseInt($("#marketplace_purchase_quantity_b").val());
 	else if(operation=='-')item_quantity = parseInt($("#marketplace_purchase_quantity_s").val());
 	prevMarketContent.ship.money-=currentStuff.sell*item_quantity;
-	for(var i = 0;i<item_quantity;i++){
-		prevMarketContent.ship.items.push(item_id);
-	}
+	//for(var i = 0;i<item_quantity;i++){
+		var buy_item ={
+			id:item_id,
+			cost:currentStuff.sell,
+			quantity:item_quantity
+		}
+		prevMarketContent.ship.items.push(buy_item);
+	//}
 	ClosePurchaseWindow(option);
 	DrawMarketContent(prevMarketContent);
 }

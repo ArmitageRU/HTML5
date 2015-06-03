@@ -30,5 +30,14 @@ Ship.prototype = {
 	
 	VLength:function(vector){
 		return Math.sqrt(Math.pow(vector.x, 2) + Math.pow(vector.y,2));
+	},
+
+	AddItem:function(item){
+		for(var i = 0;i<this.items.length;i++){
+			if(this.items[i].id==item.id){
+				this.items[i].quantity++;
+				this.items[i].cost++;
+			}
+		}
 	}
 };
