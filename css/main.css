@@ -87,12 +87,45 @@
     border: 1px solid black;  
 }
 
+.purchase_win{
+    padding:3px;
+    height: 100%;
+}
+
+.marketplace_purchase_heading{
+    /*border-bottom: 1px solid black;*/
+    padding:3px;
+    background-color: orange;
+    color:white;
+}
+
+.marketplace_purchase_max{
+    margin:0 auto; 
+    width:53px;
+}
+
+#marketplace_purchase_quantity{
+    padding:0;
+    height:15px;
+    margin-right:3px; 
+}
+
+.marketplace_purchase_range{
+    margin:0 auto;
+    width: 345px;
+}
+
+.marketplace_purchase_buttons{
+    vertical-align: bottom;
+    margin-top: 35px;
+}
+
 #marketplace_veil{
     z-index:1; 
     width:100%; 
     height:100%; 
     position:absolute; 
-    background-color: rgba(215, 44, 44, 0.5);
+    background-color: rgba(15, 15, 15, 0.5);
 }
 
 #marketplace_buttons{

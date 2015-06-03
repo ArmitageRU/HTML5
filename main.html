@@ -106,30 +106,44 @@
 		<div id="marketplace" class="dn">
 			<div id="marketplace_veil" class="dn"></div>			
 			<div id="marketplace_purchase" class="dn">
-				<div id="marketplace_purchase_buy" class="dn">
-					<div>Покупка</div>
-					<hr/>
-					<span id="marketplace_purchase_title"></span>
-					<div>
-					<input type="range" min="1" max="500" value="1" onchange="ShowQuantity(this.value);" id="marketplace_purchase_quantity"><output id="marketplace_purchase_input">1</output>
+				<div id="marketplace_purchase_buy" class="dn purchase_win">
+					<div class="marketplace_purchase_heading"><strong>Покупка</strong></div>
+					<span class="marketplace_purchase_title"></span>
+					<div class="marketplace_purchase_range">
+						<input type="range" min="1" max="500" value="1" id="marketplace_purchase_quantity_b" onchange="ShowQuantity(this.value);"><button onclick="SetMaxQuantity('+');">макс.</button>
+					</div>
+					<div class="marketplace_purchase_max">
+						<output class="marketplace_purchase_input">255</output>
 					</div>
 					<div>
-						<span id="marketplace_purchase_money"></span>
-					</div>	
-					<div>
-						<button>Отмена</button>
-						<button>купить</button>
-						<button>купить максимум</button>
+						<strong>Деньги:</strong><span class="marketplace_purchase_money">11221</span><br/>
+						<strong>Груз:</strong><span class="marketplace_purchase_cargo">112/521</span>
+					</div>
+					<hr />
+					<div class="marketplace_purchase_buttons">
+						<button onclick="ClosePurchaseWindow('+');">Отмена</button>
+						<button onclick="ConfirmPurchase('+');">Купить</button>
 					</div>
 				</div>
-				<div id="marketplace_purchase_sell" class="dn">
-					<span id="purchase_title"></span>
-					<span id="purchase_quantity"></span>
-					<button>продать все</button>
-					<button>купить максимум</button>
-					<button>+</button>
-					<button>-</button>
-					<div><button>Отмена</button><button>Подтвердить</button></div>
+				<div id="marketplace_purchase_sell" class="dn purchase_win">
+					<div class="marketplace_purchase_heading"><strong>Продажа</strong></div>
+					<span class="marketplace_purchase_title"></span>
+					<div class="marketplace_purchase_range">
+						<input type="range" min="1" max="500" value="1" id="marketplace_purchase_quantity_s" onchange="ShowQuantity(this.value);"><button onclick="SetMaxQuantity('-');">макс.</button>
+					</div>
+					<div class="marketplace_purchase_max">
+						<output class="marketplace_purchase_input">255</output>
+					</div>
+					<div>
+						<strong>Прибыль:</strong><span id="marketplace_purchase_money">11221</span><br/>
+						<strong>Деньги:</strong><span class="marketplace_purchase_money">11221</span><br/>
+						<strong>Груз:</strong><span class="marketplace_purchase_cargo">112/521</span>
+					</div>
+					<hr />
+					<div class="marketplace_purchase_buttons">
+						<button onclick="ClosePurchaseWindow('-');">Отмена</button>
+						<button onclick="ConfirmPurchase('-');">Продать</button>
+					</div>
 				</div>
 			</div>
 			<div id="goods_div">
