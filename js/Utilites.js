@@ -8,7 +8,6 @@ var currentStuff = {
     id: 0
 }
 
-
 //Обработчик кнопки "Инфопанель"
 function ShowHideInfopanel() {
 	if($("#infobox" ).hasClass( "dn" ))$("#infobox").removeClass("dn");
@@ -65,6 +64,7 @@ function FillTabs(maincontent, marketcontent) {
 	}
 	
 	if(prevMarketContent!=marketcontent){
+		if(marketcontent.goods.length==0)marketcontent=null;
 		DrawMarketContent(marketcontent);		
 	}
 }
@@ -74,18 +74,18 @@ function DrawMarketContent(content){
 		$('#market_goods tbody').empty();
 		if(content!=null){
 			content.ReCalculateInCargo();
-			$('#ship_cargo_current').html(content.ship.items.length);
+			$('#ship_cargo_current').html(content.ship.InCargo());
 			$('#ship_cargo_max').html(content.ship.cargoCapacity);
 			$('#ship_money').html(content.ship.money);
-			for(var i = 0;i<content.Commodity.length;i++){
-				var can_sell = content.Commodity[i].in_cargo==0?"disabled=\"disabled\"":"";
-				var can_buy = content.Commodity[i].sell>content.ship.money?"disabled=\"disabled\"":"";
-				$('#market_goods tbody').append("<tr onmouseover=\"ShowItemInfo(this);\" onmouseout=\"ClearItemInfo(this);\" id=\""+content.Commodity[i].item.id+"\"><td>"+content.Commodity[i].item.title+
-											    "</td><td id=\"B"+content.Commodity[i].item.id+"\">"+content.Commodity[i].buy+
-											    "</td><td id=\"S"+content.Commodity[i].item.id+"\">"+content.Commodity[i].sell+
-											   	"</td><td id=\"MQ"+content.Commodity[i].item.id+"\">"+content.Commodity[i].quantity+
+			for(var i = 0;i<content.goods.length;i++){
+				var can_sell = content.goods[i].in_cargo==0?"disabled=\"disabled\"":"";
+				var can_buy = content.goods[i].sell>content.ship.money?"disabled=\"disabled\"":"";
+				$('#market_goods tbody').append("<tr onmouseover=\"ShowItemInfo(this);\" onmouseout=\"ClearItemInfo(this);\" id=\""+content.goods[i].item.id+"\"><td>"+content.goods[i].item.title+
+											    "</td><td id=\"B"+content.goods[i].item.id+"\">"+content.goods[i].buy+
+											    "</td><td id=\"S"+content.goods[i].item.id+"\">"+content.goods[i].sell+
+											   	"</td><td id=\"MQ"+content.goods[i].item.id+"\">"+content.goods[i].quantity+
 											  	"</td><td><button onclick=\"ItemSell(this);\" "+can_sell+">-</button></td>"+
-											  	"<td id=\"Q"+content.Commodity[i].item.id+"\">"+content.Commodity[i].in_cargo+"</td>"+
+											  	"<td id=\"Q"+content.goods[i].item.id+"\">"+content.goods[i].in_cargo+"</td>"+
 											  	"</td><td><button onclick=\"ItemBuy(this);\" "+can_buy+">+</button></td>");
 			}
 		}
@@ -103,9 +103,9 @@ function ShowItemInfo(obj){
 	//$('#marketplace_info').html('');
 	if(prevMarketContent!=null){
 		var id = $(obj).attr('id');
-		for(var i = 0;i<prevMarketContent.Commodity.length;i++){
-			if(prevMarketContent.Commodity[i].item.id==id){
-				$('#marketplace_info').html(prevMarketContent.Commodity[i].item.desription);			
+		for(var i = 0;i<prevMarketContent.goods.length;i++){
+			if(prevMarketContent.goods[i].item.id==id){
+				$('#marketplace_info').html(prevMarketContent.goods[i].item.desription);			
 				break;
 			}
 		}
@@ -113,14 +113,18 @@ function ShowItemInfo(obj){
 }
 
 //Показывать выбранное колличество при покупке/продаже товара, остаток денег, загруженность грузового отсека
-function ShowQuantity(val){
+function ShowQuantity(val, operation){
 	val = parseInt(val);
 	$(".marketplace_purchase_input").html(val);
 	var money = prevMarketContent.ship.money - currentStuff.sell*val;
+	if(operation=='-')money=prevMarketContent.ship.money + currentStuff.sell*val;
 	$(".marketplace_purchase_money").html(money);
-	var in_cargo = prevMarketContent.ship.items.length+val;
+	var in_cargo = prevMarketContent.ship.InCargo()+val;
+	if(operation=='-')in_cargo = prevMarketContent.ship.InCargo()-val;
 	var cargo_capacity = prevMarketContent.ship.cargoCapacity;
 	$(".marketplace_purchase_cargo").html(in_cargo+'/'+cargo_capacity);
+	var profit = (prevMarketContent.ship.GetCommodityProfit(currentStuff.id, currentStuff.sell)).toFixed(1);
+	$("#marketplace_purchase_profit").html(profit*val);
 }
 
 //Закрываем окно покупок
@@ -145,17 +149,17 @@ function ItemBuy(obj){
 	$("#marketplace_purchase").removeClass("dn");
 	$("#marketplace_purchase_buy").removeClass("dn");
 
-	for(var i = 0;i<prevMarketContent.Commodity.length;i++){
-			if(prevMarketContent.Commodity[i].item.id==id){
-				$(".marketplace_purchase_title").html(prevMarketContent.Commodity[i].item.title+" ["+prevMarketContent.Commodity[i].sell+"]");			
-				max_buy = Math.floor(prevMarketContent.ship.money/prevMarketContent.Commodity[i].sell);
-				var free_cargo = prevMarketContent.ship.cargoCapacity-prevMarketContent.ship.items.length;
-				if(max_buy>prevMarketContent.Commodity[i].quantity)max_buy=prevMarketContent.Commodity[i].quantity;
+	for(var i = 0;i<prevMarketContent.goods.length;i++){
+			if(prevMarketContent.goods[i].item.id==id){
+				$(".marketplace_purchase_title").html(prevMarketContent.goods[i].item.title+" ["+prevMarketContent.goods[i].sell+"]");			
+				max_buy = Math.floor(prevMarketContent.ship.money/prevMarketContent.goods[i].sell);
+				var free_cargo = prevMarketContent.ship.cargoCapacity-prevMarketContent.ship.InCargo();
+				if(max_buy>prevMarketContent.goods[i].quantity)max_buy=prevMarketContent.goods[i].quantity;
 				if(max_buy>free_cargo)max_buy = free_cargo;
-				currentStuff.sell = prevMarketContent.Commodity[i].sell;
-				currentStuff.id = prevMarketContent.Commodity[i].item.id;
+				currentStuff.sell = prevMarketContent.goods[i].sell;
+				currentStuff.id = prevMarketContent.goods[i].item.id;
 				$("#marketplace_purchase_quantity_b").attr('max',max_buy);
-				ShowQuantity(1);
+				ShowQuantity(1, '+');
 				break;
 			}
 		}
@@ -163,26 +167,19 @@ function ItemBuy(obj){
 
 //Обработчик нажатия кнопки "-"(продать) на товаре
 function ItemSell(obj){
-		var id = $(obj).closest('tr').attr('id');
-	var max_buy = 1;
+	var id = $(obj).closest('tr').attr('id');
+	var max_sell = prevMarketContent.ship.InCargoParticular(id);
 	$("#marketplace_veil").removeClass("dn");
 	$("#marketplace_purchase").removeClass("dn");
 	$("#marketplace_purchase_sell").removeClass("dn");
-
-	for(var i = 0;i<prevMarketContent.Commodity.length;i++){
-			if(prevMarketContent.Commodity[i].item.id==id){
-				$(".marketplace_purchase_title").html(prevMarketContent.Commodity[i].item.title+" ["+prevMarketContent.Commodity[i].sell+"]");			
-				max_buy = Math.floor(prevMarketContent.ship.money/prevMarketContent.Commodity[i].sell);
-				var free_cargo = prevMarketContent.ship.cargoCapacity-prevMarketContent.ship.items.length;
-				if(max_buy>prevMarketContent.Commodity[i].quantity)max_buy=prevMarketContent.Commodity[i].quantity;
-				if(max_buy>free_cargo)max_buy = free_cargo;
-				currentStuff.sell = prevMarketContent.Commodity[i].sell;
-				currentStuff.id = prevMarketContent.Commodity[i].item.id;
-				$("#marketplace_purchase_quantity_s").attr('max',max_buy);
-				ShowQuantity(1);
+	$("#marketplace_purchase_quantity_s").attr('max',max_sell);
+	for(var i = 0;i<prevMarketContent.goods.length;i++){
+			if(prevMarketContent.goods[i].item.id==id){
+				$(".marketplace_purchase_title").html(prevMarketContent.goods[i].item.title+" ["+prevMarketContent.goods[i].sell+"]");			
 				break;
 			}
 		}
+	ShowQuantity(1, '-');
 }
 
 //Выставить колличесво товара для покупки/продажи в максимум
@@ -190,29 +187,28 @@ function SetMaxQuantity(operation){
 	if(operation=='+'){
 		var max = $("#marketplace_purchase_quantity_b").attr('max');
 		$("#marketplace_purchase_quantity_b").val(max);
-		ShowQuantity(max);
+		ShowQuantity(max, '+');
 	}
-	else if(operation=='+'){
+	else if(operation=='-'){
 		var max = $("#marketplace_purchase_quantity_s").attr('max');
 		$("#marketplace_purchase_quantity_s").val(max);
-		ShowQuantity(max);
+		ShowQuantity(max, '-');
 	}
 }
 //Подтверждение покупки
-function ConfirmPurchase(option){
+function ConfirmPurchase(operation){
 	var item_id = currentStuff.id;
 	var item_quantity = 0;
-	if(operation=='+')item_quantity = parseInt($("#marketplace_purchase_quantity_b").val());
-	else if(operation=='-')item_quantity = parseInt($("#marketplace_purchase_quantity_s").val());
-	prevMarketContent.ship.money-=currentStuff.sell*item_quantity;
-	//for(var i = 0;i<item_quantity;i++){
-		var buy_item ={
-			id:item_id,
-			cost:currentStuff.sell,
-			quantity:item_quantity
-		}
-		prevMarketContent.ship.items.push(buy_item);
-	//}
-	ClosePurchaseWindow(option);
+	//var total_cost = currentStuff.sell*item_quantity;
+	if(operation=='+'){
+		item_quantity = parseInt($("#marketplace_purchase_quantity_b").val());
+		//total_cost*=-1;
+	}
+	else if(operation=='-'){
+		item_quantity = -1*parseInt($("#marketplace_purchase_quantity_s").val());
+	}
+	//prevMarketContent.ship.money+=total_cost;
+	prevMarketContent.ship.AddCargo(item_id, item_quantity, currentStuff.sell);
+	ClosePurchaseWindow(operation);
 	DrawMarketContent(prevMarketContent);
 }

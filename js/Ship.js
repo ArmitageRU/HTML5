@@ -8,7 +8,7 @@ function Ship(ctx, image){
 
 	this.money=20000;
 	this.cargoCapacity=10;
-	this.items = [];
+	this.cargo = [];
 };
 
 Ship.prototype = {
@@ -32,12 +32,66 @@ Ship.prototype = {
 		return Math.sqrt(Math.pow(vector.x, 2) + Math.pow(vector.y,2));
 	},
 
-	AddItem:function(item){
-		for(var i = 0;i<this.items.length;i++){
-			if(this.items[i].id==item.id){
-				this.items[i].quantity++;
-				this.items[i].cost++;
+	AddCargo:function(id, quantity, cost){
+		if(quantity<0)this.RemoveCargo(id, quantity*-1, cost);
+		else{
+			var found = false;
+			for(var i = 0;i<this.cargo.length;i++){
+				if(this.cargo[i].id==id){
+					this.cargo[i].quantity+=quantity;
+					this.cargo[i].worth+=cost*quantity;
+					found = true;
+					break;
+				}
+			}
+			if(!found)this.cargo.push(new Commodity(id, quantity, cost));
+		}
+		this.money-=cost*quantity;
+	},
+	
+	RemoveCargo:function(id, quantity, cost){
+		for(var i = 0;i<this.cargo.length;i++){
+			if(this.cargo[i].id==id){
+				if(this.cargo[i].quantity ==quantity){
+					delete this.cargo[i]; 
+					break;
+				}
+				else {
+					this.cargo[i].Reduction(quantity);
+					this.money+=cost*quantity;
+					break;
+				}
 			}
 		}
-	}
+	},
+		
+	InCargo:function(){
+		var cargo_amount =0;
+		for(var i = 0;i<this.cargo.length;i++){
+			cargo_amount+=this.cargo[i].quantity
+		}
+		return cargo_amount;
+	},
+
+	InCargoParticular:function(id){
+		var cargo_amount =0;
+		for(var i = 0;i<this.cargo.length;i++){
+			if(this.cargo[i].id==id){
+				cargo_amount=this.cargo[i].quantity;
+				break;
+			}
+		}
+		return cargo_amount;
+	},
+	
+	GetCommodityProfit:function(id, cost){
+		var profit = 0;
+		for(var i = 0;i<this.cargo.length;i++){
+			if(this.cargo[i].id==id){
+				profit = cost-this.cargo[i].AverageCost();
+				break;
+			}
+		}
+		return profit;
+	}	
 };
