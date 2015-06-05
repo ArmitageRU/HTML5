@@ -4,7 +4,7 @@ var prevMarketContent = null;
 //var moneyRest = 0;
 
 var currentStuff = {
-    sell: 0, 
+    worth: 0,
     id: 0
 }
 
@@ -116,14 +116,14 @@ function ShowItemInfo(obj){
 function ShowQuantity(val, operation){
 	val = parseInt(val);
 	$(".marketplace_purchase_input").html(val);
-	var money = prevMarketContent.ship.money - currentStuff.sell*val;
-	if(operation=='-')money=prevMarketContent.ship.money + currentStuff.sell*val;
+	var money = prevMarketContent.ship.money - currentStuff.worth*val;
+	if(operation=='-')money=prevMarketContent.ship.money + currentStuff.worth*val;
 	$(".marketplace_purchase_money").html(money);
 	var in_cargo = prevMarketContent.ship.InCargo()+val;
 	if(operation=='-')in_cargo = prevMarketContent.ship.InCargo()-val;
 	var cargo_capacity = prevMarketContent.ship.cargoCapacity;
 	$(".marketplace_purchase_cargo").html(in_cargo+'/'+cargo_capacity);
-	var profit = (prevMarketContent.ship.GetCommodityProfit(currentStuff.id, currentStuff.sell)).toFixed(1);
+	var profit = (prevMarketContent.ship.GetCommodityProfit(currentStuff.id, currentStuff.worth)).toFixed(1);
 	$("#marketplace_purchase_profit").html(profit*val);
 }
 
@@ -144,41 +144,44 @@ function ClosePurchaseWindow(option){
 //Обработчик нажатия кнопки "+"(купить) на товаре
 function ItemBuy(obj){
 	var id = $(obj).closest('tr').attr('id');
+	currentStuff.id = id;
 	var max_buy = 1;
 	$("#marketplace_veil").removeClass("dn");
 	$("#marketplace_purchase").removeClass("dn");
 	$("#marketplace_purchase_buy").removeClass("dn");
 
 	for(var i = 0;i<prevMarketContent.goods.length;i++){
-			if(prevMarketContent.goods[i].item.id==id){
-				$(".marketplace_purchase_title").html(prevMarketContent.goods[i].item.title+" ["+prevMarketContent.goods[i].sell+"]");			
-				max_buy = Math.floor(prevMarketContent.ship.money/prevMarketContent.goods[i].sell);
-				var free_cargo = prevMarketContent.ship.cargoCapacity-prevMarketContent.ship.InCargo();
-				if(max_buy>prevMarketContent.goods[i].quantity)max_buy=prevMarketContent.goods[i].quantity;
-				if(max_buy>free_cargo)max_buy = free_cargo;
-				currentStuff.sell = prevMarketContent.goods[i].sell;
-				currentStuff.id = prevMarketContent.goods[i].item.id;
-				$("#marketplace_purchase_quantity_b").attr('max',max_buy);
-				ShowQuantity(1, '+');
-				break;
-			}
+		if(prevMarketContent.goods[i].item.id==id){
+			$(".marketplace_purchase_title").html(prevMarketContent.goods[i].item.title+" ["+prevMarketContent.goods[i].sell+"]");			
+			max_buy = Math.floor(prevMarketContent.ship.money/prevMarketContent.goods[i].sell);
+			var free_cargo = prevMarketContent.ship.cargoCapacity-prevMarketContent.ship.InCargo();
+			if(max_buy>prevMarketContent.goods[i].quantity)max_buy=prevMarketContent.goods[i].quantity;
+			if(max_buy>free_cargo)max_buy = free_cargo;
+			currentStuff.worth = prevMarketContent.goods[i].sell;
+			//currentStuff.id = prevMarketContent.goods[i].item.id;
+			$("#marketplace_purchase_quantity_b").attr('max',max_buy);
+			break;
 		}
+	}
+	ShowQuantity(1, '+');
 }
 
 //Обработчик нажатия кнопки "-"(продать) на товаре
 function ItemSell(obj){
 	var id = $(obj).closest('tr').attr('id');
+	currentStuff.id = id;
 	var max_sell = prevMarketContent.ship.InCargoParticular(id);
 	$("#marketplace_veil").removeClass("dn");
 	$("#marketplace_purchase").removeClass("dn");
 	$("#marketplace_purchase_sell").removeClass("dn");
 	$("#marketplace_purchase_quantity_s").attr('max',max_sell);
 	for(var i = 0;i<prevMarketContent.goods.length;i++){
-			if(prevMarketContent.goods[i].item.id==id){
-				$(".marketplace_purchase_title").html(prevMarketContent.goods[i].item.title+" ["+prevMarketContent.goods[i].sell+"]");			
-				break;
-			}
+		if(prevMarketContent.goods[i].item.id==id){
+			$(".marketplace_purchase_title").html(prevMarketContent.goods[i].item.title+" ["+prevMarketContent.goods[i].sell+"]");			
+			currentStuff.worth = prevMarketContent.goods[i].buy;
+			break;
 		}
+	}
 	ShowQuantity(1, '-');
 }
 
@@ -199,7 +202,7 @@ function SetMaxQuantity(operation){
 function ConfirmPurchase(operation){
 	var item_id = currentStuff.id;
 	var item_quantity = 0;
-	//var total_cost = currentStuff.sell*item_quantity;
+	//var total_cost = currentStuff.worth*item_quantity;
 	if(operation=='+'){
 		item_quantity = parseInt($("#marketplace_purchase_quantity_b").val());
 		//total_cost*=-1;
@@ -208,7 +211,7 @@ function ConfirmPurchase(operation){
 		item_quantity = -1*parseInt($("#marketplace_purchase_quantity_s").val());
 	}
 	//prevMarketContent.ship.money+=total_cost;
-	prevMarketContent.ship.AddCargo(item_id, item_quantity, currentStuff.sell);
+	prevMarketContent.ship.AddCargo(item_id, item_quantity, currentStuff.worth);
 	ClosePurchaseWindow(operation);
 	DrawMarketContent(prevMarketContent);
 }

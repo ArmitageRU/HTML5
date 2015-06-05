@@ -45,24 +45,24 @@ Ship.prototype = {
 				}
 			}
 			if(!found)this.cargo.push(new Commodity(id, quantity, cost));
+			this.money-=cost*quantity;
 		}
-		this.money-=cost*quantity;
 	},
 	
 	RemoveCargo:function(id, quantity, cost){
 		for(var i = 0;i<this.cargo.length;i++){
 			if(this.cargo[i].id==id){
 				if(this.cargo[i].quantity ==quantity){
-					delete this.cargo[i]; 
+					this.cargo.splice(i,1);
 					break;
 				}
 				else {
 					this.cargo[i].Reduction(quantity);
-					this.money+=cost*quantity;
 					break;
 				}
 			}
 		}
+		this.money+=cost*quantity;
 	},
 		
 	InCargo:function(){
