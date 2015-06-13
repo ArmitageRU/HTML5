@@ -133,7 +133,7 @@ Application.prototype = {
             FillTabs(this.currentMainContent, this.currentMarketContent);
         }
         else if (this.battleActive) {
-
+            
         }
 		/*GRID*/
 		/*
