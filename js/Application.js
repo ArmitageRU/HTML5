@@ -15,6 +15,9 @@ var Application = function(){
 	this.currentMainContent;
 	this.currentMarketContent = null;
 	this.curentShipContent = null;
+
+    //battle
+	this.battleActive = false;
 };
 
 Application.prototype = {
@@ -103,31 +106,35 @@ Application.prototype = {
             self.render(curTime);
         });
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-		self.Star.Draw(curTime-lastTime);
-		//var showInfo= -1;
-		this.route.to = null;
-		this.currentMainContent = this.Star.MainContent;
-		this.currentMarketContent = null;
-		for(var j = 0;j<this.Orbits.length;j++){
-			//if(this.Orbits[j].planet.selected)showInfo = j;
-			this.Orbits[j].Draw(curTime-lastTime);
-			if(this.mouse.pressed && Math.abs(this.mouse.pos.x -this.Orbits[j].planet.position.x)<25 && Math.abs(this.mouse.pos.y-this.Orbits[j].planet.position.y)<25){
-				this.selectPlanet(this.Orbits[j])
-			}
-			if(this.Orbits[j].planet.selected){
-				this.currentMainContent = this.Orbits[j].planet.MainContent;
-				this.currentMarketContent = this.Orbits[j].planet.MarketContent;
-				this.currentMarketContent.ship = this.ship;
-			}
-			if(this.Orbits[j].planet.to)this.route.to = this.Orbits[j].planet.position;
-		}
-		//this.Infobox.DrawForm(selectedPlanet, this.mouse);
-		this.route.RenderPath(this.ctx, curTime-lastTime);
-		this.ship.render(curTime-lastTime);
-		this.mouse.pressed = false;
+        if (!this.battleActive) {
+            self.Star.Draw(curTime - lastTime);
+            //var showInfo= -1;
+            this.route.to = null;
+            this.currentMainContent = this.Star.MainContent;
+            this.currentMarketContent = null;
+            for (var j = 0; j < this.Orbits.length; j++) {
+                //if(this.Orbits[j].planet.selected)showInfo = j;
+                this.Orbits[j].Draw(curTime - lastTime);
+                if (this.mouse.pressed && Math.abs(this.mouse.pos.x - this.Orbits[j].planet.position.x) < 25 && Math.abs(this.mouse.pos.y - this.Orbits[j].planet.position.y) < 25) {
+                    this.selectPlanet(this.Orbits[j])
+                }
+                if (this.Orbits[j].planet.selected) {
+                    this.currentMainContent = this.Orbits[j].planet.MainContent;
+                    this.currentMarketContent = this.Orbits[j].planet.MarketContent;
+                    this.currentMarketContent.ship = this.ship;
+                }
+                if (this.Orbits[j].planet.to) this.route.to = this.Orbits[j].planet.position;
+            }
+            //this.Infobox.DrawForm(selectedPlanet, this.mouse);
+            this.route.RenderPath(this.ctx, curTime - lastTime);
+            this.ship.render(curTime - lastTime);
+            this.mouse.pressed = false;
 
-		FillTabs(this.currentMainContent, this.currentMarketContent);
-		
+            FillTabs(this.currentMainContent, this.currentMarketContent);
+        }
+        else if (this.battleActive) {
+
+        }
 		/*GRID*/
 		/*
 		ctx.beginPath();
