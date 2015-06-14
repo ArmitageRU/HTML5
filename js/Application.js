@@ -17,7 +17,7 @@ var Application = function(){
 	this.curentShipContent = null;
 
     //battle
-	this.battleActive = false;
+	this.battleActive = true;
 };
 
 Application.prototype = {
@@ -133,7 +133,7 @@ Application.prototype = {
             FillTabs(this.currentMainContent, this.currentMarketContent);
         }
         else if (this.battleActive) {
-            
+            this.ship.tile.drawScale(new Point(120, this.canvas.height/2), Math.PI/2, 1);
         }
 		/*GRID*/
 		/*
