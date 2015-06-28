@@ -18,6 +18,10 @@ var Application = function(){
 
     //battle
 	this.battleActive = true;
+
+    //tmp
+	this.Ships = [];
+	this.enemyShip;
 };
 
 Application.prototype = {
@@ -97,6 +101,93 @@ Application.prototype = {
 		}
 		this.mouse = new MouseController(this.canvas);
 		//this.Infobox = new Infobox(this.canvas.width, this.canvas.height, this.ctx);
+		//tmp
+		var tmp_s_obj = {
+		    x:64,
+		    y:72, 
+		    width:128,
+		    height:99
+		}
+		this.Ships.push(tmp_s_obj);
+		tmp_s_obj = {
+		    x:64,
+		    y:320, 
+		    width:128,
+		    height: 131
+		}
+		this.Ships.push(tmp_s_obj);
+		tmp_s_obj = {
+		    x: 32,
+		    y: 568,
+		    width: 192,
+		    height: 131
+		}
+		this.Ships.push(tmp_s_obj);
+		tmp_s_obj = {
+		    x: 28,
+		    y: 804, 
+		    width: 199,
+		    height:163
+		}
+		this.Ships.push(tmp_s_obj);
+		tmp_s_obj = {
+		    x:32,
+		    y:1052, 
+		    width: 192,
+		    height:168
+		}
+		this.Ships.push(tmp_s_obj);
+		tmp_s_obj = {
+		    x:80,
+		    y:1332, 
+		    width: 95,
+		    height:135
+		}
+		this.Ships.push(tmp_s_obj);
+		tmp_s_obj = {
+		    x:80,
+		    y:1580, 
+		    width: 95,
+		    height:135
+		}
+		this.Ships.push(tmp_s_obj);
+		tmp_s_obj = {
+		    x:32,
+		    y:1864, 
+		    width: 191,
+		    height:127
+		}
+		this.Ships.push(tmp_s_obj);
+		tmp_s_obj = {
+		    x:28,
+		    y:2108, 
+		    width:199,
+		    height:135
+		}
+		this.Ships.push(tmp_s_obj);
+		tmp_s_obj = {
+		    x:80,
+		    y:2388, 
+		    width:95,
+		    height:83
+		}
+		this.Ships.push(tmp_s_obj);
+		tmp_s_obj = {
+		    x:28,
+		    y:2596, 
+		    width:199,
+		    height:263
+		}
+		this.Ships.push(tmp_s_obj);
+		tmp_s_obj = {
+		    x:28,
+		    y:2980, 
+		    width: 199,
+		    height: 255
+		}
+		this.Ships.push(tmp_s_obj);
+
+		this.enemyShip = this.getEnemy();
 	},
 	render: function(lastTime) {
         var curTime = new Date();
@@ -133,7 +224,8 @@ Application.prototype = {
             FillTabs(this.currentMainContent, this.currentMarketContent);
         }
         else if (this.battleActive) {
-            this.ship.tile.drawScale(new Point(120, this.canvas.height/2), Math.PI/2, 1);
+            this.ship.tile.drawScale(new Point(120, this.canvas.height / 2), Math.PI / 2, 1);
+            this.enemyShip.tile.drawScale(new Point(this.canvas.width - 120, this.canvas.height / 2), -Math.PI / 2, 1);
         }
 		/*GRID*/
 		/*
@@ -175,5 +267,15 @@ Application.prototype = {
 		}
 
 		return orbit.planet.selected;
+	},
+
+	getEnemy: function () {
+	    var random_ship = ~~(getRandomArbitrary(0, this.Ships.length));
+	    var enemy_ship = new Ship(this.ctx, this._images['ships']);
+	    enemy_ship.tile.sx = this.Ships[random_ship].x;
+	    enemy_ship.tile.sy = this.Ships[random_ship].y;
+	    enemy_ship.tile.sWidth = this.Ships[random_ship].width;
+	    enemy_ship.tile.sHeight = this.Ships[random_ship].height;
+	    return enemy_ship;
 	}
 };
