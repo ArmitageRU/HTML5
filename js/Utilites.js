@@ -215,3 +215,11 @@ function ConfirmPurchase(operation){
 	ClosePurchaseWindow(operation);
 	DrawMarketContent(prevMarketContent);
 }
+
+/************************************Режим боя********************************************/
+function HideStandartHTMLUI(hide) {
+    if (hide) {
+        $("#main_ui").addClass("dn");
+    }
+    else $("#main_ui").removeClass("dn");
+}

@@ -30,17 +30,19 @@
 <body>
     <script>var StarSystem = new Application();</script>
 	<div id="application">
-		<div id="application_buttons">
-			<button onClick="ShowHideInfopanel();">Инфопанель</button>
-			<button onClick="ShowHideMarketPlace();" id="app_mrkt_btn" disabled>Рынок</button>
-			<button onClick="" id="app_shp_btn" disabled>Корабль</button>
-		</div>
-		<div id = "infobox">
-			<span id="origin_title"></span><img id="origin_avatar" src="avatar.png">
-			<hr/>
-			<p id="origin_textdata">
-			</p>
-		</div>	
+        <div id="main_ui">
+            <div id="application_buttons">
+                <button onclick="ShowHideInfopanel();">Инфопанель</button>
+                <button onclick="ShowHideMarketPlace();" id="app_mrkt_btn" disabled>Рынок</button>
+                <button onclick="" id="app_shp_btn" disabled>Корабль</button>
+            </div>
+            <div id="infobox">
+                <span id="origin_title"></span><img id="origin_avatar" src="avatar.png">
+                <hr />
+                <p id="origin_textdata">
+                </p>
+            </div>
+        </div>
 		<!-- <div id="infobox">
 			<div id="container">
 			<div class="tabs" id="tabs">

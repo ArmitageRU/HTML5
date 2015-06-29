@@ -224,6 +224,7 @@ Application.prototype = {
             FillTabs(this.currentMainContent, this.currentMarketContent);
         }
         else if (this.battleActive) {
+            HideStandartHTMLUI(true);
             this.ship.tile.drawScale(new Point(120, this.canvas.height / 2), Math.PI / 2, 1);
             this.enemyShip.tile.drawScale(new Point(this.canvas.width - 120, this.canvas.height / 2), -Math.PI / 2, 1);
         }
