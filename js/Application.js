@@ -224,9 +224,10 @@ Application.prototype = {
             FillTabs(this.currentMainContent, this.currentMarketContent);
         }
         else if (this.battleActive) {
+            PrepareForBattle(true, this.ship.energy);
             HideStandartHTMLUI(true);
-            this.ship.tile.drawScale(new Point(120, this.canvas.height / 2), Math.PI / 2, 1);
-            this.enemyShip.tile.drawScale(new Point(this.canvas.width - 120, this.canvas.height / 2), -Math.PI / 2, 1);
+            this.ship.renderBattleMode(lastTime, true, true);
+            this.enemyShip.renderBattleMode(lastTime, false, false);
         }
 		/*GRID*/
 		/*

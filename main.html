@@ -26,6 +26,7 @@
 	<script src="js/Utilites.js" type="text/javascript"></script>
 	<script src="js/Goods.js" type="text/javascript"></script>
 	<script src="js/Commodity.js" type="text/javascript"></script>
+    <script src="js/HUD.js" type="text/javascript"></script>
 </head>
 <body>
     <script>var StarSystem = new Application();</script>
@@ -170,7 +171,15 @@
 				<button onclick="ShowHideMarketPlace();">Закрыть</button>
 				<span id="marketplace_ship">Деньги <span id="ship_money">0</span>d | Груз <span id="ship_cargo_current">~</span>/<span id="ship_cargo_max">~</span></span>
 			</div>
-		</div>	
+		</div>
+        <div id="battle" class="dn">
+            Энергия: <span id="battle_energy">1500</span>
+            <hr/>
+            <select id="battle_weapons">
+            </select>
+            <button>Использовать</button>
+            <button>Побег</button>
+        </div>	
 	</div>
 </body>
 </html>

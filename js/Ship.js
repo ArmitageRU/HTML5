@@ -1,14 +1,23 @@
 ﻿"use strict";
 function Ship(ctx, image){
-	this.position;
+    this.position;
+    this.ctx = ctx;
 	this.tile = new Tile(ctx, image, 28, 804, 199, 163, 0.3);
 	this.route;
 	this.rot = -Math.PI / 2;
-	this.speed= 90; //pixel per second e.g.
+	this.speed = 90; //pixel per second e.g.
+	this.energy = 900;
+	this.weapons = [];
 
 	this.money=20000;
 	this.cargoCapacity=10;
 	this.cargo = [];
+
+	this.life = {
+	    max:100,
+        current:80
+	};
+	this.hud = new HUD(ctx, this.tile, this.life);
 };
 
 Ship.prototype = {
@@ -26,6 +35,12 @@ Ship.prototype = {
 		}
 		this.tile.draw(this.position, this.rot);
 		this.route.from=this.position;
+	},
+
+	renderBattleMode: function (time, forward, left) {
+	    var point = new Point(left ? 120 : this.ctx.canvas.width - 120, this.ctx.canvas.height / 2);
+	    this.tile.drawScale(point, forward ? Math.PI / 2 : -Math.PI / 2, 1);
+	    this.hud.render(time, point, 1);
 	},
 	
 	VLength:function(vector){

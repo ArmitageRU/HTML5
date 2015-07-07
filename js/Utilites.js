@@ -1,5 +1,6 @@
 var prevMainContent = null;
 var prevMarketContent = null;
+var inbattle = false;
 //var currentCommodities = [];
 //var moneyRest = 0;
 
@@ -217,9 +218,29 @@ function ConfirmPurchase(operation){
 }
 
 /************************************Режим боя********************************************/
+function PrepareForBattle(hide, energy) {
+    if (!inbattle) {
+        HideStandartHTMLUI(hide);
+        PrepareBattleMenu(energy);
+        inbattle = true;
+    }
+}
+
 function HideStandartHTMLUI(hide) {
     if (hide) {
         $("#main_ui").addClass("dn");
     }
-    else $("#main_ui").removeClass("dn");
+    else {
+        $("#main_ui").removeClass("dn");
+    }
+}
+
+function PrepareBattleMenu(energy) {
+    $("#battle").removeClass("dn");
+    $("#battle_energy").html(energy);
+    var select = $("#battle_weapons");
+    $('option', select).remove();
+    $('#battle_weapons').append('<option value="0" selected="selected">Лазер — 200</option>');
+    $('#battle_weapons').append('<option value="1" selected="selected">Плазма — 700</option>');
+    $('#battle_weapons').append('<option value="2" selected="selected">Ракеты — 1000</option>');
 }

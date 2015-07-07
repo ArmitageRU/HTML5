@@ -1,6 +1,8 @@
 /*----------------- #Infoblock ---------------------- */
 #application {
     position:relative;
+
+    min-width:100%;
 }
 
 #application_buttons {
@@ -39,6 +41,16 @@
     width: 1200px;
     left:120px;
     top:50px;
+}
+
+#battle{
+    position:absolute;
+    background-color:#fff;
+    padding:5px;
+    width: 350;
+    height: 100px;
+    left: 0;
+    bottom: 0;
 }
 
 #market_goods table, td{
