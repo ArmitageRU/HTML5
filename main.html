@@ -27,6 +27,8 @@
 	<script src="js/Goods.js" type="text/javascript"></script>
 	<script src="js/Commodity.js" type="text/javascript"></script>
     <script src="js/HUD.js" type="text/javascript"></script>
+    <script src="js/Weapon.js" type="text/javascript"></script>
+    <script src="js/FAKES.js" type="text/javascript"></script>
 </head>
 <body>
     <script>var StarSystem = new Application();</script>
@@ -176,8 +178,9 @@
             Энергия: <span id="battle_energy">1500</span>
             <hr/>
             <select id="battle_weapons">
+                <option>Got you!</option>
             </select>
-            <button>Использовать</button>
+            <button onclick="Fire();">Использовать</button>
             <button>Побег</button>
         </div>	
 	</div>

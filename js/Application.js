@@ -20,7 +20,7 @@ var Application = function(){
 	this.battleActive = true;
 
     //tmp
-	this.Ships = [];
+	this.FAKE;
 	this.enemyShip;
 };
 
@@ -32,8 +32,9 @@ Application.prototype = {
 		}
 	},
 	init:function(){
-		this.canvas = document.createElement('canvas');
-        //document.body.appendChild(this.canvas);
+	    this.FAKE = new FAKES();
+
+	    this.canvas = document.createElement('canvas');
         document.getElementById("application").appendChild(this.canvas);
         if (!this.canvas.getContext('2d')) {
 			document.getElementById("application").innerHTML = '<center>No support 2d context.</center>';
@@ -87,10 +88,12 @@ Application.prototype = {
 		this.Star = new Star(globalCenter, 50)
 		this.Star.ctx = this.ctx;
 		this.currentMainContent = this.Star.MainContent;
+        //ship section
 		this.ship = new Ship(this.ctx, this._images['ships'])
 		this.ship.position = new Point(this.canvas.width-100, this.canvas.height/2);
 		this.route = new Route(this.ship.position);
-		this.ship.route =this.route;
+		this.ship.route = this.route;
+		this.ship.weapons = this.FAKE.GenerateFakeWeapons();
 		//system screen
 		for(var i = 0; i < 8; ++i){
 			var nextOrbit = this.generateOrbit();
@@ -100,93 +103,6 @@ Application.prototype = {
 			}
 		}
 		this.mouse = new MouseController(this.canvas);
-		//this.Infobox = new Infobox(this.canvas.width, this.canvas.height, this.ctx);
-		//tmp
-		var tmp_s_obj = {
-		    x:64,
-		    y:72, 
-		    width:128,
-		    height:99
-		}
-		this.Ships.push(tmp_s_obj);
-		tmp_s_obj = {
-		    x:64,
-		    y:320, 
-		    width:128,
-		    height: 131
-		}
-		this.Ships.push(tmp_s_obj);
-		tmp_s_obj = {
-		    x: 32,
-		    y: 568,
-		    width: 192,
-		    height: 131
-		}
-		this.Ships.push(tmp_s_obj);
-		tmp_s_obj = {
-		    x: 28,
-		    y: 804, 
-		    width: 199,
-		    height:163
-		}
-		this.Ships.push(tmp_s_obj);
-		tmp_s_obj = {
-		    x:32,
-		    y:1052, 
-		    width: 192,
-		    height:168
-		}
-		this.Ships.push(tmp_s_obj);
-		tmp_s_obj = {
-		    x:80,
-		    y:1332, 
-		    width: 95,
-		    height:135
-		}
-		this.Ships.push(tmp_s_obj);
-		tmp_s_obj = {
-		    x:80,
-		    y:1580, 
-		    width: 95,
-		    height:135
-		}
-		this.Ships.push(tmp_s_obj);
-		tmp_s_obj = {
-		    x:32,
-		    y:1864, 
-		    width: 191,
-		    height:127
-		}
-		this.Ships.push(tmp_s_obj);
-		tmp_s_obj = {
-		    x:28,
-		    y:2108, 
-		    width:199,
-		    height:135
-		}
-		this.Ships.push(tmp_s_obj);
-		tmp_s_obj = {
-		    x:80,
-		    y:2388, 
-		    width:95,
-		    height:83
-		}
-		this.Ships.push(tmp_s_obj);
-		tmp_s_obj = {
-		    x:28,
-		    y:2596, 
-		    width:199,
-		    height:263
-		}
-		this.Ships.push(tmp_s_obj);
-		tmp_s_obj = {
-		    x:28,
-		    y:2980, 
-		    width: 199,
-		    height: 255
-		}
-		this.Ships.push(tmp_s_obj);
-
 		this.enemyShip = this.getEnemy();
 	},
 	render: function(lastTime) {
@@ -199,12 +115,10 @@ Application.prototype = {
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         if (!this.battleActive) {
             self.Star.Draw(curTime - lastTime);
-            //var showInfo= -1;
             this.route.to = null;
             this.currentMainContent = this.Star.MainContent;
             this.currentMarketContent = null;
             for (var j = 0; j < this.Orbits.length; j++) {
-                //if(this.Orbits[j].planet.selected)showInfo = j;
                 this.Orbits[j].Draw(curTime - lastTime);
                 if (this.mouse.pressed && Math.abs(this.mouse.pos.x - this.Orbits[j].planet.position.x) < 25 && Math.abs(this.mouse.pos.y - this.Orbits[j].planet.position.y) < 25) {
                     this.selectPlanet(this.Orbits[j])
@@ -216,7 +130,6 @@ Application.prototype = {
                 }
                 if (this.Orbits[j].planet.to) this.route.to = this.Orbits[j].planet.position;
             }
-            //this.Infobox.DrawForm(selectedPlanet, this.mouse);
             this.route.RenderPath(this.ctx, curTime - lastTime);
             this.ship.render(curTime - lastTime);
             this.mouse.pressed = false;
@@ -224,7 +137,7 @@ Application.prototype = {
             FillTabs(this.currentMainContent, this.currentMarketContent);
         }
         else if (this.battleActive) {
-            PrepareForBattle(true, this.ship.energy);
+            PrepareForBattle(true, this.ship);
             HideStandartHTMLUI(true);
             this.ship.renderBattleMode(lastTime, true, true);
             this.enemyShip.renderBattleMode(lastTime, false, false);
@@ -272,12 +185,12 @@ Application.prototype = {
 	},
 
 	getEnemy: function () {
-	    var random_ship = ~~(getRandomArbitrary(0, this.Ships.length));
+	    var random_ship = ~~(getRandomArbitrary(0, this.FAKE.ships.length));
 	    var enemy_ship = new Ship(this.ctx, this._images['ships']);
-	    enemy_ship.tile.sx = this.Ships[random_ship].x;
-	    enemy_ship.tile.sy = this.Ships[random_ship].y;
-	    enemy_ship.tile.sWidth = this.Ships[random_ship].width;
-	    enemy_ship.tile.sHeight = this.Ships[random_ship].height;
+	    enemy_ship.tile.sx = this.FAKE.ships[random_ship].x;
+	    enemy_ship.tile.sy = this.FAKE.ships[random_ship].y;
+	    enemy_ship.tile.sWidth = this.FAKE.ships[random_ship].width;
+	    enemy_ship.tile.sHeight = this.FAKE.ships[random_ship].height;
 	    return enemy_ship;
 	}
 };

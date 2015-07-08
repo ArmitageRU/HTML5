@@ -9,6 +9,8 @@ var currentStuff = {
     id: 0
 }
 
+var currentShip;
+
 //Обработчик кнопки "Инфопанель"
 function ShowHideInfopanel() {
 	if($("#infobox" ).hasClass( "dn" ))$("#infobox").removeClass("dn");
@@ -218,14 +220,17 @@ function ConfirmPurchase(operation){
 }
 
 /************************************Режим боя********************************************/
-function PrepareForBattle(hide, energy) {
+function PrepareForBattle(hide, ship) {
     if (!inbattle) {
         HideStandartHTMLUI(hide);
-        PrepareBattleMenu(energy);
+        PrepareBattleMenu(ship);
+        CheckWeapons(ship);
         inbattle = true;
+        currentShip = ship;
     }
 }
 
+//Скрыть UI 
 function HideStandartHTMLUI(hide) {
     if (hide) {
         $("#main_ui").addClass("dn");
@@ -235,12 +240,34 @@ function HideStandartHTMLUI(hide) {
     }
 }
 
-function PrepareBattleMenu(energy) {
+// Ship.js
+function PrepareBattleMenu(ship) {
     $("#battle").removeClass("dn");
-    $("#battle_energy").html(energy);
-    var select = $("#battle_weapons");
-    $('option', select).remove();
-    $('#battle_weapons').append('<option value="0" selected="selected">Лазер — 200</option>');
-    $('#battle_weapons').append('<option value="1" selected="selected">Плазма — 700</option>');
-    $('#battle_weapons').append('<option value="2" selected="selected">Ракеты — 1000</option>');
+    $("#battle_energy").html(ship.energy);
+    $("#battle_weapons").empty();
+    //console.log(ship.weapons.length);
+    for (var i = 0, len = ship.weapons.length; i < len; i += 1) {
+        //console.log(i);
+        $('#battle_weapons').append('<option value="' + ship.weapons[i].id + '" selected="selected">' + ship.weapons[i].title + ' — ' + ship.weapons[i].energy + '</option>');
+    }
+}
+
+function CheckWeapons(ship) {
+    for (var i = 0, len = ship.weapons.length; i < len; i += 1) {
+        if (ship.weapons[i].energy > ship.energy) {
+            $('#battle_weapons option[value=' + ship.weapons[i].id + ']').prop('disabled', true);
+        }
+        else {
+            $('#battle_weapons option[value=' + ship.weapons[i].id + ']').prop('disabled', false);
+        }
+    }
+}
+
+function Fire() {
+    var w_id = $('#battle_weapons option:selected').val();
+    for (var i = 0, len = currentShip.weapons.length; i < len; i += 1) {
+        if (w_id == currentShip.weapons[i].id) {
+
+        }
+    }
 }
