@@ -1,6 +1,7 @@
 var prevMainContent = null;
 var prevMarketContent = null;
 var inbattle = false;
+var fires = [];
 //var currentCommodities = [];
 //var moneyRest = 0;
 
@@ -250,16 +251,23 @@ function PrepareBattleMenu(ship) {
         //console.log(i);
         $('#battle_weapons').append('<option value="' + ship.weapons[i].id + '" selected="selected">' + ship.weapons[i].title + ' — ' + ship.weapons[i].energy + '</option>');
     }
+    CheckWeapons(ship);
 }
 
 function CheckWeapons(ship) {
+    var disable_fire = true;
     for (var i = 0, len = ship.weapons.length; i < len; i += 1) {
         if (ship.weapons[i].energy > ship.energy) {
             $('#battle_weapons option[value=' + ship.weapons[i].id + ']').prop('disabled', true);
         }
         else {
             $('#battle_weapons option[value=' + ship.weapons[i].id + ']').prop('disabled', false);
+            $('#battle_weapons option[value=' + ship.weapons[i].id + ']').prop('selected', true);
+            disable_fire = false;
         }
+    }
+    if (disable_fire) {
+        $("#battle_fire").prop('disabled', true);
     }
 }
 
@@ -267,7 +275,13 @@ function Fire() {
     var w_id = $('#battle_weapons option:selected').val();
     for (var i = 0, len = currentShip.weapons.length; i < len; i += 1) {
         if (w_id == currentShip.weapons[i].id) {
-
+            currentShip.energy -= currentShip.weapons[i].energy;
+            PrepareBattleMenu(currentShip);
+            fires[fires.length] = {
+                weapon: currentShip.weapons[i],
+                time:500
+            };
+            break;
         }
     }
 }

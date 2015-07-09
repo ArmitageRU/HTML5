@@ -137,6 +137,18 @@ Application.prototype = {
             FillTabs(this.currentMainContent, this.currentMarketContent);
         }
         else if (this.battleActive) {
+            if (fires.length>0) {
+                for (var i = 0; i < fires.length; i += 1) {
+                    if (fires[i].time <= 0) {
+                        fires.splice(i, 1)
+                    }
+                    else {
+                        fires[i].weapon.renderAction(fires[i].time, lastTime, ctx, new Point(50,50), new Point(250, 100));
+                        //full_time, time, ctx, from, to
+                    }
+                }
+            }
+
             PrepareForBattle(true, this.ship);
             HideStandartHTMLUI(true);
             this.ship.renderBattleMode(lastTime, true, true);

@@ -1,4 +1,4 @@
-﻿"use strict";
+﻿ "use strict";
 function Ship(ctx, image){
     this.position;
     this.ctx = ctx;
