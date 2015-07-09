@@ -107,19 +107,20 @@ Application.prototype = {
 	},
 	render: function(lastTime) {
         var curTime = new Date();
-        var self    = this,
-            ctx     = this.ctx;
+        var self = this,
+            ctx = this.ctx,
+            elapsedTime = curTime - lastTime;
         requestAnimationFrame(function(){
             self.render(curTime);
         });
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         if (!this.battleActive) {
-            self.Star.Draw(curTime - lastTime);
+            self.Star.Draw(elapsedTime);
             this.route.to = null;
             this.currentMainContent = this.Star.MainContent;
             this.currentMarketContent = null;
             for (var j = 0; j < this.Orbits.length; j++) {
-                this.Orbits[j].Draw(curTime - lastTime);
+                this.Orbits[j].Draw(elapsedTime);
                 if (this.mouse.pressed && Math.abs(this.mouse.pos.x - this.Orbits[j].planet.position.x) < 25 && Math.abs(this.mouse.pos.y - this.Orbits[j].planet.position.y) < 25) {
                     this.selectPlanet(this.Orbits[j])
                 }
@@ -130,8 +131,8 @@ Application.prototype = {
                 }
                 if (this.Orbits[j].planet.to) this.route.to = this.Orbits[j].planet.position;
             }
-            this.route.RenderPath(this.ctx, curTime - lastTime);
-            this.ship.render(curTime - lastTime);
+            this.route.RenderPath(this.ctx, elapsedTime);
+            this.ship.render(elapsedTime);
             this.mouse.pressed = false;
 
             FillTabs(this.currentMainContent, this.currentMarketContent);
@@ -143,7 +144,7 @@ Application.prototype = {
                         fires.splice(i, 1)
                     }
                     else {
-                        fires[i].weapon.renderAction(fires[i].time, lastTime, ctx, new Point(50,50), new Point(250, 100));
+                        fires[i].time = fires[i].weapon.renderAction(fires[i].time, elapsedTime, ctx, new Point(50, 50), new Point(250, 100));
                         //full_time, time, ctx, from, to
                     }
                 }
@@ -151,8 +152,8 @@ Application.prototype = {
 
             PrepareForBattle(true, this.ship);
             HideStandartHTMLUI(true);
-            this.ship.renderBattleMode(lastTime, true, true);
-            this.enemyShip.renderBattleMode(lastTime, false, false);
+            this.ship.renderBattleMode(elapsedTime, true, true);
+            this.enemyShip.renderBattleMode(elapsedTime, false, false);
         }
 		/*GRID*/
 		/*
