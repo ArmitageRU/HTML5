@@ -224,7 +224,7 @@ function ConfirmPurchase(operation){
 function PrepareForBattle(hide, ship) {
     if (!inbattle) {
         HideStandartHTMLUI(hide);
-        PrepareBattleMenu(ship);
+        PrepareBattleMenu(ship, 0);
         CheckWeapons(ship);
         inbattle = true;
         currentShip = ship;
@@ -242,7 +242,7 @@ function HideStandartHTMLUI(hide) {
 }
 
 // Ship.js
-function PrepareBattleMenu(ship) {
+function PrepareBattleMenu(ship, w_id) {
     $("#battle").removeClass("dn");
     $("#battle_energy").html(ship.energy);
     $("#battle_weapons").empty();
@@ -251,21 +251,33 @@ function PrepareBattleMenu(ship) {
         //console.log(i);
         $('#battle_weapons').append('<option value="' + ship.weapons[i].id + '" selected="selected">' + ship.weapons[i].title + ' — ' + ship.weapons[i].energy + '</option>');
     }
-    CheckWeapons(ship);
+    CheckWeapons(ship, w_id);
 }
 
-function CheckWeapons(ship) {
-    var disable_fire = true;
+//задизейблить невозможное оружие и/или кнопку стрельбы
+function CheckWeapons(ship, w_id) {
+    var disable_fire = true,
+        weapons_id = w_id;
     for (var i = 0, len = ship.weapons.length; i < len; i += 1) {
         if (ship.weapons[i].energy > ship.energy) {
             $('#battle_weapons option[value=' + ship.weapons[i].id + ']').prop('disabled', true);
+            if (ship.weapons[i].id == weapons_id) {
+                weapons_id = 0;
+            }
         }
         else {
             $('#battle_weapons option[value=' + ship.weapons[i].id + ']').prop('disabled', false);
-            $('#battle_weapons option[value=' + ship.weapons[i].id + ']').prop('selected', true);
+            if (ship.weapons[i].id == weapons_id) {
+                $('#battle_weapons option[value=' + ship.weapons[i].id + ']').prop('selected', true);
+            }
             disable_fire = false;
         }
     }
+
+    if (weapons_id == 0) {
+        $('#battle_weapons option:enabled').prop('selected', true);
+    }
+
     if (disable_fire) {
         $("#battle_fire").prop('disabled', true);
     }
@@ -276,10 +288,10 @@ function Fire() {
     for (var i = 0, len = currentShip.weapons.length; i < len; i += 1) {
         if (w_id == currentShip.weapons[i].id) {
             currentShip.energy -= currentShip.weapons[i].energy;
-            PrepareBattleMenu(currentShip);
+            PrepareBattleMenu(currentShip, w_id);
             fires[fires.length] = {
                 weapon: currentShip.weapons[i],
-                time:500
+                time:1000
             };
             break;
         }

@@ -1,6 +1,8 @@
 ﻿ "use strict";
 function Ship(ctx, image){
     this.position;
+    this.prevPos; //при возвращении из режима битвы
+    this.inBattle = false;
     this.ctx = ctx;
 	this.tile = new Tile(ctx, image, 28, 804, 199, 163, 0.3);
 	this.route;
@@ -38,11 +40,23 @@ Ship.prototype = {
 	},
 
 	renderBattleMode: function (time, forward, left) {
-	    var point = new Point(left ? 120 : this.ctx.canvas.width - 120, this.ctx.canvas.height / 2);
-	    this.tile.drawScale(point, forward ? Math.PI / 2 : -Math.PI / 2, 1);
-	    this.hud.render(time, point, 1);
+	    if (!this.inBattle) {
+	        this.battlePrepare();
+	        this.inBattle = true;
+	    }
+	    /*var point*/this.position = new Point(left ? 120 : this.ctx.canvas.width - 120, this.ctx.canvas.height / 2);
+	    this.tile.drawScale(/*point*/this.position, forward ? Math.PI / 2 : -Math.PI / 2, 1);
+	    this.hud.render(time, /*point*/this.position, 1);
 	},
 	
+	battlePrepare: function(){
+	    this.prevPos = this.position;
+	},
+
+	battleDebriefing: function() {
+	    this.position = this.prevPos;
+	},
+
 	VLength:function(vector){
 		return Math.sqrt(Math.pow(vector.x, 2) + Math.pow(vector.y,2));
 	},

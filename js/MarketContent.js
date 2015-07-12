@@ -7,7 +7,7 @@ function MarketContent(){
 MarketContent.prototype = {
 
 	Fulfill: function(planet){
-		var FakeGoods = new Goods();//Удалить когда будет серверная часть
+	    var FakeGoods = new Goods();//Удалить когда будет серверная часть
 		var goods_quantity = ~~(Math.random()*(1+11)+1);
 		var c_item = [0,1,2,3,4,5,6,7,8,9,10];//~~(Math.random()*FakeGoods.items.length);/
 		shuffle(c_item);

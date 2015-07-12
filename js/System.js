@@ -1,12 +1,13 @@
-﻿if (!window.requestAnimationFrame) {
-    window.requestAnimationFrame = (function() {
-        return window.webkitRequestAnimationFrame ||
-        window.mozRequestAnimationFrame ||
-        window.oRequestAnimationFrame ||
-        window.msRequestAnimationFrame ||
-        function(callback, element) {
-            window.setTimeout(callback, 1000 / 60);
-        };
+﻿"use strict";
+if (!requestAnimationFrame) {
+    requestAnimationFrame = (function () {
+        return webkitRequestAnimationFrame ||
+            mozRequestAnimationFrame ||
+            oRequestAnimationFrame ||
+            msRequestAnimationFrame ||
+            function (callback, element) {
+                setTimeout(callback, 1000 / 60);
+            };
     })();
 }
 
@@ -19,29 +20,34 @@
             }
         }
     }
-    return this; 
+    return this;
 }*/
 
 function shuffle(array) {
-    var len = array.length;
-    var i = len;
-    while (i--) {
-        var p = Math.floor(Math.random() * len);
-        var t = array[i];
+    var len = array.length,
+        i = len,
+        p,
+        t;
+    while (i-=1) {
+        p = Math.floor(Math.random() * len);
+        t = array[i];
         array[i] = array[p];
         array[p] = t;
     }
     return true;
 }
 
-function textWidth(ctx, font, text){
-	if(font!=null)ctx.font = font;
-	else ctx.font = '12pt Courier New';
-	var metrics = ctx.measureText(text);
-	var text_width = ~~(metrics.width);
-	return 	text_width;
+function textWidth(ctx, font, text) {
+    if (font != null) {
+        ctx.font = font;
+    } else {
+        ctx.font = '12pt Courier New';
+    }
+    var metrics = ctx.measureText(text);
+    var text_width = ~~(metrics.width);
+    return text_width;
 }
 
 function getRandomArbitrary(min, max) {
-  return Math.random() * (max - min) + min;
+    return Math.random() * (max - min) + min;
 }

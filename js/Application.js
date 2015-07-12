@@ -144,12 +144,10 @@ Application.prototype = {
                         fires.splice(i, 1)
                     }
                     else {
-                        fires[i].time = fires[i].weapon.renderAction(fires[i].time, elapsedTime, ctx, new Point(50, 50), new Point(250, 100));
-                        //full_time, time, ctx, from, to
+                        fires[i].time = fires[i].weapon.renderAction(fires[i].time, elapsedTime, ctx, this.ship.position, this.enemyShip.position);
                     }
                 }
             }
-
             PrepareForBattle(true, this.ship);
             HideStandartHTMLUI(true);
             this.ship.renderBattleMode(elapsedTime, true, true);

@@ -15,12 +15,12 @@ function Weapon(energy, title, cost, size, type) {
 
 Weapon.prototype = {
     renderAction: function (full_time, time, ctx, from, to) {
-        var ret_time = 0;
+        var ret_time = full_time + time;
         switch (this.type) {
             case 'beam':
-                full_time -= time;
-                if (full_time < 0) {
-                    ret_val = full_time;
+                //full_time -= time;
+                if (ret_time > 1000) {
+                    ret_time = -1;
                     break;
                 }
                 ctx.beginPath();
@@ -35,6 +35,7 @@ Weapon.prototype = {
             default:
                 break;
         }
-        return ret_val;
+        //console.log(ret_time);
+        return ret_time;
     }
 };
