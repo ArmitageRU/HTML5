@@ -291,7 +291,7 @@ function Fire() {
             PrepareBattleMenu(currentShip, w_id);
             fires[fires.length] = {
                 weapon: currentShip.weapons[i],
-                time:1000
+                time:0
             };
             break;
         }

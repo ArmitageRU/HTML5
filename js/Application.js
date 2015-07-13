@@ -140,7 +140,7 @@ Application.prototype = {
         else if (this.battleActive) {
             if (fires.length>0) {
                 for (var i = 0; i < fires.length; i += 1) {
-                    if (fires[i].time <= 0) {
+                    if (fires[i].time < 0) {
                         fires.splice(i, 1)
                     }
                     else {

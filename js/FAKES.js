@@ -12,7 +12,7 @@ FAKES.prototype = {
         w = new Weapon(1000, 'Ракеты', 1500, 2, 'rocket');
         w.id = 102;
         weapons[1] = w;
-        w = new Weapon(500, 'Плазма', 650, 3, 'plazma');
+        w = new Weapon(500, 'Плазма', 650, 3, 'plasma');
         w.id = 103;
         weapons[2] = w;
 
