@@ -10,6 +10,7 @@ var Application = function(){
 	this.route;
 	this.ship;
 	this._images = {};
+	this.battle;
 	
 	//system screen
 	this.currentMainContent;
@@ -94,6 +95,7 @@ Application.prototype = {
 		this.route = new Route(this.ship.position);
 		this.ship.route = this.route;
 		this.ship.weapons = this.FAKE.GenerateFakeWeapons();
+		this.ship.id = 0;
 		//system screen
 		for(var i = 0; i < 8; ++i){
 			var nextOrbit = this.generateOrbit();
@@ -104,6 +106,9 @@ Application.prototype = {
 		}
 		this.mouse = new MouseController(this.canvas);
 		this.enemyShip = this.getEnemy();
+		this.enemyShip.id = 1;
+
+		this.initBattle();
 	},
 	render: function(lastTime) {
         var curTime = new Date();
@@ -138,20 +143,21 @@ Application.prototype = {
             FillTabs(this.currentMainContent, this.currentMarketContent);
         }
         else if (this.battleActive) {
-            if (fires.length>0) {
-                for (var i = 0; i < fires.length; i += 1) {
-                    if (fires[i].time < 0) {
-                        fires.splice(i, 1)
-                    }
-                    else {
-                        fires[i].time = fires[i].weapon.renderAction(fires[i].time, elapsedTime, ctx, this.ship.position, this.enemyShip.position);
-                    }
-                }
-            }
+            //if (fires.length>0) {
+            //    for (var i = 0; i < fires.length; i += 1) {
+            //        if (fires[i].time < 0) {
+            //            fires.splice(i, 1)
+            //        }
+            //        else {
+            //            fires[i].time = fires[i].weapon.renderAction(fires[i].time, elapsedTime, ctx, this.ship.position, this.enemyShip.position);
+            //        }
+            //    }
+            //}
             PrepareForBattle(true, this.ship);
             HideStandartHTMLUI(true);
-            this.ship.renderBattleMode(elapsedTime, true, true);
-            this.enemyShip.renderBattleMode(elapsedTime, false, false);
+            this.battle.render(elapsedTime);
+            //this.ship.renderBattleMode(elapsedTime, true, true);
+            //this.enemyShip.renderBattleMode(elapsedTime, false, false);
         }
 		/*GRID*/
 		/*
@@ -203,5 +209,12 @@ Application.prototype = {
 	    enemy_ship.tile.sWidth = this.FAKE.ships[random_ship].width;
 	    enemy_ship.tile.sHeight = this.FAKE.ships[random_ship].height;
 	    return enemy_ship;
+	},
+
+    //только для теста
+	initBattle: function () {
+	    this.battle = new Battle(this.ctx);
+	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.ship, this.enemyShip, this.ship.renderBattleMode);
+	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.enemyShip, this.ship, this.enemyShip.renderBattleMode);
 	}
 };

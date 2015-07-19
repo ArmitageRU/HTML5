@@ -1,6 +1,8 @@
 ﻿ "use strict";
 function Ship(ctx, image){
+    this.id;
     this.position;
+
     this.prevPos; //при возвращении из режима битвы
     this.inBattle = false;
     this.ctx = ctx;
@@ -39,14 +41,16 @@ Ship.prototype = {
 		this.route.from=this.position;
 	},
 
-	renderBattleMode: function (time, forward, left) {
+	renderBattleMode: function (time) {
 	    if (!this.inBattle) {
 	        this.battlePrepare();
 	        this.inBattle = true;
 	    }
-	    /*var point*/this.position = new Point(left ? 120 : this.ctx.canvas.width - 120, this.ctx.canvas.height / 2);
-	    this.tile.drawScale(/*point*/this.position, forward ? Math.PI / 2 : -Math.PI / 2, 1);
-	    this.hud.render(time, /*point*/this.position, 1);
+	    var x = this.id === 0 ? 120 : this.ctx.canvas.width - 120,
+            rot = this.id === 0 ? Math.PI / 2 : -Math.PI / 2;
+	    this.position = new Point(x, this.ctx.canvas.height / 2);
+	    this.tile.drawScale(this.position, rot, 1);
+	    this.hud.render(time, this.position, 1);
 	},
 	
 	battlePrepare: function(){

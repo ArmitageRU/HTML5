@@ -1,7 +1,9 @@
+//глобальные переменные
 var prevMainContent = null;
 var prevMarketContent = null;
 var inbattle = false;
-var fires = [];
+//var fires = [];
+
 //var currentCommodities = [];
 //var moneyRest = 0;
 
@@ -289,8 +291,11 @@ function Fire() {
         if (w_id == currentShip.weapons[i].id) {
             currentShip.energy -= currentShip.weapons[i].energy;
             PrepareBattleMenu(currentShip, w_id);
-            fires[fires.length] = {
-                weapon: currentShip.weapons[i],
+            StarSystem.battle.fires[StarSystem.battle.fires.length] = {
+                //weapon: currentShip.weapons[i],
+                //time:0
+                ship: currentShip,
+                weapon_id: currentShip.weapons[i].id,
                 time:0
             };
             break;
