@@ -58,7 +58,7 @@ Weapon.prototype = {
                     var rocket_ship = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
                     rocket_ship.id = 0;
                     rocket_ship.subShip = 1;
-                    rocket_ship.rot = 0;
+                    rocket_ship.rot = Math.PI;
                     StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship, target, rocket_ship.renderBattleMode);
                     ret_time = -1;
                     break;
