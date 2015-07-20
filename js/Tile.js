@@ -2,11 +2,13 @@
 function Tile(ctx, image, sx, sy, sw, sh, scale){
 	this.ctx = ctx;
 	this.img = image;
-	this.sx = sx;
-	this.sy = sy;
+	this.sx = sx || 0;
+	this.sy = sy || 0;
 	this.sWidth = sw;
+	if (sw == null && image != null) this.sWidth = image.width;
 	this.sHeight = sh;
-	this.scale = scale;
+	if (sh == null && image != null) this.sHeight = image.height;
+	this.scale = scale|| 1;
 };
 
 Tile.prototype = {

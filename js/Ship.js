@@ -1,16 +1,17 @@
 ﻿ "use strict";
-function Ship(ctx, image){
+function Ship(ctx, image, rectangle){
     this.id;
     this.position;
+    this.subShip=0;
 
     this.prevPos; //при возвращении из режима битвы
     this.inBattle = false;
     this.ctx = ctx;
-	this.tile = new Tile(ctx, image, 28, 804, 199, 163, 0.3);
+    this.tile = new Tile(ctx, image, rectangle.x, rectangle.y, rectangle.width, rectangle.height, rectangle.scale);//new Tile(ctx, image, 28, 804, 199, 163, 0.3);//надо менять
 	this.route;
 	this.rot = -Math.PI / 2;
 	this.speed = 90; //pixel per second e.g.
-	this.energy = 900;
+	this.energy = 1900;
 	this.weapons = [];
 
 	this.money=20000;
@@ -47,10 +48,15 @@ Ship.prototype = {
 	        this.inBattle = true;
 	    }
 	    var x = this.id === 0 ? 120 : this.ctx.canvas.width - 120,
-            rot = this.id === 0 ? Math.PI / 2 : -Math.PI / 2;
-	    this.position = new Point(x, this.ctx.canvas.height / 2);
+            rot = this.id === 0 ? Math.PI / 2 : -Math.PI / 2,
+            y = this.ctx.canvas.height / 2;
+	    if (this.subShip > 0)
+	        y -= this.tile.sHeight / 2 + 100;
+	    if (this.subShip < 0)
+	        y += this.tile.sHeight / 2 + 100;
+	    this.position = new Point(x, y);
 	    this.tile.drawScale(this.position, rot, 1);
-	    this.hud.render(time, this.position, 1);
+	    if(this.subShip==0)this.hud.render(time, this.position, 1);
 	},
 	
 	battlePrepare: function(){

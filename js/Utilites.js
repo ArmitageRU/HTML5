@@ -292,8 +292,6 @@ function Fire() {
             currentShip.energy -= currentShip.weapons[i].energy;
             PrepareBattleMenu(currentShip, w_id);
             StarSystem.battle.fires[StarSystem.battle.fires.length] = {
-                //weapon: currentShip.weapons[i],
-                //time:0
                 ship: currentShip,
                 weapon_id: currentShip.weapons[i].id,
                 time:0

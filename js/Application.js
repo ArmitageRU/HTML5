@@ -85,16 +85,18 @@ Application.prototype = {
 		IM.add('img/planets/planet16.png', 'planet16');
 		IM.add('img/planets/planet17.png', 'planet17');
 		IM.add('img/planets/planet18.png', 'planet18');
+        //rocket
+		IM.add('img/DiverWithMissleRocket.png', 'rocket');
 		
 		this.Star = new Star(globalCenter, 50)
 		this.Star.ctx = this.ctx;
 		this.currentMainContent = this.Star.MainContent;
         //ship section
-		this.ship = new Ship(this.ctx, this._images['ships'])
+		this.ship = new Ship(this.ctx, this._images['ships'], new Rectangle(28, 804, 199, 163, 0.3));
 		this.ship.position = new Point(this.canvas.width-100, this.canvas.height/2);
 		this.route = new Route(this.ship.position);
 		this.ship.route = this.route;
-		this.ship.weapons = this.FAKE.GenerateFakeWeapons();
+		this.ship.weapons = this.FAKE.GenerateFakeWeapons(this.ctx, this._images['rocket']);
 		this.ship.id = 0;
 		//system screen
 		for(var i = 0; i < 8; ++i){
@@ -143,21 +145,9 @@ Application.prototype = {
             FillTabs(this.currentMainContent, this.currentMarketContent);
         }
         else if (this.battleActive) {
-            //if (fires.length>0) {
-            //    for (var i = 0; i < fires.length; i += 1) {
-            //        if (fires[i].time < 0) {
-            //            fires.splice(i, 1)
-            //        }
-            //        else {
-            //            fires[i].time = fires[i].weapon.renderAction(fires[i].time, elapsedTime, ctx, this.ship.position, this.enemyShip.position);
-            //        }
-            //    }
-            //}
             PrepareForBattle(true, this.ship);
             HideStandartHTMLUI(true);
             this.battle.render(elapsedTime);
-            //this.ship.renderBattleMode(elapsedTime, true, true);
-            //this.enemyShip.renderBattleMode(elapsedTime, false, false);
         }
 		/*GRID*/
 		/*
@@ -203,11 +193,11 @@ Application.prototype = {
 
 	getEnemy: function () {
 	    var random_ship = ~~(getRandomArbitrary(0, this.FAKE.ships.length));
-	    var enemy_ship = new Ship(this.ctx, this._images['ships']);
-	    enemy_ship.tile.sx = this.FAKE.ships[random_ship].x;
-	    enemy_ship.tile.sy = this.FAKE.ships[random_ship].y;
-	    enemy_ship.tile.sWidth = this.FAKE.ships[random_ship].width;
-	    enemy_ship.tile.sHeight = this.FAKE.ships[random_ship].height;
+	    var enemy_ship = new Ship(this.ctx, this._images['ships'], new Rectangle(this.FAKE.ships[random_ship].x, this.FAKE.ships[random_ship].y, this.FAKE.ships[random_ship].width, this.FAKE.ships[random_ship].height, 0.3));
+	    //enemy_ship.tile.sx = this.FAKE.ships[random_ship].x;
+	    //enemy_ship.tile.sy = this.FAKE.ships[random_ship].y;
+	    //enemy_ship.tile.sWidth = this.FAKE.ships[random_ship].width;
+	    //enemy_ship.tile.sHeight = this.FAKE.ships[random_ship].height;
 	    return enemy_ship;
 	},
 
