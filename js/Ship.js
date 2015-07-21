@@ -25,6 +25,7 @@ function Ship(ctx, image, rectangle){
 	this.rot = -Math.PI;
 	this.speed = 90; //pixel per second e.g.
 	this.energy = 1900;
+	this.recharge = 130;//скорость зарядки батареи
 	this.weapons = [];
 
 	this.money=20000;
