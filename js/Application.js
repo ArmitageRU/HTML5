@@ -204,7 +204,9 @@ Application.prototype = {
     //только для теста
 	initBattle: function () {
 	    this.battle = new Battle(this.ctx);
-	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.ship, this.enemyShip, this.ship.renderBattleMode);
-	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.enemyShip, this.ship, this.enemyShip.renderBattleMode);
+	    this.ship.battlePrepare(new Point(120, this.canvas.height / 2), Math.PI / 2, null, 1);
+	    this.enemyShip.battlePrepare(new Point(this.canvas.width - 120, this.canvas.height / 2), -Math.PI / 2, null, 1);
+	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.ship, this.enemyShip, this.ship.render);
+	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.enemyShip, this.ship, this.enemyShip.render);
 	}
 };

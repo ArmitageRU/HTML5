@@ -300,3 +300,7 @@ function Fire() {
         }
     }
 }
+
+function EndPhase() {
+
+}

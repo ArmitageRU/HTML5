@@ -5,7 +5,19 @@ function Ship(ctx, image, rectangle){
     this.parentShipId = null;
     this.shift = 0;
 
-    this.prevPos; //при возвращении из режима битвы
+    this.origin = new Point(0, 0);
+
+    //храним для возвращения из битвы
+    this.prevPos;
+    this.prevRot;
+    this.prevRoute;
+    this.prevScale;
+
+    //значения инициализации для битвы
+    this.battlePos;
+    this.battleRot;
+    this.battleRoute;
+
     this.inBattle = false;
     this.ctx = ctx;
     this.tile = new Tile(ctx, image, rectangle.x, rectangle.y, rectangle.width, rectangle.height, rectangle.scale);//new Tile(ctx, image, 28, 804, 199, 163, 0.3);//надо менять
@@ -29,7 +41,7 @@ function Ship(ctx, image, rectangle){
 Ship.prototype = {
 	render:function(time){
 		var path = this.speed*time*0.001;
-		if(this.route.to!=null && this.route.to!=this.route.from){	
+		if(this.route != null && this.route.to!=null && this.route.to!=this.route.from){	
 			this.rot = Math.atan2(this.position.y-this.route.to.y, this.position.x-this.route.to.x)-Math.PI / 2;
 			var dir_vector = new Point(this.route.to.x-this.position.x, this.route.to.y-this.position.y);
 			var dir_length = this.VLength(dir_vector);
@@ -40,28 +52,57 @@ Ship.prototype = {
 			}
 		}
 		this.tile.draw(this.position, this.rot);
-		this.route.from=this.position;
+		if (this.route!=null)this.route.from = this.position;
 	},
 
 	renderBattleMode: function (time) {
 	    if (!this.inBattle) {
-	        this.battlePrepare();
+	        this.battlePrepare(pos, rot, route, scale);
 	        this.inBattle = true;
 	    }
-	    var x = this.id === 0 ? 120 : this.ctx.canvas.width - 120,
-            rot = this.id === 0 ? Math.PI / 2 : -Math.PI / 2,
+
+        /*
+	    var x = 0,// = this.id === 0 ? 120 : this.ctx.canvas.width - 120,
+            rot = 0,// = this.id === 0 ? this.rot - Math.PI / 2 : this.rot + Math.PI / 2,
             y = this.ctx.canvas.height / 2;
-	    if (this.shift > 0)
+        //координаты
+	    if (this.shift > 0) {
 	        y -= this.tile.sHeight / 2 + 100;
-	    if (this.shift < 0)
+	    }
+	    if (this.shift < 0) {
 	        y += this.tile.sHeight / 2 + 100;
-	    this.position = new Point(x, y);
+	    }
+
+	    if (this.parentShipId == null && this.id == 0) {
+	        x = 120;
+	    }
+	    else if (this.parentShipId == null && this.id > 0) {
+	        x = this.ctx.canvas.width - 120;
+	    }
+	    //поворот
+	    if (this.parentShipId == null && this.id == 0) {
+	        rot = this.rot - Math.PI / 2;
+	    }
+	    else if (this.parentShipId == null && this.id > 0) {
+	        rot = this.rot + Math.PI / 2;
+	    }
+
+	    this.position = new Point(x+this.origin.x, y+this.origin.y);
 	    this.tile.drawScale(this.position, rot, 1);
 	    if(this.subShip==0)this.hud.render(time, this.position, 1);
+        */
 	},
 	
-	battlePrepare: function(){
+	battlePrepare: function (pos, rot, route, scale) {
 	    this.prevPos = this.position;
+	    this.prevRot = this.rot;
+	    this.prevRoute = this.route;
+	    this.prevScale = this.tile.scale;
+
+	    this.position = pos;
+	    this.rot = rot;
+	    this.route = route;
+	    this.tile.scale = scale;
 	},
 
 	battleDebriefing: function() {

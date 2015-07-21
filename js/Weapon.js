@@ -30,7 +30,7 @@ Weapon.prototype = {
                     break;
                 }
                 ctx.beginPath();
-                ctx.moveTo(from.x, from.y);
+                ctx.moveTo(from.position.x, from.position.y);
                 ctx.lineTo(target.position.x, target.position.y);
                 ctx.lineWidth = thickness;//10;
                 // set line color
@@ -42,9 +42,9 @@ Weapon.prototype = {
                     ret_time = -1;
                     break;
                 }
-                var curr_x = (target.position.x - from.x) * ret_time / this.plasmaLasting;
+                var curr_x = (target.position.x - from.position.x) * ret_time / this.plasmaLasting;
                 ctx.beginPath();
-                ctx.arc(from.x + curr_x, from.y, 30, 0, 2 * Math.PI, false);
+                ctx.arc(from.position.x + curr_x, from.position.y, 30, 0, 2 * Math.PI, false);
                 ctx.fillStyle = '#ff3333';
                 ctx.fill();
                 ctx.lineWidth = 5;
@@ -52,18 +52,22 @@ Weapon.prototype = {
                 ctx.stroke();
                 break;
             case 'rocket':
-                var curr_x = (from.x + 50) * ret_time / this.rocketLasting,
-                    curr_y = (from.y + 50) * ret_time / this.rocketLasting;
+                var curr_x = (/*from.position.x +*/ 100) * ret_time / this.rocketLasting,
+                    curr_y = (/*from.position.y -*/ 100) * ret_time / this.rocketLasting;
                 if (ret_time > this.rocketLasting) {
-                    var rocket_ship = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
-                    rocket_ship.id = 0;
-                    rocket_ship.subShip = 1;
-                    rocket_ship.rot = Math.PI;
-                    StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship, target, rocket_ship.renderBattleMode);
+                    var rocket_ship_up = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
+                    rocket_ship_up.parentShipId = from.id;
+                    rocket_ship_up.battlePrepare(new Point(from.position.x + 100, from.position.y - 100), Math.PI, null, 1);
+                    StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship_up, target, rocket_ship_up.render);
+                    var rocket_ship_down = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
+                    rocket_ship_down.parentShipId = from.id;
+                    rocket_ship_down.battlePrepare(new Point(from.position.x + 100, from.position.y + 100), Math.PI, null, 1);
+                    StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship_down, target, rocket_ship_down.render);
                     ret_time = -1;
                     break;
                 }
-                this.tile.draw(new Point(from.x + curr_x, from.y - curr_y), -Math.PI);
+                this.tile.draw(new Point(from.position.x + curr_x, from.position.y - curr_y), -Math.PI);
+                this.tile.draw(new Point(from.position.x + curr_x, from.position.y + curr_y), -Math.PI);
                 break;
             default:
                 break;
