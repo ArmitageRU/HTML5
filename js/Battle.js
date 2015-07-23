@@ -5,6 +5,8 @@ function Battle(context) {
     this.turns = 0;
     this.phase = 0;
     this.ctx = context;
+
+    this.queue = [0, 1];
 };
 
 Battle.prototype = {
