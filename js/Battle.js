@@ -7,6 +7,7 @@ function Battle(context) {
     this.ctx = context;
 
     this.queue = [0, 1];
+    this.phaseActive = false;
 };
 
 Battle.prototype = {
@@ -46,6 +47,22 @@ Battle.prototype = {
 
         //turn begin 
 
+    },
+
+    begin: function () {
+        if (!this.phaseActive) {
+            for (var i = 0, max = this.participants.length; i < max; i += 1) {
+                if (this.participants[i].source.id == this.queue[0]) {
+                    this.participants[i].source.phaseActive();
+                    this.phaseActive = true;
+                    break;
+                }
+            }
+        }
+    },
+
+    phaseAction: function () {
+        
     },
 
     phaseEnd: function () {

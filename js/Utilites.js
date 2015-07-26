@@ -2,6 +2,8 @@
 var prevMainContent = null;
 var prevMarketContent = null;
 var inbattle = false;
+
+var phaseActive = false;
 //var fires = [];
 
 //var currentCommodities = [];
@@ -227,7 +229,7 @@ function PrepareForBattle(hide, ship) {
     if (!inbattle) {
         HideStandartHTMLUI(hide);
         PrepareBattleMenu(ship, 0);
-        CheckWeapons(ship);
+        //CheckWeapons(ship);
         inbattle = true;
         currentShip = ship;
     }
@@ -290,7 +292,8 @@ function Fire() {
     for (var i = 0, len = currentShip.weapons.length; i < len; i += 1) {
         if (w_id == currentShip.weapons[i].id) {
             currentShip.energy -= currentShip.weapons[i].energy;
-            PrepareBattleMenu(currentShip, w_id);
+            //PrepareBattleMenu(currentShip, w_id);
+            CheckWeapons(currentShip, w_id);
             StarSystem.battle.fires[StarSystem.battle.fires.length] = {
                 ship: currentShip,
                 weapon_id: currentShip.weapons[i].id,

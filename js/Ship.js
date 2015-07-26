@@ -3,7 +3,7 @@ function Ship(ctx, image, rectangle){
     this.id;
     this.position;
     this.parentShipId = null;
-    this.shift = 0;
+    //this.shift = 0;
 
     this.origin = new Point(0, 0);
 
@@ -18,7 +18,12 @@ function Ship(ctx, image, rectangle){
     this.battleRot;
     this.battleRoute;
 
-    this.inBattle = false;
+    this.inBattle = false;//индикатор перехода в режим боя
+    //функция инициализации
+    //для нашего корабля это будет показ интерфейса управления
+    this.phaseActive;
+    
+
     this.ctx = ctx;
     this.tile = new Tile(ctx, image, rectangle.x, rectangle.y, rectangle.width, rectangle.height, rectangle.scale);//new Tile(ctx, image, 28, 804, 199, 163, 0.3);//надо менять
 	this.route;

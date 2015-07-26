@@ -97,6 +97,9 @@ Application.prototype = {
 		this.route = new Route(this.ship.position);
 		this.ship.route = this.route;
 		this.ship.weapons = this.FAKE.GenerateFakeWeapons(this.ctx, this._images['rocket']);
+		this.ship.phaseActive = function phaseActive() {
+		    PrepareBattleMenu(this.ship, 0);
+		};
 		this.ship.id = 0;
 		//system screen
 		for(var i = 0; i < 8; ++i){
@@ -145,8 +148,8 @@ Application.prototype = {
             FillTabs(this.currentMainContent, this.currentMarketContent);
         }
         else if (this.battleActive) {
-            PrepareForBattle(true, this.ship);
-            HideStandartHTMLUI(true);
+            this.battle.begin();
+            //PrepareForBattle(true, this.ship);
             this.battle.render(elapsedTime);
         }
 		/*GRID*/
