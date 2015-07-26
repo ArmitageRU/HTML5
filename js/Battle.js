@@ -53,7 +53,7 @@ Battle.prototype = {
         if (!this.phaseActive) {
             for (var i = 0, max = this.participants.length; i < max; i += 1) {
                 if (this.participants[i].source.id == this.queue[0]) {
-                    this.participants[i].source.phaseActive();
+                    this.participants[i].source.phaseActive.call(this.participants[i].source);
                     this.phaseActive = true;
                     break;
                 }
