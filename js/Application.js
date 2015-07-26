@@ -98,7 +98,7 @@ Application.prototype = {
 		this.ship.route = this.route;
 		this.ship.weapons = this.FAKE.GenerateFakeWeapons(this.ctx, this._images['rocket']);
 		this.ship.phaseActive = function phaseActive() {
-		    PrepareBattleMenu(this.ship, 0);
+		    PrepareBattleMenu(this, 0);
 		};
 		this.ship.id = 0;
 		//system screen

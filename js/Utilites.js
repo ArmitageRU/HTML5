@@ -246,7 +246,8 @@ function HideStandartHTMLUI(hide) {
 }
 
 // Ship.js
-function PrepareBattleMenu(ship, w_id) {
+function PrepareBattleMenu(/*ship,w_id*/) {
+    var ship = this;
     $("#battle").removeClass("dn");
     $("#battle_energy").html(ship.energy);
     $("#battle_weapons").empty();
@@ -255,7 +256,7 @@ function PrepareBattleMenu(ship, w_id) {
         //console.log(i);
         $('#battle_weapons').append('<option value="' + ship.weapons[i].id + '" selected="selected">' + ship.weapons[i].title + ' — ' + ship.weapons[i].energy + '</option>');
     }
-    CheckWeapons(ship, w_id);
+    CheckWeapons(ship, 0/*w_id*/);
 }
 
 //задизейблить невозможное оружие и/или кнопку стрельбы
