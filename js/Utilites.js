@@ -228,7 +228,7 @@ function ConfirmPurchase(operation){
 function PrepareForBattle(hide, ship) {
     if (!inbattle) {
         HideStandartHTMLUI(hide);
-        PrepareBattleMenu(ship, 0);
+        //PrepareBattleMenu(ship, 0);
         //CheckWeapons(ship);
         inbattle = true;
         currentShip = ship;
@@ -246,8 +246,8 @@ function HideStandartHTMLUI(hide) {
 }
 
 // Ship.js
-function PrepareBattleMenu(/*ship,w_id*/) {
-    var ship = this;
+function PrepareBattleMenu(ship/*,w_id*/) {
+    //var ship = this;
     $("#battle").removeClass("dn");
     $("#battle_energy").html(ship.energy);
     $("#battle_weapons").empty();

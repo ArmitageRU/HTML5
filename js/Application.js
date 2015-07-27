@@ -98,7 +98,7 @@ Application.prototype = {
 		this.ship.route = this.route;
 		this.ship.weapons = this.FAKE.GenerateFakeWeapons(this.ctx, this._images['rocket']);
 		this.ship.phaseActive = function phaseActive() {
-		    PrepareBattleMenu(this, 0);
+		    PrepareBattleMenu(this);
 		};
 		this.ship.id = 0;
 		//system screen
@@ -149,7 +149,7 @@ Application.prototype = {
         }
         else if (this.battleActive) {
             this.battle.begin();
-            //PrepareForBattle(true, this.ship);
+            PrepareForBattle(true, this.ship);
             this.battle.render(elapsedTime);
         }
 		/*GRID*/
