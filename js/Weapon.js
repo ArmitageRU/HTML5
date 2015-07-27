@@ -56,10 +56,17 @@ Weapon.prototype = {
                     curr_y = (/*from.position.y -*/ 100) * ret_time / this.rocketLasting;
                 if (ret_time > this.rocketLasting) {
                     var rocket_ship_up = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
+                    rocket_ship_up.id = -1
                     rocket_ship_up.parentShipId = from.id;
                     rocket_ship_up.battlePrepare(new Point(from.position.x + 100, from.position.y - 100), Math.PI, null, 1);
+                    rocket_ship_up.phaseActive = function phaseActive() {
+                        //PrepareBattleMenu(this);
+                        rocket_ship_up.route = new Route(rocket_ship_up.position);
+                        rocket_ship_up.route.to = target.position;
+                    };
                     StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship_up, target, rocket_ship_up.render);
                     var rocket_ship_down = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
+                    rocket_ship_down.id = -1
                     rocket_ship_down.parentShipId = from.id;
                     rocket_ship_down.battlePrepare(new Point(from.position.x + 100, from.position.y + 100), Math.PI, null, 1);
                     StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship_down, target, rocket_ship_down.render);

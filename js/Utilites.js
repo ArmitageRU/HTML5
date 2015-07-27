@@ -247,7 +247,6 @@ function HideStandartHTMLUI(hide) {
 
 // Ship.js
 function PrepareBattleMenu(ship/*,w_id*/) {
-    //var ship = this;
     $("#battle").removeClass("dn");
     $("#battle_energy").html(ship.energy);
     $("#battle_weapons").empty();
@@ -263,6 +262,7 @@ function PrepareBattleMenu(ship/*,w_id*/) {
 function CheckWeapons(ship, w_id) {
     var disable_fire = true,
         weapons_id = w_id;
+    $("#battle_energy").html(ship.energy);
     for (var i = 0, len = ship.weapons.length; i < len; i += 1) {
         if (ship.weapons[i].energy > ship.energy) {
             $('#battle_weapons option[value=' + ship.weapons[i].id + ']').prop('disabled', true);
@@ -290,19 +290,21 @@ function CheckWeapons(ship, w_id) {
 
 function Fire() {
     var w_id = $('#battle_weapons option:selected').val();
-    for (var i = 0, len = currentShip.weapons.length; i < len; i += 1) {
-        if (w_id == currentShip.weapons[i].id) {
-            currentShip.energy -= currentShip.weapons[i].energy;
-            //PrepareBattleMenu(currentShip, w_id);
-            CheckWeapons(currentShip, w_id);
-            StarSystem.battle.fires[StarSystem.battle.fires.length] = {
-                ship: currentShip,
-                weapon_id: currentShip.weapons[i].id,
-                time:0
-            };
-            break;
-        }
-    }
+    var c_ship = StarSystem.battle.fire(w_id);
+    if(c_ship !=null)CheckWeapons(c_ship, w_id);
+    //for (var i = 0, len = currentShip.weapons.length; i < len; i += 1) {
+    //    if (w_id == currentShip.weapons[i].id) {
+    //        currentShip.energy -= currentShip.weapons[i].energy;
+    //        //PrepareBattleMenu(currentShip, w_id);
+    //        CheckWeapons(currentShip, w_id);
+    //        StarSystem.battle.fires[StarSystem.battle.fires.length] = {
+    //            ship: currentShip,
+    //            weapon_id: currentShip.weapons[i].id,
+    //            time:0
+    //        };
+    //        break;
+    //    }
+    //}
 }
 
 function EndPhase() {

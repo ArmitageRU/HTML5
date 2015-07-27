@@ -148,7 +148,7 @@ Application.prototype = {
             FillTabs(this.currentMainContent, this.currentMarketContent);
         }
         else if (this.battleActive) {
-            this.battle.begin();
+            this.battle.beginPhase();
             PrepareForBattle(true, this.ship);
             this.battle.render(elapsedTime);
         }
@@ -197,10 +197,9 @@ Application.prototype = {
 	getEnemy: function () {
 	    var random_ship = ~~(getRandomArbitrary(0, this.FAKE.ships.length));
 	    var enemy_ship = new Ship(this.ctx, this._images['ships'], new Rectangle(this.FAKE.ships[random_ship].x, this.FAKE.ships[random_ship].y, this.FAKE.ships[random_ship].width, this.FAKE.ships[random_ship].height, 0.3));
-	    //enemy_ship.tile.sx = this.FAKE.ships[random_ship].x;
-	    //enemy_ship.tile.sy = this.FAKE.ships[random_ship].y;
-	    //enemy_ship.tile.sWidth = this.FAKE.ships[random_ship].width;
-	    //enemy_ship.tile.sHeight = this.FAKE.ships[random_ship].height;
+	    enemy_ship.phaseActive = function phaseActive() {
+	        //управляемое Ai
+	    };
 	    return enemy_ship;
 	},
 

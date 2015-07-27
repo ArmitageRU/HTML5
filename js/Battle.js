@@ -6,8 +6,9 @@ function Battle(context) {
     this.phase = 0;
     this.ctx = context;
 
-    this.queue = [0, 1];
+    this.queue = [0, 0];
     this.phaseActive = false;
+    this.currentShip = null;
 };
 
 Battle.prototype = {
@@ -49,28 +50,43 @@ Battle.prototype = {
 
     },
 
-    begin: function () {
+    beginPhase: function () {
         if (!this.phaseActive) {
             for (var i = 0, max = this.participants.length; i < max; i += 1) {
-                if (this.participants[i].source.id == this.queue[0]) {
+                if (this.participants[i].source.id == this.queue[0] || this.participants[i].source.parentShipId == this.queue[0]) {
                     this.participants[i].source.phaseActive.call(this.participants[i].source);
                     this.phaseActive = true;
-                    break;
+                    if (this.participants[i].source.id == this.queue[0]) {
+                        this.currentShip = this.participants[i].source;
+                    }
                 }
             }
         }
     },
 
-    phaseAction: function () {
-        
+    endPhase: function () {
+        this.queue.splice(0, 1);
+        this.phaseActive = false;
     },
 
-    phaseEnd: function () {
-        nextPhase();
-    },
+    fire: function (w_id) {
+        var ship = null;
+        for (var i = 0, len = this.currentShip.weapons.length; i < len; i += 1) {
+            if (w_id == this.currentShip.weapons[i].id) {
+                this.currentShip.energy -= currentShip.weapons[i].energy;
+                //PrepareBattleMenu(currentShip, w_id);
+                //CheckWeapons(currentShip, w_id);
+                this.fires[StarSystem.battle.fires.length] = {
+                    ship: this.currentShip,
+                    weapon_id: this.currentShip.weapons[i].id,
+                    time: 0
+                };
+                ship = this.currentShip;
+                break;
+            }
+        }
 
-    nextPhase: function () {
-
+        return ship;
     }
 };
 
