@@ -101,10 +101,17 @@ Ship.prototype = {
 	},
 
 	inBound:function(coords){
-	    var sX = this.position.x - this.tile.sWidth * this.tile.scale / 2;
+	    var sX = this.position.x - this.tile.sWidth * this.tile.scale / 2,
 	        eX = this.position.x + this.tile.sWidth * this.tile.scale / 2,
             sY = this.position.y - this.tile.sHeight * this.tile.scale / 2,
             sY = this.position.y + this.tile.sHeight * this.tile.scale / 2;
+
+	        if (this.rot == Math.abs(Math.PI / 2)) {
+	            sX = this.position.x - this.tile.sHeight * this.tile.scale / 2;
+	            eX = this.position.x + this.tile.sHeigh * this.tile.scale / 2;
+	            sY = this.position.y - this.tile.sWidth * this.tile.scale / 2;
+	            sY = this.position.y + this.tile.sWidth * this.tile.scale / 2;
+	        }
         
 	    return (coord.x >= sX && coord.x <= eX && coord.y >= sY && coord.y <= eY);
 	},
