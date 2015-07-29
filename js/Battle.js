@@ -6,20 +6,20 @@ function Battle(context) {
     this.phase = 0;
     this.ctx = context;
 
-    this.queue = [0, 0];
+    this.queue = [0, 1];
     this.phaseActive = false;
     this.currentShip = null;
 };
 
 Battle.prototype = {
-    addParticipant: function (render, object, init) {
-        var participant = {
-            render: render,
-            param: param,
-            object:object
-        }
-        this.participants[this.participants.length] = participant;
-    }, 
+    //addParticipant: function (render, object, init) {
+    //    var participant = {
+    //        render: render,
+    //        param: param,
+    //        object:object
+    //    }
+    //    this.participants[this.participants.length] = participant;
+    //}, 
 
     render: function (time) {
         for (var i = 0, max_p = this.participants.length; i < max_p; i += 1) {
@@ -76,7 +76,7 @@ Battle.prototype = {
                 this.currentShip.energy -= currentShip.weapons[i].energy;
                 //PrepareBattleMenu(currentShip, w_id);
                 //CheckWeapons(currentShip, w_id);
-                this.fires[StarSystem.battle.fires.length] = {
+                this.fires[this.fires.length] = {
                     ship: this.currentShip,
                     weapon_id: this.currentShip.weapons[i].id,
                     time: 0

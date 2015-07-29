@@ -39,9 +39,10 @@ function Ship(ctx, image, rectangle){
 
 	this.life = {
 	    max:100,
-        current:80
+        current:100
 	};
 	this.hud = new HUD(ctx, this.tile, this.life);
+	this.boundingBox = rectangle;
 };
 
 Ship.prototype = {

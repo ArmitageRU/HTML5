@@ -197,9 +197,6 @@ Application.prototype = {
 	getEnemy: function () {
 	    var random_ship = ~~(getRandomArbitrary(0, this.FAKE.ships.length));
 	    var enemy_ship = new Ship(this.ctx, this._images['ships'], new Rectangle(this.FAKE.ships[random_ship].x, this.FAKE.ships[random_ship].y, this.FAKE.ships[random_ship].width, this.FAKE.ships[random_ship].height, 0.3));
-	    enemy_ship.phaseActive = function phaseActive() {
-	        //управляемое Ai
-	    };
 	    return enemy_ship;
 	},
 
@@ -210,5 +207,9 @@ Application.prototype = {
 	    this.enemyShip.battlePrepare(new Point(this.canvas.width - 120, this.canvas.height / 2), -Math.PI / 2, null, 1);
 	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.ship, this.enemyShip, this.ship.render);
 	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.enemyShip, this.ship, this.enemyShip.render);
+	    var ai = new AI(this.enemyShip, this.battle.participants);
+	    this.enemyShip.phaseActive = function phaseActive() {
+	        ai.phaseActive.call(ai);
+	    };
 	}
 };
