@@ -8,7 +8,16 @@ function Tile(ctx, image, sx, sy, sw, sh, scale){
 	if (sw == null && image != null) this.sWidth = image.width;
 	this.sHeight = sh;
 	if (sh == null && image != null) this.sHeight = image.height;
-	this.scale = scale|| 1;
+	this.scale = scale || 1;
+	//console.log(ctx, image, sx, sy, this.sWidth, this.sHeight, scale);
+    this.test_id = Math.random();
+	if ((this.sWidth == 0) && (this.sHeight == 0)) {
+	    console.log(this.img);
+	    console.log(sx, sy, sw, sh, image.width, image.height, this.img.height, this.img.width);
+	    console.log("I [" + this.test_id + "]" + this.sWidth, this.sHeight);
+	}
+
+	
 };
 
 Tile.prototype = {
@@ -18,7 +27,7 @@ Tile.prototype = {
         //ctx.rotate(Math.atan2(p.y - y, p.x - x) + Math.PI / 2);
 		this.ctx.rotate(rot);
 		this.ctx.scale(this.scale, this.scale);
-        this.ctx.drawImage(this.img, this.sx, this.sy, this.sWidth, this.sHeight,-this.sWidth / 2, -this.sHeight / 2, this.sWidth, this.sHeight);
+		this.ctx.drawImage(this.img, this.sx, this.sy, this.sWidth, this.sHeight, -this.sWidth / 2, -this.sHeight / 2, this.sWidth, this.sHeight);
         this.ctx.restore();
 	
 	},

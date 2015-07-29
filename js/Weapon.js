@@ -4,8 +4,10 @@ function Weapon(energy, title, cost, size, type, context, image) {
         return new Weapon();
     }
     this.ctx = context;
-    this.tile = new Tile(this.ctx, image, null, null, null, null, 1);
-
+    this.tile = new Tile(this.ctx, image, null, null, 49, 19, 1);
+    if (image != null) {
+        console.log("weapon", image.width, image.height);
+    }
     this.energy = energy;
     this.title = title;
     this.primeCost = cost;//себестоимость, возможно не понадобится
@@ -58,9 +60,9 @@ Weapon.prototype = {
                     var rocket_ship_up = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
                     rocket_ship_up.id = -1
                     rocket_ship_up.parentShipId = from.id;
+                    rocket_ship_up.speed = 1500;
                     rocket_ship_up.battlePrepare(new Point(from.position.x + 100, from.position.y - 100), Math.PI, null, 1);
                     rocket_ship_up.phaseActive = function phaseActive() {
-                        //PrepareBattleMenu(this);
                         rocket_ship_up.route = new Route(rocket_ship_up.position);
                         rocket_ship_up.route.to = target.position;
                     };
@@ -68,7 +70,12 @@ Weapon.prototype = {
                     var rocket_ship_down = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
                     rocket_ship_down.id = -1
                     rocket_ship_down.parentShipId = from.id;
+                    rocket_ship_down.speed = 1500;
                     rocket_ship_down.battlePrepare(new Point(from.position.x + 100, from.position.y + 100), Math.PI, null, 1);
+                    rocket_ship_down.phaseActive = function phaseActive() {
+                        rocket_ship_down.route = new Route(rocket_ship_down.position);
+                        rocket_ship_down.route.to = target.position;
+                    };
                     StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship_down, target, rocket_ship_down.render);
                     ret_time = -1;
                     break;
