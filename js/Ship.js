@@ -4,8 +4,11 @@ function Ship(ctx, image, rectangle){
     this.position;
     this.parentShipId = null;
     //this.shift = 0;
+    this.target = null;//пока только корабль, возможно убрать или наоборот исользовать таргет из роута
 
-    this.origin = new Point(0, 0);
+    this.selected = true;
+
+    //this.origin = new Point(0, 0);
 
     //храним для возвращения из битвы
     this.prevPos;
@@ -42,7 +45,7 @@ function Ship(ctx, image, rectangle){
         current:100
 	};
 	this.hud = new HUD(ctx, this.tile, this.life);
-	this.boundingBox = rectangle;
+	//this.boundingBox = new Rectangle(this.position.x - this.tile.width / 2, this.position.y - this.tile.height / 2, this.tile.width, this.tile.height);//x, y, width, height, scale
 };
 
 Ship.prototype = {
@@ -58,8 +61,16 @@ Ship.prototype = {
 				this.position = this.route.from;
 			}
 		}
-		this.tile.draw(this.position, this.rot);
-		if (this.route!=null)this.route.from = this.position;
+		this.tile.draw(this.position, this.rot, this.selected);
+		if (this.route != null) this.route.from = this.position;
+
+		//if (this.selected) {
+		//    this.ctx.beginPath();
+		//    this.ctx.rect(this.position.x - this.tile.sWidth / 2, this.position.y - this.tile.sHeight / 2, this.tile.sWidth, this.tile.sHeight);
+		//    this.ctx.lineWidth = 1;
+		//    this.ctx.strokeStyle = 'orange';
+		//    this.ctx.stroke();
+		//}
 	},
 
 	renderBattleMode: function (time) {
@@ -67,37 +78,6 @@ Ship.prototype = {
 	        this.battlePrepare(pos, rot, route, scale);
 	        this.inBattle = true;
 	    }
-
-        /*
-	    var x = 0,// = this.id === 0 ? 120 : this.ctx.canvas.width - 120,
-            rot = 0,// = this.id === 0 ? this.rot - Math.PI / 2 : this.rot + Math.PI / 2,
-            y = this.ctx.canvas.height / 2;
-        //координаты
-	    if (this.shift > 0) {
-	        y -= this.tile.sHeight / 2 + 100;
-	    }
-	    if (this.shift < 0) {
-	        y += this.tile.sHeight / 2 + 100;
-	    }
-
-	    if (this.parentShipId == null && this.id == 0) {
-	        x = 120;
-	    }
-	    else if (this.parentShipId == null && this.id > 0) {
-	        x = this.ctx.canvas.width - 120;
-	    }
-	    //поворот
-	    if (this.parentShipId == null && this.id == 0) {
-	        rot = this.rot - Math.PI / 2;
-	    }
-	    else if (this.parentShipId == null && this.id > 0) {
-	        rot = this.rot + Math.PI / 2;
-	    }
-
-	    this.position = new Point(x+this.origin.x, y+this.origin.y);
-	    this.tile.drawScale(this.position, rot, 1);
-	    if(this.subShip==0)this.hud.render(time, this.position, 1);
-        */
 	},
 	
 	battlePrepare: function (pos, rot, route, scale) {
@@ -118,6 +98,15 @@ Ship.prototype = {
 
 	VLength:function(vector){
 		return Math.sqrt(Math.pow(vector.x, 2) + Math.pow(vector.y,2));
+	},
+
+	inBound:function(coords){
+	    var sX = this.position.x - this.tile.sWidth * this.tile.scale / 2;
+	        eX = this.position.x + this.tile.sWidth * this.tile.scale / 2,
+            sY = this.position.y - this.tile.sHeight * this.tile.scale / 2,
+            sY = this.position.y + this.tile.sHeight * this.tile.scale / 2;
+        
+	    return (coord.x >= sX && coord.x <= eX && coord.y >= sY && coord.y <= eY);
 	},
 
 	AddCargo:function(id, quantity, cost){

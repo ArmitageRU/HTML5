@@ -21,13 +21,21 @@ function Tile(ctx, image, sx, sy, sw, sh, scale){
 };
 
 Tile.prototype = {
-	draw:function(pos, rot){
+	draw:function(pos, rot, selected){
 		this.ctx.save();
         this.ctx.translate(pos.x, pos.y);
-        //ctx.rotate(Math.atan2(p.y - y, p.x - x) + Math.PI / 2);
 		this.ctx.rotate(rot);
 		this.ctx.scale(this.scale, this.scale);
 		this.ctx.drawImage(this.img, this.sx, this.sy, this.sWidth, this.sHeight, -this.sWidth / 2, -this.sHeight / 2, this.sWidth, this.sHeight);
+
+		if (selected) {
+		    this.ctx.beginPath();
+		    this.ctx.rect(-this.sWidth / 2, -this.sHeight / 2, this.sWidth, this.sHeight);
+		    this.ctx.lineWidth = 1;
+		    this.ctx.strokeStyle = 'orange';
+		    this.ctx.stroke();
+		}
+
         this.ctx.restore();
 	
 	},
@@ -35,7 +43,6 @@ Tile.prototype = {
 	drawScale: function (pos, rot, scale) {
 	    this.ctx.save();
 	    this.ctx.translate(pos.x, pos.y);
-	    //ctx.rotate(Math.atan2(p.y - y, p.x - x) + Math.PI / 2);
 	    this.ctx.rotate(rot);
 	    this.ctx.scale(scale, scale);
 	    this.ctx.drawImage(this.img, this.sx, this.sy, this.sWidth, this.sHeight, -this.sWidth / 2, -this.sHeight / 2, this.sWidth, this.sHeight);

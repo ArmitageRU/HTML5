@@ -28,36 +28,33 @@ Battle.prototype = {
                     if (this.fires[j].time < 0) {
                         this.fires.splice(j, 1);
                     }
-                    else if (this.fires[j].ship.id === this.participants[i].source.id) {
+                    else if (this.fires[j].ship.id === this.participants[i].object.id) {
                         for (var k = 0, max_f = this.fires[j].ship.weapons.length; k < max_f; k += 1) {
                             if (this.fires[j].weapon_id === this.fires[j].ship.weapons[k].id) {
-                                this.fires[j].time = this.fires[j].ship.weapons[k].renderAction(this.fires[j].time, time, this.ctx, this.participants[i].source, this.participants[i].target);
+                                this.fires[j].time = this.fires[j].ship.weapons[k].renderAction(this.fires[j].time, time, this.ctx, this.participants[i].object/*, this.participants[i].target*/);
                             }
                         }
                     }
                 }
             }
-            //console.log(this.participants[i].source);
-            this.participants[i].render.call(this.participants[i].source, time);
-            if (this.participants[i].source.parentShipId == null) {
-                this.participants[i].source.hud.render(time, this.participants[i].source.position, 1);
+            //console.log(this.participants[i].object);
+            this.participants[i].render.call(this.participants[i].object, time);
+            if (this.participants[i].object.parentShipId == null) {
+                this.participants[i].object.hud.render(time, this.participants[i].object.position, 1);
             }
         }
-
         //phase begin
-
         //turn begin 
-
     },
 
     beginPhase: function () {
         if (!this.phaseActive) {
             for (var i = 0, max = this.participants.length; i < max; i += 1) {
-                if (this.participants[i].source.id == this.queue[0] || this.participants[i].source.parentShipId == this.queue[0]) {
-                    this.participants[i].source.phaseActive.call(this.participants[i].source);
+                if (this.participants[i].object.id == this.queue[0] || this.participants[i].object.parentShipId == this.queue[0]) {
+                    this.participants[i].object.phaseActive.call(this.participants[i].object);
                     this.phaseActive = true;
-                    if (this.participants[i].source.id == this.queue[0]) {
-                        this.currentShip = this.participants[i].source;
+                    if (this.participants[i].object.id == this.queue[0]) {
+                        this.currentShip = this.participants[i].object;
                     }
                 }
             }
@@ -85,7 +82,6 @@ Battle.prototype = {
                 break;
             }
         }
-
         return ship;
     }
 };
