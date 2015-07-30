@@ -208,5 +208,8 @@ Application.prototype = {
 	    this.enemyShip.phaseActive = function phaseActive() {
 	        ai.phaseActive.call(ai);
 	    };
+	    this.enemyShip.phaseEnd = function phaseEnd() {
+	        
+	    };
 	}
 };

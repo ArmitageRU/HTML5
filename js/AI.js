@@ -21,6 +21,6 @@ AI.prototype = {
             //}
             
         }
-        //StarSystem.battle.endPhase();
+        StarSystem.battle.endPhase();
     }
 };
