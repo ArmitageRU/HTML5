@@ -30,18 +30,18 @@ MouseController.prototype = {
 		this.pos.y = e.offsetY || e.layerY;
 	},
 	down:function(e){
-		this.pressed = true;
+	    this.pressed = true;
 		var curTime = new Date();
 		var timeDiff = curTime-this.prevTime;
-		if(timeDiff<500)
-			this.doublePressed = true;
+		if (timeDiff < 500) {
+		    this.doublePressed = true;
+		}
 		else this.doublePressed = false;
 		this.prevTime = curTime;
 		this.move(e);
 	},
 	up:function(e){
-		this.pressed = false;
+	    this.pressed = false;
 		this.move(e);
 	},
-	
 };

@@ -11,15 +11,12 @@ var Application = function(){
 	this.ship;
 	this._images = {};
 	this.battle;
-	
 	//system screen
 	this.currentMainContent;
 	this.currentMarketContent = null;
 	this.curentShipContent = null;
-
     //battle
 	this.battleActive = true;
-
     //tmp
 	this.FAKE;
 	this.enemyShip;
@@ -100,6 +97,9 @@ Application.prototype = {
 		this.ship.phaseActive = function phaseActive() {
 		    PrepareBattleMenu(this);
 		};
+		this.ship.phaseEnd = function phaseEnd() {
+		    HideBattleMenu();
+		};
 		this.ship.id = 0;
 		//system screen
 		for(var i = 0; i < 8; ++i){
@@ -112,7 +112,6 @@ Application.prototype = {
 		this.mouse = new MouseController(this.canvas);
 		this.enemyShip = this.getEnemy();
 		this.enemyShip.id = 1;
-
 		this.initBattle();
 	},
 	render: function(lastTime) {
@@ -144,13 +143,12 @@ Application.prototype = {
             this.route.RenderPath(this.ctx, elapsedTime);
             this.ship.render(elapsedTime);
             this.mouse.pressed = false;
-
             FillTabs(this.currentMainContent, this.currentMarketContent);
         }
         else if (this.battleActive) {
             this.battle.beginPhase();
             PrepareForBattle(true, this.ship);
-            this.battle.render(elapsedTime);
+            this.battle.render(elapsedTime, this.mouse);
         }
 		/*GRID*/
 		/*
@@ -185,18 +183,17 @@ Application.prototype = {
 	selectPlanet: function(orbit){
 		orbit.planet.selected = orbit.planet.selected?false:true;
 		if(this.mouse.doublePressed)orbit.planet.setTo();
-		
 		for(var i = 0;i<this.Orbits.length;i++){
 			if(this.Orbits[i]!=orbit)this.Orbits[i].planet.selected = false;
 			if(this.mouse.doublePressed && this.Orbits[i]!=orbit)this.Orbits[i].planet.to = false;
 		}
-
 		return orbit.planet.selected;
 	},
 
 	getEnemy: function () {
 	    var random_ship = ~~(getRandomArbitrary(0, this.FAKE.ships.length));
 	    var enemy_ship = new Ship(this.ctx, this._images['ships'], new Rectangle(this.FAKE.ships[random_ship].x, this.FAKE.ships[random_ship].y, this.FAKE.ships[random_ship].width, this.FAKE.ships[random_ship].height, 0.3));
+	    enemy_ship.weapons = this.FAKE.GenerateFakeWeapons(this.ctx, this._images['rocket']);
 	    return enemy_ship;
 	},
 

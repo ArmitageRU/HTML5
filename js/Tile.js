@@ -11,13 +11,6 @@ function Tile(ctx, image, sx, sy, sw, sh, scale){
 	this.scale = scale || 1;
 	//console.log(ctx, image, sx, sy, this.sWidth, this.sHeight, scale);
     this.test_id = Math.random();
-	if ((this.sWidth == 0) && (this.sHeight == 0)) {
-	    console.log(this.img);
-	    console.log(sx, sy, sw, sh, image.width, image.height, this.img.height, this.img.width);
-	    console.log("I [" + this.test_id + "]" + this.sWidth, this.sHeight);
-	}
-
-	
 };
 
 Tile.prototype = {

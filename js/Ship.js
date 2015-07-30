@@ -2,11 +2,11 @@
 function Ship(ctx, image, rectangle){
     this.id;
     this.position;
-    this.parentShipId = null;
+    this.parentShipId = null;//если вспомогательный объект типа ракет
     //this.shift = 0;
     this.target = null;//пока только корабль, возможно убрать или наоборот исользовать таргет из роута
 
-    this.selected = true;
+    this.selected = false;
 
     //this.origin = new Point(0, 0);
 
@@ -16,23 +16,23 @@ function Ship(ctx, image, rectangle){
     this.prevRoute;
     this.prevScale;
 
-    //значения инициализации для битвы
-    this.battlePos;
-    this.battleRot;
-    this.battleRoute;
-
     this.inBattle = false;//индикатор перехода в режим боя
+
     //функция инициализации
     //для нашего корабля это будет показ интерфейса управления
     this.phaseActive;
+    this.phaseEnd;
     
+    this.prevMouseState = false;
+    this.canShot = true;
 
     this.ctx = ctx;
     this.tile = new Tile(ctx, image, rectangle.x, rectangle.y, rectangle.width, rectangle.height, rectangle.scale);//new Tile(ctx, image, 28, 804, 199, 163, 0.3);//надо менять
 	this.route;
 	this.rot = -Math.PI;
 	this.speed = 90; //pixel per second e.g.
-	this.energy = 1900;
+	this.energyСapacity = 1900;//это чтобы знать до куда восстанавливать
+	this.energy = 1900;//это значение изменяется во время боя
 	this.recharge = 130;//скорость зарядки батареи
 	this.weapons = [];
 
@@ -63,7 +63,6 @@ Ship.prototype = {
 		}
 		this.tile.draw(this.position, this.rot, this.selected);
 		if (this.route != null) this.route.from = this.position;
-
 		//if (this.selected) {
 		//    this.ctx.beginPath();
 		//    this.ctx.rect(this.position.x - this.tile.sWidth / 2, this.position.y - this.tile.sHeight / 2, this.tile.sWidth, this.tile.sHeight);
@@ -92,6 +91,10 @@ Ship.prototype = {
 	    this.tile.scale = scale;
 	},
 
+	battleRestore: function() {
+	    this.energy = this.energyСapacity;
+	},
+
 	battleDebriefing: function() {
 	    this.position = this.prevPos;
 	},
@@ -100,20 +103,34 @@ Ship.prototype = {
 		return Math.sqrt(Math.pow(vector.x, 2) + Math.pow(vector.y,2));
 	},
 
-	inBound:function(coords){
+	inBound:function(mouse){
 	    var sX = this.position.x - this.tile.sWidth * this.tile.scale / 2,
 	        eX = this.position.x + this.tile.sWidth * this.tile.scale / 2,
             sY = this.position.y - this.tile.sHeight * this.tile.scale / 2,
-            sY = this.position.y + this.tile.sHeight * this.tile.scale / 2;
+            eY = this.position.y + this.tile.sHeight * this.tile.scale / 2;
 
-	        if (this.rot == Math.abs(Math.PI / 2)) {
+	        if ((Math.PI / 2) == Math.abs(this.rot)) {
 	            sX = this.position.x - this.tile.sHeight * this.tile.scale / 2;
-	            eX = this.position.x + this.tile.sHeigh * this.tile.scale / 2;
+	            eX = this.position.x + this.tile.sHeight * this.tile.scale / 2;
 	            sY = this.position.y - this.tile.sWidth * this.tile.scale / 2;
-	            sY = this.position.y + this.tile.sWidth * this.tile.scale / 2;
+	            eY = this.position.y + this.tile.sWidth * this.tile.scale / 2;
 	        }
-        
-	    return (coord.x >= sX && coord.x <= eX && coord.y >= sY && coord.y <= eY);
+	        //this.ctx.beginPath();
+	        //this.ctx.rect(sX, sY, eX-sX, eY-sY);
+	        //this.ctx.lineWidth = 5;
+	        //this.ctx.strokeStyle = 'white';
+	        //this.ctx.stroke();
+	        if (mouse.pos.x >= sX && mouse.pos.x <= eX && mouse.pos.y >= sY && mouse.pos.y <= eY) {
+	            if (mouse.pressed && (this.prevMouseState == false)) {
+	                this.selected = !this.selected;
+	                this.prevMouseState = mouse.pressed;
+	            }
+	            if (!mouse.pressed && (this.prevMouseState==true)) {
+	                this.prevMouseState = mouse.pressed;
+	            }
+	        }
+
+	        return this.selected;
 	},
 
 	AddCargo:function(id, quantity, cost){

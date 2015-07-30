@@ -258,6 +258,10 @@ function PrepareBattleMenu(ship/*,w_id*/) {
     CheckWeapons(ship, 0/*w_id*/);
 }
 
+function HideBattleMenu() {
+    $("#battle").addClass("dn");
+}
+
 //задизейблить невозможное оружие и/или кнопку стрельбы
 function CheckWeapons(ship, w_id) {
     var disable_fire = true,

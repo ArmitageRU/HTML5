@@ -5,9 +5,6 @@ function Weapon(energy, title, cost, size, type, context, image) {
     }
     this.ctx = context;
     this.tile = new Tile(this.ctx, image, null, null, 49, 19, 1);
-    if (image != null) {
-        console.log("weapon", image.width, image.height);
-    }
     this.energy = energy;
     this.title = title;
     this.primeCost = cost;//себестоимость, возможно не понадобится
@@ -21,10 +18,10 @@ function Weapon(energy, title, cost, size, type, context, image) {
 };
 
 Weapon.prototype = {
-    renderAction: function (full_time, time, ctx, from/*, target*/) {
+    renderAction: function (full_time, time, ctx, from, target) {
         var ret_time = full_time + time,
-            thickness = ~~(ret_time / (this.beamLasting / 10)),
-            target = from.target;
+            thickness = ~~(ret_time / (this.beamLasting / 10));
+            //target = from.target;
         switch (this.type) {
             case 'beam':
                 //full_time -= time;
@@ -69,7 +66,7 @@ Weapon.prototype = {
                     };
                     StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship_up, /*target,*/ rocket_ship_up.render);
                     var rocket_ship_down = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
-                    rocket_ship_down.id = -1
+                    rocket_ship_down.id = -2
                     rocket_ship_down.parentShipId = from.id;
                     rocket_ship_down.speed = 1500;
                     rocket_ship_down.battlePrepare(new Point(from.position.x + 100, from.position.y + 100), Math.PI, null, 1);
