@@ -1,41 +1,36 @@
 ﻿ "use strict";
-function Ship(ctx, image, rectangle){
+//Корабль и все что приравнено к нему, сейчас это ракеты (дроны возможно потом)
+ function Ship(ctx, image, rectangle) {
     this.id;
     this.position;
     this.parentShipId = null;//если вспомогательный объект типа ракет
-    //this.shift = 0;
     this.target = null;//пока только корабль, возможно убрать или наоборот исользовать таргет из роута
-
     this.selected = false;
-
+    this.prevMouseState = false;//нужно для выделения, не хочется держать её здесь, но пока не вижу другого выхода
     //this.origin = new Point(0, 0);
-
     //храним для возвращения из битвы
     this.prevPos;
     this.prevRot;
     this.prevRoute;
     this.prevScale;
-
     this.inBattle = false;//индикатор перехода в режим боя
-
     //функция инициализации
     //для нашего корабля это будет показ интерфейса управления
     this.phaseActive;
+    //а это наоброт когда фаза закончена
     this.phaseEnd;
-    
-    this.prevMouseState = false;
-    this.canShot = true;
+    this.arrive;//когда добрался до точки
 
     this.ctx = ctx;
     this.tile = new Tile(ctx, image, rectangle.x, rectangle.y, rectangle.width, rectangle.height, rectangle.scale);//new Tile(ctx, image, 28, 804, 199, 163, 0.3);//надо менять
 	this.route;
-	this.rot = -Math.PI;
+
+	this.rot = -Math.PI;//начальный поворот
 	this.speed = 90; //pixel per second e.g.
 	this.energyСapacity = 1900;//это чтобы знать до куда восстанавливать
 	this.energy = 1900;//это значение изменяется во время боя
 	this.recharge = 130;//скорость зарядки батареи
 	this.weapons = [];
-
 	this.money=20000;
 	this.cargoCapacity=10;
 	this.cargo = [];
@@ -58,26 +53,22 @@ Ship.prototype = {
 			var new_pos = new Point(path*dir_vector.x/dir_length, path*dir_vector.y/dir_length);
 			this.position = new Point(new_pos.x + this.position.x, new_pos.y + this.position.y);
 			if(this.VLength(new_pos) > this.VLength(new Point(this.route.to.x-this.route.from.x, this.route.to.y-this.route.from.y))){
-				this.position = this.route.from;
+			    this.position = this.route.from;
+			    if (this.arrive !== "undefined") {
+			        this.arrive.call(this);
+			    }
 			}
 		}
 		this.tile.draw(this.position, this.rot, this.selected);
 		if (this.route != null) this.route.from = this.position;
-		//if (this.selected) {
-		//    this.ctx.beginPath();
-		//    this.ctx.rect(this.position.x - this.tile.sWidth / 2, this.position.y - this.tile.sHeight / 2, this.tile.sWidth, this.tile.sHeight);
-		//    this.ctx.lineWidth = 1;
-		//    this.ctx.strokeStyle = 'orange';
-		//    this.ctx.stroke();
-		//}
 	},
 
-	renderBattleMode: function (time) {
-	    if (!this.inBattle) {
-	        this.battlePrepare(pos, rot, route, scale);
-	        this.inBattle = true;
-	    }
-	},
+	//renderBattleMode: function (time) {
+	//    if (!this.inBattle) {
+	//        this.battlePrepare(pos, rot, route, scale);
+	//        this.inBattle = true;
+	//    }
+	//},
 	
 	battlePrepare: function (pos, rot, route, scale) {
 	    this.prevPos = this.position;
@@ -97,6 +88,9 @@ Ship.prototype = {
 
 	battleDebriefing: function() {
 	    this.position = this.prevPos;
+	    this.rot = this.prevRot;
+	    this.route = this.prevRoute;
+	    this.tile.scale = this.prevScale;
 	},
 
 	VLength:function(vector){
@@ -194,5 +188,10 @@ Ship.prototype = {
 			}
 		}
 		return profit;
-	}	
+	},
+
+	GetDamage: function (weapon) {
+	    var loss = ~~(Math.random() * (30 - 10) + 10);
+	    this.life.current -= loss;
+	}
 };

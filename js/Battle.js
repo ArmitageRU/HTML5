@@ -6,27 +6,17 @@ function Battle(context) {
     this.phase = 0;
     this.ctx = context;
     this.queue = [0, 1];
-    this.phaseActive = false;
     this.currentShip = null;
+    this.wantEnd = null;
 };
 
 Battle.prototype = {
-    //addParticipant: function (render, object, init) {
-    //    var participant = {
-    //        render: render,
-    //        param: param,
-    //        object:object
-    //    }
-    //    this.participants[this.participants.length] = participant;
-    //}, 
 
     render: function (time, mouse) {
         for (var i = 0, max_p = this.participants.length; i < max_p; i += 1) {
             if (this.fires.length > 0) {
                 for (var j = 0; j < this.fires.length; j += 1) {
                     if (this.fires[j].time < 0) {
-                        //this.fires[j].ship.canShot = true;
-                        //this.currentShip.canShot = true;
                         this.fires.splice(j, 1);
                     }
                     else if (this.fires[j].ship.id === this.participants[i].object.id) {
@@ -39,6 +29,11 @@ Battle.prototype = {
                     }
                 }
             }
+            else if (this.wantEnd) {
+                console.log("WE", this.currentShip.id, this.fires.length);
+                this.wantEnd = null;
+                this.endPhase();
+            }
             //console.log(this.participants[i].object);
             this.participants[i].render.call(this.participants[i].object, time);
             if (this.participants[i].object.inBound(mouse)) {
@@ -49,8 +44,6 @@ Battle.prototype = {
                 this.participants[i].object.hud.render(time, this.participants[i].object.position, 1);
             }
         }
-        //phase begin
-        //turn begin 
     },
 
     refreshSelectedShip: function(s_id) {
@@ -65,7 +58,7 @@ Battle.prototype = {
     },
 
     beginPhase: function () {
-        if (!this.phaseActive) {
+            console.log("next is ", this.queue[0]);
             for (var i = 0, max = this.participants.length; i < max; i += 1) {
                 if (this.participants[i].object.id == this.queue[0] || this.participants[i].object.parentShipId == this.queue[0]) {
                     if (this.participants[i].object.id == this.queue[0]) {
@@ -73,20 +66,23 @@ Battle.prototype = {
                     }
                     this.participants[i].object.battleRestore();
                     this.participants[i].object.phaseActive.call(this.participants[i].object);
-                    this.phaseActive = true;
+                    
                 }
                 else {
                     this.refreshSelectedShip(this.participants[i].object.id);
                 }
             }
-        }
     },
 
     endPhase: function () {
         this.queue.splice(0, 1);
         this.queue[this.queue.length] = this.currentShip.id;
-        this.phaseActive = false;
+        console.log("end phase");
         this.currentShip.phaseEnd.call(this.currentShip);
+        //следующая фаза может и не начаться
+        if (true) {
+            this.beginPhase();
+        }
     },
 
     fire: function (w_id) {
@@ -113,6 +109,14 @@ Battle.prototype = {
             }
         }
         return ship;
+    },
+
+    removeParticipant: function (id) {
+        for (var i = 0, max = this.participants.length; i < max; i += 1) {
+            if (this.participants[i].object.id == id);
+            this.participants.splice(i, 1);
+            break;
+        }
     }
 };
 

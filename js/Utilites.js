@@ -312,5 +312,5 @@ function Fire() {
 }
 
 function EndPhase() {
-    StarSystem.battle.endPhase();
+    StarSystem.battle.wantEnd = true;//.endPhase();
 }

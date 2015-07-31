@@ -27,6 +27,7 @@ Weapon.prototype = {
                 //full_time -= time;
                 if (ret_time > this.beamLasting) {
                     ret_time = -1;
+                    target.GetDamage(this);
                     break;
                 }
                 ctx.beginPath();
@@ -40,6 +41,7 @@ Weapon.prototype = {
             case 'plasma':
                 if (ret_time > this.plasmaLasting) {
                     ret_time = -1;
+                    target.GetDamage(this);
                     break;
                 }
                 var curr_x = (target.position.x - from.position.x) * ret_time / this.plasmaLasting;
@@ -60,19 +62,32 @@ Weapon.prototype = {
                     rocket_ship_up.parentShipId = from.id;
                     rocket_ship_up.speed = 1500;
                     rocket_ship_up.battlePrepare(new Point(from.position.x + 100, from.position.y - 100), Math.PI, null, 1);
+                    rocket_ship_up.weapons[rocket_ship_up.weapons.length] = new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null);
+                    rocket_ship_up.target = target;
                     rocket_ship_up.phaseActive = function phaseActive() {
                         rocket_ship_up.route = new Route(rocket_ship_up.position);
                         rocket_ship_up.route.to = target.position;
                     };
+                    rocket_ship_up.arrive = function arrive() {
+                        this.target.GetDamage(this.weapons[0]);
+                        StarSystem.battle.removeParticipant(this.id)
+                    };
+
                     StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship_up, /*target,*/ rocket_ship_up.render);
                     var rocket_ship_down = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
                     rocket_ship_down.id = -2
                     rocket_ship_down.parentShipId = from.id;
                     rocket_ship_down.speed = 1500;
                     rocket_ship_down.battlePrepare(new Point(from.position.x + 100, from.position.y + 100), Math.PI, null, 1);
+                    rocket_ship_down.weapons[rocket_ship_up.weapons.length] = new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null);
+                    rocket_ship_down.target = target;
                     rocket_ship_down.phaseActive = function phaseActive() {
                         rocket_ship_down.route = new Route(rocket_ship_down.position);
                         rocket_ship_down.route.to = target.position;
+                    };
+                    rocket_ship_down.arrive = function arrive() {
+                        this.target.GetDamage(this.weapons[0]);
+                        StarSystem.battle.removeParticipant(this.id)
                     };
                     StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship_down, /*target,*/ rocket_ship_down.render);
                     ret_time = -1;

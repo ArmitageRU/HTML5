@@ -16,7 +16,8 @@ var Application = function(){
 	this.currentMarketContent = null;
 	this.curentShipContent = null;
     //battle
-	this.battleActive = true;
+    this.battleActive = true;
+    this.battleInProcess = false;//для единоразового приготовления, скрыть интерфейс например
     //tmp
 	this.FAKE;
 	this.enemyShip;
@@ -146,8 +147,11 @@ Application.prototype = {
             FillTabs(this.currentMainContent, this.currentMarketContent);
         }
         else if (this.battleActive) {
-            this.battle.beginPhase();
-            PrepareForBattle(true, this.ship);
+            if (!this.battleInProcess) {
+                PrepareForBattle(true, this.ship);
+                this.battle.beginPhase();
+                this.battleInProcess = true;
+            }
             this.battle.render(elapsedTime, this.mouse);
         }
 		/*GRID*/
@@ -207,9 +211,10 @@ Application.prototype = {
 	    var ai = new AI(this.enemyShip, this.battle.participants);
 	    this.enemyShip.phaseActive = function phaseActive() {
 	        ai.phaseActive.call(ai);
+	        StarSystem.battle.wantEnd = true;
 	    };
 	    this.enemyShip.phaseEnd = function phaseEnd() {
-	        
+	        console.log("enemy ship end phase");
 	    };
 	}
 };
