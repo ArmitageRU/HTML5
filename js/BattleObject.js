@@ -4,6 +4,7 @@ function BattleObject(/*source, target,*/object, render) {
     //this.target = target;
     this.object = object;
     this.render = render;
+    //this.live = true;
 };
 
 BattleObject.prototype = {

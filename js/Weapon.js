@@ -61,6 +61,7 @@ Weapon.prototype = {
                     rocket_ship_up.id = -1
                     rocket_ship_up.parentShipId = from.id;
                     rocket_ship_up.speed = 1500;
+                    rocket_ship_up.life.current = 20;
                     rocket_ship_up.battlePrepare(new Point(from.position.x + 100, from.position.y - 100), Math.PI, null, 1);
                     rocket_ship_up.weapons[rocket_ship_up.weapons.length] = new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null);
                     rocket_ship_up.target = target;
@@ -70,7 +71,8 @@ Weapon.prototype = {
                     };
                     rocket_ship_up.arrive = function arrive() {
                         this.target.GetDamage(this.weapons[0]);
-                        StarSystem.battle.removeParticipant(this.id)
+                        this.life.current = 0;
+                        //StarSystem.battle.removeParticipant(this.id)
                     };
 
                     StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship_up, /*target,*/ rocket_ship_up.render);
@@ -78,6 +80,7 @@ Weapon.prototype = {
                     rocket_ship_down.id = -2
                     rocket_ship_down.parentShipId = from.id;
                     rocket_ship_down.speed = 1500;
+                    rocket_ship_down.life.current = 20;
                     rocket_ship_down.battlePrepare(new Point(from.position.x + 100, from.position.y + 100), Math.PI, null, 1);
                     rocket_ship_down.weapons[rocket_ship_up.weapons.length] = new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null);
                     rocket_ship_down.target = target;
@@ -87,7 +90,8 @@ Weapon.prototype = {
                     };
                     rocket_ship_down.arrive = function arrive() {
                         this.target.GetDamage(this.weapons[0]);
-                        StarSystem.battle.removeParticipant(this.id)
+                        this.life.current = 0;
+                        //StarSystem.battle.removeParticipant(this.id)
                     };
                     StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship_down, /*target,*/ rocket_ship_down.render);
                     ret_time = -1;

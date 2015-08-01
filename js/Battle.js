@@ -8,12 +8,24 @@ function Battle(context) {
     this.queue = [0, 1];
     this.currentShip = null;
     this.wantEnd = null;
+
+    this.winner = false;
+    this.defeated = false;
+    this.endTextPosY = 0;
 };
 
 Battle.prototype = {
 
     render: function (time, mouse) {
-        for (var i = 0, max_p = this.participants.length; i < max_p; i += 1) {
+        for (var i = 0; i < this.participants.length; i += 1) {
+            if (this.participants[i].object.life.current<=0) {
+                this.participants.splice(i, 1);
+                if (this.participants.length == 1) {
+                    this.battleEnd();
+                }
+                //console.log("splice", i);
+                continue;
+            }
             if (this.fires.length > 0) {
                 for (var j = 0; j < this.fires.length; j += 1) {
                     if (this.fires[j].time < 0) {
@@ -43,6 +55,35 @@ Battle.prototype = {
             if (this.participants[i].object.parentShipId == null) {
                 this.participants[i].object.hud.render(time, this.participants[i].object.position, 1);
             }
+        }
+
+        if (this.winner) {
+            this.endTextPosY += time*0.5;
+            if (this.endTextPosY >= this.ctx.canvas.height / 2) this.endTextPosY = this.ctx.canvas.height / 2;
+            this.ctx.beginPath();
+            this.ctx.rect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+            this.ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            this.ctx.fill();
+            this.ctx.beginPath();
+            this.ctx.lineWidth = 7;
+            this.ctx.font = '45pt Helvetica';
+            var text_length = this.ctx.measureText("ПОБЕДА!").width;
+            this.ctx.fillStyle = 'red';
+            this.ctx.fillText("ПОБЕДА!", (this.ctx.canvas.width / 2) - text_length / 2, this.endTextPosY);
+        }
+        if (this.defeated) {
+            this.endTextPosY -= time * 0.5;
+            if (this.endTextPosY <= this.ctx.canvas.height / 2) this.endTextPosY = this.ctx.canvas.height / 2;
+            this.ctx.beginPath();
+            this.ctx.rect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+            this.ctx.fillStyle = 'rgba(0,0,0,0.7)';
+            this.ctx.fill();
+            this.ctx.beginPath();
+            this.ctx.lineWidth = 7;
+            this.ctx.font = '45pt Helvetica';
+            var text_length = this.ctx.measureText("ПОРАЖЕНИЕ!").width;
+            this.ctx.fillStyle = 'blue';
+            this.ctx.fillText("ПОРАЖЕНИЕ!", (this.ctx.canvas.width / 2) - text_length / 2, this.endTextPosY);
         }
     },
 
@@ -111,12 +152,23 @@ Battle.prototype = {
         return ship;
     },
 
-    removeParticipant: function (id) {
-        for (var i = 0, max = this.participants.length; i < max; i += 1) {
-            if (this.participants[i].object.id == id);
-            this.participants.splice(i, 1);
-            break;
+    battleEnd: function () {
+        if (this.participants[0].object.id == 0) {
+            this.winner = true;
+        }
+        else {
+            this.defeated = true;
+            this.endTextPosY = this.ctx.canvas.height;
         }
     }
+    //removeParticipant: function (id) {
+    //    for (var i = 0, max = this.participants.length; i < max; i += 1) {
+    //        if (this.participants[i].object.id == id) {
+    //            //this.participants.splice(i, 1);
+    //            this.participants[i].live = false;
+    //            break;
+    //        }
+    //    }
+    //}
 };
 

@@ -267,6 +267,7 @@ function CheckWeapons(ship, w_id) {
     var disable_fire = true,
         weapons_id = w_id;
     $("#battle_energy").html(ship.energy);
+    $("#battle_fire").prop('disabled', false);
     for (var i = 0, len = ship.weapons.length; i < len; i += 1) {
         if (ship.weapons[i].energy > ship.energy) {
             $('#battle_weapons option[value=' + ship.weapons[i].id + ']').prop('disabled', true);
