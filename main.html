@@ -178,16 +178,67 @@
 				<span id="marketplace_ship">Деньги <span id="ship_money">0</span>d | Груз <span id="ship_cargo_current">~</span>/<span id="ship_cargo_max">~</span></span>
 			</div>
 		</div>
-        <div id="battle" class="dn">
-            Энергия: <span id="battle_energy">1500</span>
-            <hr/>
-            <select id="battle_weapons">
-                <option>Got you!</option>
-            </select>
-            <button id="battle_fire" onclick="Fire();">Использовать</button><br />
-            <button disabled="disabled">Побег</button>
-            <button onclick="EndPhase();">Закончить</button>
-        </div>	
+	    <div id="battle" class="dn">
+	        Энергия: <span id="battle_energy">1500</span>
+	        <hr/>
+	        <select id="battle_weapons">
+	            <option>Got you!</option>
+	        </select>
+	        <button id="battle_fire" onclick="Fire();">Использовать</button><br/>
+	        <button disabled="disabled">Побег</button>
+	        <button onclick="EndPhase();">Закончить</button>
+	    </div>
+	    <div id="outfit" class="dn">
+	        <div id="outfit_veil" class="dn"></div>
+	        <div id="outfit_pack">
+                <img src="img/small_space_ship.jpg"/>
+	            <span>Корабль</span>
+	            <select>
+	                <option disabled="disabled">Текущий</option>
+	            </select>
+	            <span>Оружие</span>
+	            <select>
+	                <option></option>
+	                <option></option>
+	                <option></option>
+	            </select>
+	            <span></span>
+                <select>
+	                <option></option>
+	                <option></option>
+                    <option></option>
+	            </select>
+	        </div>
+	        <div id="outfit_weapon">
+	            <select>
+	                <option></option>
+	                <option></option>
+	                <option></option>
+	                <option></option>
+	            </select>
+	            <select>
+	                <option></option>
+	                <option></option>
+	                <option></option>
+	                <option></option>
+	            </select>
+	            <select>
+	                <option></option>
+	                <option></option>
+	                <option></option>
+	                <option></option>
+	            </select>
+                <select>
+                    <option></option>
+                    <option></option>
+                    <option></option>
+                    <option></option>
+                </select>
+	        </div>
+	        <div id="outfit_specification">
+	            
+	        </div>
+	    </div>	
 	</div>
 </body>
 </html>
