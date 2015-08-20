@@ -75,25 +75,28 @@
     height:100%;
     width:400px;
     border-right: 1px solid black;
-    display: inline-block;
-    position: relative;
+    float:left;
+	/*display: inline-block;
+    position: relative;*/
 }
 
 #outfit_weapon{
     height:100%;
     width:400px;
     border-right: 1px solid black;
-    display: inline-block;
+    /*display: inline-block;*/
+	float:left;
     overflow: scroll;
-    position: relative;
+    /*position: relative;*/
 }
 
 #outfit_specification{
-    height:100%;
+    width:390px;
     display: inline-block;
     overflow: scroll;
-    max-height: 790px;
-    position: relative;
+    height: 790px;
+	float:right;
+    /*position: relative;*/
 }
 
 #market_goods table, td{
