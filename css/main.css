@@ -53,6 +53,11 @@
     background-color: rgba(15, 15, 15, 0.5);
 }
 
+.cell-box {
+    border:1px solid black;
+    paddng:3px;
+}
+
 #marketplace{
     
 }
@@ -76,22 +81,24 @@
     width:400px;
     border-right: 1px solid black;
     float:left;
-	/*display: inline-block;
-    position: relative;*/
+
+    padding: 5px 0 0 5px;
+	
 }
 
 #outfit_weapon{
     height:100%;
     width:400px;
     border-right: 1px solid black;
-    /*display: inline-block;*/
+    
 	float:left;
     overflow: scroll;
-    /*position: relative;*/
+    
+    padding: 5px 0 0 5px;
 }
 
 #outfit_specification{
-    width:390px;
+    width:370px;
     display: inline-block;
     overflow: scroll;
     height: 790px;
