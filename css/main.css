@@ -73,7 +73,7 @@
 }
 
 #outfit{
-    
+    z-index:2;
 }
 .outfit_buttons {
     margin: 10px 0 0 10px;

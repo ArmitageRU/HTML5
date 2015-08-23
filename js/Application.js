@@ -21,6 +21,10 @@ var Application = function(){
     //tmp
 	this.FAKE;
 	this.enemyShip;
+	this.openedWindows = {
+		prebattle:false
+	};
+	
 };
 
 Application.prototype = {
@@ -147,10 +151,15 @@ Application.prototype = {
             FillTabs(this.currentMainContent, this.currentMarketContent);
         }
         else if (this.battleActive) {
-            if (!this.battleInProcess) {
-                PrepareForBattle(true, this.ship);
+            
+			if(!this.openedWindows.prebattle){
+				PrepareForBattle(true, this.ship);
+				this.openedWindows.prebattle = true;
+			}
+			if (!this.battleInProcess) {
+                //PrepareForBattle(true, this.ship);
                 this.battle.beginPhase();
-                this.battleInProcess = true;
+                //this.battleInProcess = true;
             }
             this.battle.render(elapsedTime, this.mouse);
         }

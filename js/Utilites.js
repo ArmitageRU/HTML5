@@ -228,7 +228,8 @@ function ConfirmPurchase(operation){
 function PrepareForBattle(hide, ship) {
     if (!inbattle) {
         HideStandartHTMLUI(hide);
-        //PrepareBattleMenu(ship, 0);
+        PreBattle(!hide);
+		//PrepareBattleMenu(ship, 0);
         //CheckWeapons(ship);
         inbattle = true;
         currentShip = ship;
@@ -243,6 +244,23 @@ function HideStandartHTMLUI(hide) {
     else {
         $("#main_ui").removeClass("dn");
     }
+}
+
+//Подготовительное меню
+function PreBattle(hide) {
+	if (hide) {
+        $("#outfit").addClass("dn");
+		$("#outfit_veil").addClass("dn");
+    }
+    else {
+        $("#outfit").removeClass("dn");
+		$("#outfit_veil").removeClass("dn");
+    }
+}
+
+//После нажатия кнопки "Готово"
+function PreBattleReady() {
+	StarSystem.battleInProcess = true;
 }
 
 // Ship.js
@@ -297,19 +315,6 @@ function Fire() {
     var w_id = $('#battle_weapons option:selected').val();
     var c_ship = StarSystem.battle.fire(w_id);
     if(c_ship !=null)CheckWeapons(c_ship, w_id);
-    //for (var i = 0, len = currentShip.weapons.length; i < len; i += 1) {
-    //    if (w_id == currentShip.weapons[i].id) {
-    //        currentShip.energy -= currentShip.weapons[i].energy;
-    //        //PrepareBattleMenu(currentShip, w_id);
-    //        CheckWeapons(currentShip, w_id);
-    //        StarSystem.battle.fires[StarSystem.battle.fires.length] = {
-    //            ship: currentShip,
-    //            weapon_id: currentShip.weapons[i].id,
-    //            time:0
-    //        };
-    //        break;
-    //    }
-    //}
 }
 
 function EndPhase() {
