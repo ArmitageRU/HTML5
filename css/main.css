@@ -75,6 +75,9 @@
 #outfit{
     
 }
+.outfit_buttons {
+    margin: 10px 0 0 10px;
+}
 
 #outfit_pack{
     height:100%;
@@ -87,7 +90,7 @@
 }
 
 #outfit_weapon{
-    height:100%;
+    height:795px;
     width:400px;
     border-right: 1px solid black;
     
@@ -98,10 +101,10 @@
 }
 
 #outfit_specification{
-    width:370px;
+    width:380px;
     display: inline-block;
     overflow: scroll;
-    height: 790px;
+    height: 795px;
 	float:right;
     /*position: relative;*/
 }
