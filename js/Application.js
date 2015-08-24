@@ -38,9 +38,9 @@ Application.prototype = {
 	    this.FAKE = new FAKES();
 
 	    this.canvas = document.createElement('canvas');
-        document.getElementById("application").appendChild(this.canvas);
+	    document.getElementById("canvas_wrapper").appendChild(this.canvas);
         if (!this.canvas.getContext('2d')) {
-			document.getElementById("application").innerHTML = '<center>No support 2d context.</center>';
+            document.getElementById("canvas_wrapper").innerHTML = '<center>No support 2d context.</center>';
             return false;
         }
 		this.canvas.width  = 1440;
@@ -156,12 +156,13 @@ Application.prototype = {
 				PrepareForBattle(true, this.ship);
 				this.openedWindows.prebattle = true;
 			}
-			if (!this.battleInProcess) {
+			if (this.battleInProcess) {
                 //PrepareForBattle(true, this.ship);
                 this.battle.beginPhase();
-                //this.battleInProcess = true;
+			    //this.battleInProcess = true;
+                this.battle.render(elapsedTime, this.mouse);
             }
-            this.battle.render(elapsedTime, this.mouse);
+            
         }
 		/*GRID*/
 		/*

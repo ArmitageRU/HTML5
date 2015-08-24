@@ -1,21 +1,22 @@
 ﻿"use strict";
 function FAKES() {
     this.ships = this.GetFakeShips();
+    this.weapons;
 };
 
 FAKES.prototype = {
     GenerateFakeWeapons: function (context, rocket_image) {
         var weapons = [];
-        var w = new Weapon(200, 'Лазер', 500, 1, 'beam', context, null);
+        var w = new Weapon(200, 'Лазер', 500, 1, 10, 'beam', context, null);
         w.id = 101;
         weapons[0] = w;
-        w = new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', context, rocket_image);
+        w = new Weapon(1000, 'Ракеты', 1500, 2, 40, 'rocket', context, rocket_image);
         w.id = 102;
         weapons[1] = w;
-        w = new Weapon(500, 'Плазма', 650, 3, 'plasma', context, null);
+        w = new Weapon(500, 'Плазма', 650, 1, 20, 'plasma', context, null);
         w.id = 103;
         weapons[2] = w;
-
+        this.weapons = weapons;
         return weapons;
     },
 

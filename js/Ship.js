@@ -34,6 +34,8 @@
 	this.money=20000;
 	this.cargoCapacity=10;
 	this.cargo = [];
+	this.slots = [1, 2, 1];//оружейные (и не только) слоты
+	this.mass = 95; //масса корабля
 
 	this.life = {
 	    max:100,
@@ -163,7 +165,7 @@ Ship.prototype = {
 	InCargo:function(){
 		var cargo_amount =0;
 		for(var i = 0;i<this.cargo.length;i++){
-			cargo_amount+=this.cargo[i].quantity
+		    cargo_amount += this.cargo[i].quantity;
 		}
 		return cargo_amount;
 	},
@@ -193,5 +195,36 @@ Ship.prototype = {
 	GetDamage: function (weapon) {
 	    var loss = ~~(Math.random() * (30 - 10) + 10);
 	    this.life.current -= loss;
+	},
+
+	GetDodge: function (weapons) {
+	    var reference_mass = 70;
+	    var total_mass = this.mass,
+            weapon_array = weapons,
+            ret_val;
+	    if (weapons == null) {
+	        weapon_array = this.weapons;
+	    }
+
+	    for (var i = 0, max = weapon_array.length; i < max; i += 1) {
+	        total_mass += weapon_array[i].mass;
+	    }
+	    ret_val = total_mass / reference_mass;
+	    return ret_val;
+	},
+
+	GetRecharge: function (weapons) {
+	    var weapon_array = weapons,
+            weapon_energy = 0,
+            ret_val = 0;
+	    if (weapons == null) {
+	        weapon_array = this.weapons;
+	    }
+
+	    for (var i = 0, max = weapon_array.length; i < max; i += 1) {
+	        weapon_energy += weapon_array[i].energy;
+	    }
+	    ret_val = (this.energyСapacity - weapon_energy) / this.recharge;
+	    return ret_val;
 	}
 };

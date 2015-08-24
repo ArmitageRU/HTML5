@@ -30,17 +30,18 @@
 
 .centered_window{
     font-size: inherit;
+    margin-top: 50px;
     padding-left: 0;
     padding-right: 0;
     margin-left: auto;
     margin-right: auto;
     display: block;
     background-color: #fff;   
-    position:absolute;
+    position:relative;
     height: 800px;
     width: 1200px;
-    left:120px;
-    top:50px;
+    /*left:120px;
+    top:50px;*/
 
     /*display:block;*/
 }
@@ -55,7 +56,8 @@
 
 .cell-box {
     border:1px solid black;
-    paddng:3px;
+    padding:3px;
+    margin:0 10px 10px 0;
 }
 
 #marketplace{
@@ -63,10 +65,11 @@
 }
 
 #battle{
-    position:absolute;
+    position:relative;
     background-color:#fff;
+    margin-top:790px;
     padding:5px;
-    width: 350;
+    width: 350px;
     height: 100px;
     left: 0;
     bottom: 0;
@@ -98,6 +101,10 @@
     overflow: scroll;
     
     padding: 5px 0 0 5px;
+}
+
+.outfit_weapon_item{
+    padding: 3px;
 }
 
 #outfit_specification{

@@ -1,5 +1,5 @@
 ﻿"use strict";
-function Weapon(energy, title, cost, size, type, context, image) {
+function Weapon(energy, title, cost, size, mass, type, context, image) {
     if (!(this instanceof Weapon)) {
         return new Weapon();
     }
@@ -11,6 +11,7 @@ function Weapon(energy, title, cost, size, type, context, image) {
     this.size = size;//размер слота
     this.id;
     this.type = type;
+    this.mass = mass;
 
     this.beamLasting = 700;
     this.plasmaLasting = 1000;

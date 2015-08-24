@@ -36,7 +36,10 @@
 </head>
 <body>
     <script>var StarSystem = new Application();</script>
-	<div id="application">
+    <div id="veil" class="dn veil"></div>
+    <div id="canvas_wrapper"></div>
+    <div id="application">
+        <div id="veil" class="dn veil"></div>
         <div id="main_ui">
             <div id="application_buttons">
                 <button onclick="ShowHideInfopanel();">Инфопанель</button>
@@ -114,7 +117,7 @@
 			</div>
 		</div> -->
 		<div id="marketplace" class="dn centered_window">
-			<div id="marketplace_veil" class="dn veil"></div>			
+			<!--<div id="marketplace_veil" class="dn veil"></div>-->			
 			<div id="marketplace_purchase" class="dn">
 				<div id="marketplace_purchase_buy" class="dn purchase_win">
 					<div class="marketplace_purchase_heading"><strong>Покупка</strong></div>
@@ -189,7 +192,6 @@
 	        <button onclick="EndPhase();">Закончить</button>
 	    </div>
 	    <div id="outfit" class="dn centered_window">
-	        <div id="outfit_veil" class="dn veil"></div>
 	        <div id="outfit_pack">
                 <div style="height:750px;">
                     <span>Корабль</span>
@@ -197,17 +199,17 @@
                         <option disabled="disabled">Текущий</option>
                     </select>
                     <p>
-                        скорость перезарядки<br />
-                        маневренность
+                        <span>скорость перезарядки </span><span id="outfit_recharge"></span><br />
+                        <span>маневренность </span><span id="outfit_dodge"></span>
                     </p>
                 </div>
                 <div class="outfit_buttons">
-                    <button onclick="true;">Готово</button>
+                    <button onclick="PreBattleReady();">Готово</button>
                 </div>
             </div>
 	        <div id="outfit_weapon">
-                    <span>Класс</span>
-                <p>
+                <span>Класс</span>
+                <!--<div class="outfit_weapon_item">
 					<span class="cell-box">1</span>
                     <label for="weapon_slot_0">Оружие 0</label>
 					<select id="weapon_slot_0">
@@ -216,8 +218,8 @@
 						<option></option>
 						<option></option>
 					</select>
-				</p>
-				<p>
+				</div>
+				<div class="outfit_weapon_item">
                     <span class="cell-box">2</span>
                     <label for="weapon_slot_1">Оружие 1</label>
 					<select id="weapon_slot_1">
@@ -226,8 +228,8 @@
 						<option></option>
 						<option></option>
 					</select>
-				</p>
-				<p>
+				</div>
+				<div class="outfit_weapon_item">
                     <span class="cell-box">1</span>
                     <label for="weapon_slot_2">Оружие 2</label>
 					<select id="weapon_slot_2">
@@ -236,7 +238,7 @@
 						<option></option>
 						<option></option>
 					</select>
-				</p>
+				</div>-->
 	        </div>
 	        <div id="outfit_specification">
 	            Описание оружия Описание оружия Описание оружия Описание оружия Описание оружия Описание оружия Описание оружия

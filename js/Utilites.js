@@ -137,7 +137,8 @@ function ShowQuantity(val, operation){
 
 //Закрываем окно покупок
 function ClosePurchaseWindow(option){
-	$("#marketplace_veil").addClass("dn");
+    //$("#marketplace_veil").addClass("dn");
+    $("#veil").addClass("dn");
 	$("#marketplace_purchase").addClass("dn");
 	if(option=='+'){
 		$("#marketplace_purchase_buy").addClass("dn");
@@ -154,7 +155,8 @@ function ItemBuy(obj){
 	var id = $(obj).closest('tr').attr('id');
 	currentStuff.id = id;
 	var max_buy = 1;
-	$("#marketplace_veil").removeClass("dn");
+    //$("#marketplace_veil").removeClass("dn");
+	$("#veil").removeClass("dn");
 	$("#marketplace_purchase").removeClass("dn");
 	$("#marketplace_purchase_buy").removeClass("dn");
 
@@ -179,7 +181,8 @@ function ItemSell(obj){
 	var id = $(obj).closest('tr').attr('id');
 	currentStuff.id = id;
 	var max_sell = prevMarketContent.ship.InCargoParticular(id);
-	$("#marketplace_veil").removeClass("dn");
+    //$("#marketplace_veil").removeClass("dn");
+	$("#veil").removeClass("dn");
 	$("#marketplace_purchase").removeClass("dn");
 	$("#marketplace_purchase_sell").removeClass("dn");
 	$("#marketplace_purchase_quantity_s").attr('max',max_sell);
@@ -227,12 +230,13 @@ function ConfirmPurchase(operation){
 /************************************Режим боя********************************************/
 function PrepareForBattle(hide, ship) {
     if (!inbattle) {
+        inbattle = true;
+        currentShip = ship;
         HideStandartHTMLUI(hide);
         PreBattle(!hide);
 		//PrepareBattleMenu(ship, 0);
         //CheckWeapons(ship);
-        inbattle = true;
-        currentShip = ship;
+        
     }
 }
 
@@ -248,19 +252,49 @@ function HideStandartHTMLUI(hide) {
 
 //Подготовительное меню
 function PreBattle(hide) {
-	if (hide) {
+    if (hide) {
         $("#outfit").addClass("dn");
-		$("#outfit_veil").addClass("dn");
+		$("#veil").addClass("dn");
     }
     else {
-        $("#outfit").removeClass("dn");
-		$("#outfit_veil").removeClass("dn");
+        //заполнить данными
+        FillPreBattle(null);
+	    $("#outfit").removeClass("dn");
+		$("#veil").removeClass("dn");
     }
+}
+
+function FillPreBattle(weapons) {
+    $("#outfit_recharge").html(currentShip.GetRecharge(weapons).toFixed(2));
+    $("#outfit_dodge").html(currentShip.GetDodge(weapons).toFixed(2));
+    var suited_weapons,
+        all_weapons = StarSystem.FAKE.weapons;
+
+    for (var i = 0, max = currentShip.slots.length; i < max; i += 1) {
+        suited_weapons = "<select id=\"weapon_slot_0\">";
+        for (var j = 0, max_w = all_weapons.length; j < max_w; j += 1) {
+            if (all_weapons[j].size == currentShip.slots[i]) {
+                suited_weapons += "<option>" + all_weapons[j].title + "</option>";
+            }
+        }
+        suited_weapons +="</select>";
+
+        $("#outfit_weapon").append("<div class=\"outfit_weapon_item\">" +
+					"<span class=\"cell-box\">" + currentShip.slots[i] + "</span>" +
+					suited_weapons +
+				    "</div>");
+    }
+    
+
 }
 
 //После нажатия кнопки "Готово"
 function PreBattleReady() {
-	StarSystem.battleInProcess = true;
+    StarSystem.battleInProcess = true;
+    /*
+        логика по выбору того что выбрано. 
+    */
+    PreBattle(true);
 }
 
 // Ship.js
