@@ -109,6 +109,17 @@ FAKES.prototype = {
         ships.push(tmp_s_obj);
 
         return ships;
+    },
+
+    GetWeaponById: function(id) {
+        var return_weapon = null;
+        for (var i = 0, max = this.weapons.length; i < max; i += 1) {
+            if (this.weapons[i].id == id) {
+                return_weapon = this.weapons[i];
+                break;
+            }
+        }
+        return return_weapon;
     }
 };
     

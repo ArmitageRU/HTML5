@@ -267,25 +267,37 @@ function PreBattle(hide) {
 function FillPreBattle(weapons) {
     $("#outfit_recharge").html(currentShip.GetRecharge(weapons).toFixed(2));
     $("#outfit_dodge").html(currentShip.GetDodge(weapons).toFixed(2));
+    $("#outfit_energy").html(currentShip.GetEnergy(weapons));
+    $("#outfit_weapon").html("<span>Класс</span>");
+
     var suited_weapons,
         all_weapons = StarSystem.FAKE.weapons;
 
     for (var i = 0, max = currentShip.slots.length; i < max; i += 1) {
-        suited_weapons = "<select id=\"weapon_slot_0\">";
+        suited_weapons = "<select onchange=\"SelectOutfitWeapon("+ i +", this);\"><option value=\"0\"></option>";
         for (var j = 0, max_w = all_weapons.length; j < max_w; j += 1) {
-            if (all_weapons[j].size == currentShip.slots[i]) {
-                suited_weapons += "<option>" + all_weapons[j].title + "</option>";
+            if (all_weapons[j].size == currentShip.slots[i].number) {
+                suited_weapons += "<option value=\"" + all_weapons[j].id + "\" ";
+                if (all_weapons[j].id == currentShip.slots[i].id) {
+                    suited_weapons += " selected=\"selected\"";
+                }
+                suited_weapons += ">" + all_weapons[j].title + "</option>";
             }
         }
         suited_weapons +="</select>";
 
         $("#outfit_weapon").append("<div class=\"outfit_weapon_item\">" +
-					"<span class=\"cell-box\">" + currentShip.slots[i] + "</span>" +
+					"<span class=\"cell-box\">" + currentShip.slots[i].number + "</span>" +
 					suited_weapons +
 				    "</div>");
     }
-    
+}
 
+function SelectOutfitWeapon(slot, obj) {
+    var weapon_id = $(obj).val(),
+        wpn = StarSystem.FAKE.GetWeaponById(weapon_id);
+    currentShip.SetWeapon(slot, wpn);
+    FillPreBattle(null);
 }
 
 //После нажатия кнопки "Готово"

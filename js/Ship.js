@@ -34,7 +34,23 @@
 	this.money=20000;
 	this.cargoCapacity=10;
 	this.cargo = [];
-	this.slots = [1, 2, 1];//оружейные (и не только) слоты
+    //оружейные (и не только) слоты
+	this.slots = [
+                    {
+                        number: 1,
+                        id: 101
+                    },
+
+                    {
+                        number: 2,
+                        id: 102
+                    },
+
+                    {
+                        number: 1,
+                        id: 103
+                    }
+	             ];
 	this.mass = 95; //масса корабля
 
 	this.life = {
@@ -226,5 +242,36 @@ Ship.prototype = {
 	    }
 	    ret_val = (this.energyСapacity - weapon_energy) / this.recharge;
 	    return ret_val;
+	},
+
+	GetEnergy: function (weapons) {
+	    var weapon_array = weapons,
+            remaining_energy = 0;
+
+	    if (weapons == null) {
+	        weapon_array = this.weapons;
+	    }
+	    remaining_energy = this.energyСapacity;
+	    for (var i = 0, max = weapon_array.length; i < max; i += 1) {
+	        remaining_energy -= weapon_array[i].energy;
+	    }
+	    return remaining_energy;
+	},
+
+	SetWeapon: function (slot, weapon) {
+	    for (var i = 0, max = this.weapons.length; i < max; i += 1) {
+	        if (this.weapons[i].id == this.slots[slot].id) {
+	            if (weapon == null) {
+	                this.weapons.splice(i, 1);
+	                this.slots[slot].id = null;
+	            }
+	            else {
+	                this.weapons[i] = weapon;
+	                this.slots[slot].id = weapon.id;
+	            }
+	            break;
+	        }
+	    }
+
 	}
 };

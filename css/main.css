@@ -56,8 +56,8 @@
 
 .cell-box {
     border:1px solid black;
-    padding:3px;
-    margin:0 10px 10px 0;
+    padding:1px;
+    margin:0 20px 10px 10px;
 }
 
 #marketplace{
