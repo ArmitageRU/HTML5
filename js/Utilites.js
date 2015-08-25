@@ -263,12 +263,22 @@ function PreBattle(hide) {
 		$("#veil").removeClass("dn");
     }
 }
-
+//Заполнить окно с предподготовкой
 function FillPreBattle(weapons) {
     $("#outfit_recharge").html(currentShip.GetRecharge(weapons).toFixed(2));
     $("#outfit_dodge").html(currentShip.GetDodge(weapons).toFixed(2));
-    $("#outfit_energy").html(currentShip.GetEnergy(weapons));
-    $("#outfit_weapon").html("<span>Класс</span>");
+    var energy = currentShip.GetEnergy(weapons);
+	if(energy<0 && !$("#outfit_energy").hasClass("outfit_weapon_item_red")){
+		$("#outfit_energy").addClass("outfit_weapon_item_red");
+		$("#outfit_ready").prop('disabled', true);
+	}
+	else {
+		$("#outfit_energy").removeClass("outfit_weapon_item_red");
+		$("#outfit_ready").prop('disabled', false);
+	}
+	$("#outfit_energy").html(currentShip.GetEnergy(weapons));
+    
+	$("#outfit_weapon").html("<span>Класс</span>");
 
     var suited_weapons,
         all_weapons = StarSystem.FAKE.weapons;

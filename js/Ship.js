@@ -259,19 +259,24 @@ Ship.prototype = {
 	},
 
 	SetWeapon: function (slot, weapon) {
-	    for (var i = 0, max = this.weapons.length; i < max; i += 1) {
-	        if (this.weapons[i].id == this.slots[slot].id) {
-	            if (weapon == null) {
-	                this.weapons.splice(i, 1);
-	                this.slots[slot].id = null;
-	            }
-	            else {
-	                this.weapons[i] = weapon;
-	                this.slots[slot].id = weapon.id;
-	            }
-	            break;
-	        }
-	    }
-
+	    if(weapon!=null && this.slots[slot].id == null) {
+			this.weapons[this.weapons.length] = weapon;
+			this.slots[slot].id = weapon.id;
+		}
+		else {
+			for (var i = 0, max = this.weapons.length; i < max; i += 1) {
+				if (this.weapons[i].id == this.slots[slot].id) {
+					if (weapon == null) {
+						this.weapons.splice(i, 1);
+						this.slots[slot].id = null;
+					}
+					else {
+						this.weapons[i] = weapon;
+						this.slots[slot].id = weapon.id;
+					}
+					break;
+				}
+			}
+		}
 	}
 };

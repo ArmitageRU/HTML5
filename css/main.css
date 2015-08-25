@@ -107,6 +107,11 @@
     padding: 3px;
 }
 
+.outfit_weapon_item_red{
+	color:red;
+	font-weight:bold;
+}
+
 #outfit_specification{
     width:380px;
     display: inline-block;
