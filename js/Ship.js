@@ -30,25 +30,23 @@
 	this.energyСapacity = 1900;//это чтобы знать до куда восстанавливать
 	this.energy = 1900;//это значение изменяется во время боя
 	this.recharge = 130;//скорость зарядки батареи
-	this.weapons = [];
+	//this.weapons = [];
 	this.money=20000;
 	this.cargoCapacity=10;
 	this.cargo = [];
     //оружейные (и не только) слоты
 	this.slots = [
                     {
-                        number: 1,
-                        id: 101
+                        size: 1
                     },
 
                     {
-                        number: 2,
-                        id: 102
+                        size: 2
+                        
                     },
 
                     {
-                        number: 1,
-                        id: 103
+                        size: 1
                     }
 	             ];
 	this.mass = 95; //масса корабля
@@ -213,70 +211,90 @@ Ship.prototype = {
 	    this.life.current -= loss;
 	},
 
-	GetDodge: function (weapons) {
+	GetDodge: function () {
 	    var reference_mass = 70;
 	    var total_mass = this.mass,
-            weapon_array = weapons,
             ret_val;
-	    if (weapons == null) {
-	        weapon_array = this.weapons;
-	    }
 
-	    for (var i = 0, max = weapon_array.length; i < max; i += 1) {
-	        total_mass += weapon_array[i].mass;
+	    for (var i = 0, max = this.slots.length; i < max; i += 1) {
+	        if (this.slots[i].weapon != null) {
+	            total_mass += this.slots[i].weapon.mass;
+	        }
 	    }
 	    ret_val = total_mass / reference_mass;
 	    return ret_val;
 	},
 
-	GetRecharge: function (weapons) {
-	    var weapon_array = weapons,
-            weapon_energy = 0,
+	GetRecharge: function () {
+	    var weapon_energy = 0,
             ret_val = 0;
-	    if (weapons == null) {
-	        weapon_array = this.weapons;
-	    }
 
-	    for (var i = 0, max = weapon_array.length; i < max; i += 1) {
-	        weapon_energy += weapon_array[i].energy;
+
+	    for (var i = 0, max = this.slots.length; i < max; i += 1) {
+	        if (this.slots[i].weapon != null) {
+	            weapon_energy += this.slots[i].weapon.energy;
+	        }
 	    }
 	    ret_val = (this.energyСapacity - weapon_energy) / this.recharge;
 	    return ret_val;
 	},
 
-	GetEnergy: function (weapons) {
-	    var weapon_array = weapons,
-            remaining_energy = 0;
+	GetEnergy: function () {
+	    var remaining_energy = 0;
 
-	    if (weapons == null) {
-	        weapon_array = this.weapons;
-	    }
 	    remaining_energy = this.energyСapacity;
-	    for (var i = 0, max = weapon_array.length; i < max; i += 1) {
-	        remaining_energy -= weapon_array[i].energy;
+	    for (var i = 0, max = this.slots.length; i < max; i += 1) {
+	        if (this.slots[i].weapon != null) {
+	            remaining_energy -= this.slots[i].weapon.energy;
+	        }
 	    }
 	    return remaining_energy;
 	},
 
+	GetWeapons: function () {
+	    var wpns = [],
+            found = false;
+	    for (var i = 0, max = this.slots.length; i < max; i += 1) {
+	        found = false;
+	        if (this.slots[i].weapon != null) {
+	            for (var j = 0, len = wpns.length; j < wpns; j++) {
+	                if (wpns[j].weapon.id == this.slots[i].weapon.id) {
+	                    wpns[j].count++;
+	                    found = true;
+                        break;
+	                }
+	            }
+	            if (!found) {
+	                wpns[wpns.length] = {
+	                    weapon: this.slots[i].weapon,
+	                    count: 1
+	                };
+	            }
+	        }
+	    }
+	    return wpns;
+	},
+
 	SetWeapon: function (slot, weapon) {
-	    if(weapon!=null && this.slots[slot].id == null) {
-			this.weapons[this.weapons.length] = weapon;
-			this.slots[slot].id = weapon.id;
-		}
-		else {
-			for (var i = 0, max = this.weapons.length; i < max; i += 1) {
-				if (this.weapons[i].id == this.slots[slot].id) {
-					if (weapon == null) {
-						this.weapons.splice(i, 1);
-						this.slots[slot].id = null;
-					}
-					else {
-						this.weapons[i] = weapon;
-						this.slots[slot].id = weapon.id;
-					}
-					break;
-				}
-			}
-		}
+	    this.slots[slot].weapon = weapon;
+	    //if (weapon != null && this.slots[slot].id == null) {
+			//this.weapons[this.weapons.length] = weapon;
+			//this.slots[slot].weapon = weapon;
+		//}
+		//else {
+		//	for (var i = 0, max = this.weapons.length; i < max; i += 1) {
+		//		if (this.weapons[i].id == this.slots[slot].id) {
+		//			if (weapon == null) {
+		//				this.weapons.splice(i, 1);
+		//				this.slots[slot].id = null;
+		//			}
+		//			else {
+		//				this.weapons[i] = weapon;
+		//				this.slots[slot].id = weapon.id;
+		//			}
+		//			break;
+		//		}
+		//	}
+		//}
 	}
 };

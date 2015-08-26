@@ -5,7 +5,7 @@ function FAKES() {
 };
 
 FAKES.prototype = {
-    GenerateFakeWeapons: function (context, rocket_image) {
+    GenerateFakeWeapons: function (slots, context, rocket_image) {
         var weapons = [];
         var w = new Weapon(200, 'Лазер', 500, 1, 10, 'beam', context, null);
         w.id = 101;
@@ -17,7 +17,10 @@ FAKES.prototype = {
         w.id = 103;
         weapons[2] = w;
         this.weapons = weapons;
-        return weapons;
+        slots[0].weapon = weapons[0];
+        slots[1].weapon = weapons[1];
+        slots[2].weapon = weapons[2];
+        //return weapons;
     },
 
     GetFakeShips: function () {

@@ -98,7 +98,8 @@ Application.prototype = {
 		this.ship.position = new Point(this.canvas.width-100, this.canvas.height/2);
 		this.route = new Route(this.ship.position);
 		this.ship.route = this.route;
-		this.ship.weapons = this.FAKE.GenerateFakeWeapons(this.ctx, this._images['rocket']);
+		this.FAKE.GenerateFakeWeapons(this.ship.slots, this.ctx, this._images['rocket']); //устанавливаем оружие в слоты
+	    //this.ship.weapons = this.FAKE.GenerateFakeWeapons(this.ctx, this._images['rocket']);
 		this.ship.phaseActive = function phaseActive() {
 		    PrepareBattleMenu(this);
 		};
@@ -207,7 +208,8 @@ Application.prototype = {
 	getEnemy: function () {
 	    var random_ship = ~~(getRandomArbitrary(0, this.FAKE.ships.length));
 	    var enemy_ship = new Ship(this.ctx, this._images['ships'], new Rectangle(this.FAKE.ships[random_ship].x, this.FAKE.ships[random_ship].y, this.FAKE.ships[random_ship].width, this.FAKE.ships[random_ship].height, 0.3));
-	    enemy_ship.weapons = this.FAKE.GenerateFakeWeapons(this.ctx, this._images['rocket']);
+	    this.FAKE.GenerateFakeWeapons(this.slots, this.ctx, this._images['rocket']);
+	    //enemy_ship.weapons = this.FAKE.GenerateFakeWeapons(this.ctx, this._images['rocket']);
 	    return enemy_ship;
 	},
 

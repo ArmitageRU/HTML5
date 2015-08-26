@@ -258,16 +258,17 @@ function PreBattle(hide) {
     }
     else {
         //заполнить данными
-        FillPreBattle(null);
+        FillPreBattle();
 	    $("#outfit").removeClass("dn");
 		$("#veil").removeClass("dn");
     }
 }
 //Заполнить окно с предподготовкой
-function FillPreBattle(weapons) {
-    $("#outfit_recharge").html(currentShip.GetRecharge(weapons).toFixed(2));
-    $("#outfit_dodge").html(currentShip.GetDodge(weapons).toFixed(2));
-    var energy = currentShip.GetEnergy(weapons);
+function FillPreBattle() {
+    $("#outfit_recharge").html(currentShip.GetRecharge().toFixed(2));
+    $("#outfit_dodge").html(currentShip.GetDodge().toFixed(2));
+    var energy = currentShip.GetEnergy();
+    $("#outfit_energy").html(energy);
 	if(energy<0 && !$("#outfit_energy").hasClass("outfit_weapon_item_red")){
 		$("#outfit_energy").addClass("outfit_weapon_item_red");
 		$("#outfit_ready").prop('disabled', true);
@@ -276,7 +277,7 @@ function FillPreBattle(weapons) {
 		$("#outfit_energy").removeClass("outfit_weapon_item_red");
 		$("#outfit_ready").prop('disabled', false);
 	}
-	$("#outfit_energy").html(currentShip.GetEnergy(weapons));
+	
     
 	$("#outfit_weapon").html("<span>Класс</span>");
 
@@ -284,10 +285,10 @@ function FillPreBattle(weapons) {
         all_weapons = StarSystem.FAKE.weapons;
 
     for (var i = 0, max = currentShip.slots.length; i < max; i += 1) {
-        suited_weapons = "<select onchange=\"SelectOutfitWeapon("+ i +", this);\"><option value=\"0\"></option>";
+        suited_weapons = "<select onclick=\"ViewWeaponInfo(this)\" onchange=\"SelectOutfitWeapon("+ i +", this);\"><option value=\"0\"></option>";
         for (var j = 0, max_w = all_weapons.length; j < max_w; j += 1) {
-            if (all_weapons[j].size == currentShip.slots[i].number) {
-                suited_weapons += "<option value=\"" + all_weapons[j].id + "\" ";
+            if (all_weapons[j].size <= currentShip.slots[i].size) {
+                suited_weapons += "<option value=\"" + all_weapons[j].weapon.id + "\" ";
                 if (all_weapons[j].id == currentShip.slots[i].id) {
                     suited_weapons += " selected=\"selected\"";
                 }
@@ -297,17 +298,42 @@ function FillPreBattle(weapons) {
         suited_weapons +="</select>";
 
         $("#outfit_weapon").append("<div class=\"outfit_weapon_item\">" +
-					"<span class=\"cell-box\">" + currentShip.slots[i].number + "</span>" +
+					"<span class=\"cell-box\">" + currentShip.slots[i].size + "</span>" +
 					suited_weapons +
 				    "</div>");
     }
 }
 
+//выбор оружия из списка
 function SelectOutfitWeapon(slot, obj) {
     var weapon_id = $(obj).val(),
         wpn = StarSystem.FAKE.GetWeaponById(weapon_id);
     currentShip.SetWeapon(slot, wpn);
     FillPreBattle(null);
+    ShowWeaponInfo(wpn);
+}
+
+function ViewWeaponInfo(obj) {
+    var o = $(obj),
+        weapon_id = o.children("select option:selected").eq(0).val(),
+        wpn = StarSystem.FAKE.GetWeaponById(weapon_id);
+    ShowWeaponInfo(wpn);
+}
+
+//клик по диву в котором выбор оружия (сильно не уверен что нужно)
+function ShowWeaponInfo(weapon) {
+    if (weapon != null) {
+        $("#outfit_specification_energy").html(weapon.energy);
+        $("#outfit_specification_cost").html(weapon.primeCost);
+        $("#outfit_specification_type").html(weapon.type);
+        $("#outfit_specification_mass").html(weapon.mass);
+    }
+    else {
+        $("#outfit_specification_energy").html("");
+        $("#outfit_specification_cost").html("");
+        $("#outfit_specification_type").html("");
+        $("#outfit_specification_mass").html("");
+    }
 }
 
 //После нажатия кнопки "Готово"
@@ -325,10 +351,18 @@ function PrepareBattleMenu(ship/*,w_id*/) {
     $("#battle_energy").html(ship.energy);
     $("#battle_weapons").empty();
     //console.log(ship.weapons.length);
-    for (var i = 0, len = ship.weapons.length; i < len; i += 1) {
-        //console.log(i);
-        $('#battle_weapons').append('<option value="' + ship.weapons[i].id + '" selected="selected">' + ship.weapons[i].title + ' — ' + ship.weapons[i].energy + '</option>');
+    var weapons = currentShip.GetWeapons(),
+        counter =0,
+        w_count;
+
+    for (var i = 0, len = weapons.length; i < len; i += 1) {
+        counter = 1;
+        w_count = weapons[i].count;
+        do{
+            $('#battle_weapons').append('<option value="' + weapons[i].weapon.id + '_' + weapons[i].weapon.energy * counter + '" selected="selected">' + weapons[i].weapon.title + ' — ' + weapons[i].weapon.energy * counter + '</option>');
+        }while(counter<=w_count)
     }
+
     CheckWeapons(ship, 0/*w_id*/);
 }
 
@@ -342,6 +376,11 @@ function CheckWeapons(ship, w_id) {
         weapons_id = w_id;
     $("#battle_energy").html(ship.energy);
     $("#battle_fire").prop('disabled', false);
+
+    for (var i = 0, len = ship.weapons.length; i < len; i += 1) {
+
+    }
+
     for (var i = 0, len = ship.weapons.length; i < len; i += 1) {
         if (ship.weapons[i].energy > ship.energy) {
             $('#battle_weapons option[value=' + ship.weapons[i].id + ']').prop('disabled', true);
