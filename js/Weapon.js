@@ -19,7 +19,7 @@ function Weapon(energy, title, cost, size, mass, type, context, image) {
 };
 
 Weapon.prototype = {
-    renderAction: function (full_time, time, ctx, from, target) {
+    renderAction: function (full_time, time, ctx, from, barrels, target) {
         var ret_time = full_time + time,
             thickness = ~~(ret_time / (this.beamLasting / 10));
             //target = from.target;
@@ -42,7 +42,7 @@ Weapon.prototype = {
             case 'plasma':
                 if (ret_time > this.plasmaLasting) {
                     ret_time = -1;
-                    target.GetDamage(this);
+                    target.GetDamage(this, barrels);
                     break;
                 }
                 var curr_x = (target.position.x - from.position.x) * ret_time / this.plasmaLasting;
@@ -64,14 +64,18 @@ Weapon.prototype = {
                     rocket_ship_up.speed = 1500;
                     rocket_ship_up.life.current = 20;
                     rocket_ship_up.battlePrepare(new Point(from.position.x + 100, from.position.y - 100), Math.PI, null, 1);
-                    rocket_ship_up.weapons[rocket_ship_up.weapons.length] = new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null);
+                    //rocket_ship_up.weapons[rocket_ship_up.weapons.length] = new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null);
+                    rocket_ship_up.slots = [{
+                        size: 1,
+                        weapon: new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null)
+                    }];
                     rocket_ship_up.target = target;
                     rocket_ship_up.phaseActive = function phaseActive() {
                         rocket_ship_up.route = new Route(rocket_ship_up.position);
                         rocket_ship_up.route.to = target.position;
                     };
                     rocket_ship_up.arrive = function arrive() {
-                        this.target.GetDamage(this.weapons[0]);
+                        this.target.GetDamage(this.weapons[0], barrels);
                         this.life.current = 0;
                         //StarSystem.battle.removeParticipant(this.id)
                     };
@@ -83,14 +87,18 @@ Weapon.prototype = {
                     rocket_ship_down.speed = 1500;
                     rocket_ship_down.life.current = 20;
                     rocket_ship_down.battlePrepare(new Point(from.position.x + 100, from.position.y + 100), Math.PI, null, 1);
-                    rocket_ship_down.weapons[rocket_ship_up.weapons.length] = new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null);
+                    //rocket_ship_down.weapons[rocket_ship_up.weapons.length] = new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null);
+                    rocket_ship_up.slots = [{
+                        size: 1,
+                        weapon: new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null)
+                    }];
                     rocket_ship_down.target = target;
                     rocket_ship_down.phaseActive = function phaseActive() {
                         rocket_ship_down.route = new Route(rocket_ship_down.position);
                         rocket_ship_down.route.to = target.position;
                     };
                     rocket_ship_down.arrive = function arrive() {
-                        this.target.GetDamage(this.weapons[0]);
+                        this.target.GetDamage(this.weapons[0], barrels);
                         this.life.current = 0;
                         //StarSystem.battle.removeParticipant(this.id)
                     };

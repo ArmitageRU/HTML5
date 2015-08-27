@@ -288,8 +288,8 @@ function FillPreBattle() {
         suited_weapons = "<select onclick=\"ViewWeaponInfo(this)\" onchange=\"SelectOutfitWeapon("+ i +", this);\"><option value=\"0\"></option>";
         for (var j = 0, max_w = all_weapons.length; j < max_w; j += 1) {
             if (all_weapons[j].size <= currentShip.slots[i].size) {
-                suited_weapons += "<option value=\"" + all_weapons[j].weapon.id + "\" ";
-                if (all_weapons[j].id == currentShip.slots[i].id) {
+                suited_weapons += "<option value=\"" + all_weapons[j].id + "\" ";
+                if (all_weapons[j].id == currentShip.slots[i].weapon.id) {
                     suited_weapons += " selected=\"selected\"";
                 }
                 suited_weapons += ">" + all_weapons[j].title + "</option>";
@@ -360,6 +360,7 @@ function PrepareBattleMenu(ship/*,w_id*/) {
         w_count = weapons[i].count;
         do{
             $('#battle_weapons').append('<option value="' + weapons[i].weapon.id + '_' + weapons[i].weapon.energy * counter + '" selected="selected">' + weapons[i].weapon.title + ' — ' + weapons[i].weapon.energy * counter + '</option>');
+            counter++;
         }while(counter<=w_count)
     }
 
@@ -372,25 +373,30 @@ function HideBattleMenu() {
 
 //задизейблить невозможное оружие и/или кнопку стрельбы
 function CheckWeapons(ship, w_id) {
-    var disable_fire = true,
-        weapons_id = w_id;
+    var disable_fire = true,//weapon_id_energy = w_id.split('_'),
+        weapons_id = w_id,
+        wpns = ship.GetWeapons(),
+        tmp_energy,
+        tmp_id;
+    
+
     $("#battle_energy").html(ship.energy);
     $("#battle_fire").prop('disabled', false);
 
-    for (var i = 0, len = ship.weapons.length; i < len; i += 1) {
+    for (var i = 0, len = wpns.length; i < len; i += 1) {
+        tmp_energy = wpns[i].weapon.energy * wpns[i].count;
+        tmp_id = wpns[i].weapon.id + '_' + wpns[i].weapon.energy * wpns[i].count;
 
-    }
+        if (tmp_energy > ship.energy) {
+            $('#battle_weapons option[value=' + tmp_id + ']').prop('disabled', true);
 
-    for (var i = 0, len = ship.weapons.length; i < len; i += 1) {
-        if (ship.weapons[i].energy > ship.energy) {
-            $('#battle_weapons option[value=' + ship.weapons[i].id + ']').prop('disabled', true);
-            if (ship.weapons[i].id == weapons_id) {
+            if (tmp_id == weapons_id) {
                 weapons_id = 0;
             }
         }
         else {
-            $('#battle_weapons option[value=' + ship.weapons[i].id + ']').prop('disabled', false);
-            if (ship.weapons[i].id == weapons_id) {
+            $('#battle_weapons option[value=' + tmp_id + ']').prop('disabled', false);
+            if (tmp_id == w_id) {
                 $('#battle_weapons option[value=' + ship.weapons[i].id + ']').prop('selected', true);
             }
             disable_fire = false;

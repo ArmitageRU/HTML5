@@ -208,7 +208,7 @@ Application.prototype = {
 	getEnemy: function () {
 	    var random_ship = ~~(getRandomArbitrary(0, this.FAKE.ships.length));
 	    var enemy_ship = new Ship(this.ctx, this._images['ships'], new Rectangle(this.FAKE.ships[random_ship].x, this.FAKE.ships[random_ship].y, this.FAKE.ships[random_ship].width, this.FAKE.ships[random_ship].height, 0.3));
-	    this.FAKE.GenerateFakeWeapons(this.slots, this.ctx, this._images['rocket']);
+	    this.FAKE.GenerateFakeWeapons(enemy_ship.slots, this.ctx, this._images['rocket']);
 	    //enemy_ship.weapons = this.FAKE.GenerateFakeWeapons(this.ctx, this._images['rocket']);
 	    return enemy_ship;
 	},

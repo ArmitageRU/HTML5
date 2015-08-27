@@ -32,9 +32,10 @@ Battle.prototype = {
                         this.fires.splice(j, 1);
                     }
                     else if (this.fires[j].ship.id === this.participants[i].object.id) {
-                        for (var k = 0, max_f = this.fires[j].ship.weapons.length; k < max_f; k += 1) {
-                            if (this.fires[j].weapon_id === this.fires[j].ship.weapons[k].id) {
-                                this.fires[j].time = this.fires[j].ship.weapons[k].renderAction(this.fires[j].time, time, this.ctx, this.fires[j].ship, this.fires[j].target/*this.participants[i].object/*, /*this.participants[i].target*/);
+                        //for (var k = 0, max_f = this.fires[j].ship.weapons.length; k < max_f; k += 1) {
+                        for (var k = 0, max_f = this.fires[j].slots.length; k < max_f; k += 1) {
+                            if (this.fires[j].weapon_id === this.fires[j].ship.slots[k].weapon.id) {
+                                this.fires[j].time = this.fires[j].ship.slots[k].weapon.renderAction(this.fires[j].time, time, this.ctx, this.fires[j].ship, this.fires[j].barrels, this.fires[j].target/*this.participants[i].object/*, /*this.participants[i].target*/);
                             }
                         }
                         break;
@@ -42,7 +43,7 @@ Battle.prototype = {
                 }
             }
             else if (this.wantEnd) {
-                console.log("WE", this.currentShip.id, this.fires.length);
+                //console.log("WE", this.currentShip.id, this.fires.length);
                 this.wantEnd = null;
                 this.endPhase();
             }
@@ -99,7 +100,7 @@ Battle.prototype = {
     },
 
     beginPhase: function () {
-            console.log("next is ", this.queue[0]);
+            //console.log("next is ", this.queue[0]);
             for (var i = 0, max = this.participants.length; i < max; i += 1) {
                 if (this.participants[i].object.id == this.queue[0] || this.participants[i].object.parentShipId == this.queue[0]) {
                     if (this.participants[i].object.id == this.queue[0]) {
@@ -118,7 +119,7 @@ Battle.prototype = {
     endPhase: function () {
         this.queue.splice(0, 1);
         this.queue[this.queue.length] = this.currentShip.id;
-        console.log("end phase");
+        //console.log("end phase");
         this.currentShip.phaseEnd.call(this.currentShip);
         //следующая фаза может и не начаться
         if (true) {
@@ -127,21 +128,33 @@ Battle.prototype = {
     },
 
     fire: function (w_id) {
-        var ship = null;
-        for (var i = 0, len = this.currentShip.weapons.length; i < len; i += 1) {
-            if (w_id == this.currentShip.weapons[i].id) {
+        var ship = null,
+            wpns = this.currentShip.GetWeapons(),
+            weapon_id_energy = w_id.split('_'),
+            barrels = 1;
+        //for (var i = 0, len = this.currentShip.weapons.length; i < len; i += 1) {
+        for (var i = 0, len = wpns.length; i < len; i += 1) {
+            if (w_idweapon_id_energy[0] == wpns[i].weapon.id) {
+                //узнаем из скольких орудий стреляли
+                for (var j = 0, max_barrels = wpns[i].count; j < max_barrels; j+=1){
+                    if(weapon_id_energy[1] == wpns[i].weapon.energy*(j+1)){
+                        barrels = j+1;
+                        break;
+                    }
+                }
 
                 var fire = {
                     ship: this.currentShip,
-                    weapon_id: this.currentShip.weapons[i].id,
-                    time: 0
+                    weapon_id: wpns[i].weapon.id,
+                    time: 0,
+                    barrels: barrels
                 };
 
                 for (var j = 0, max_p = this.participants.length; j < max_p; j += 1) {
                     if (this.participants[j].object.selected) {
                         fire.target = this.participants[j].object;
                         this.fires[this.fires.length] = fire;
-                        this.currentShip.energy -= this.currentShip.weapons[i].energy;
+                        this.currentShip.energy -= weapon_id_energy[1];//this.currentShip.weapons[i].energy;
                         break;
                     }
                 }
@@ -161,14 +174,5 @@ Battle.prototype = {
             this.endTextPosY = this.ctx.canvas.height;
         }
     }
-    //removeParticipant: function (id) {
-    //    for (var i = 0, max = this.participants.length; i < max; i += 1) {
-    //        if (this.participants[i].object.id == id) {
-    //            //this.participants.splice(i, 1);
-    //            this.participants[i].live = false;
-    //            break;
-    //        }
-    //    }
-    //}
 };
 
