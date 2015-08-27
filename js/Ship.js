@@ -257,7 +257,7 @@ Ship.prototype = {
 	    for (var i = 0, max = this.slots.length; i < max; i += 1) {
 	        found = false;
 	        if (this.slots[i].weapon != null) {
-	            for (var j = 0, len = wpns.length; j < wpns; j++) {
+	            for (var j = 0, len = wpns.length; j < len; j++) {
 	                if (wpns[j].weapon.id == this.slots[i].weapon.id) {
 	                    wpns[j].count++;
 	                    found = true;
