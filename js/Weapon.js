@@ -75,7 +75,7 @@ Weapon.prototype = {
                         rocket_ship_up.route.to = target.position;
                     };
                     rocket_ship_up.arrive = function arrive() {
-                        this.target.GetDamage(this.weapons[0], barrels);
+                        this.target.GetDamage(this.slots[0].weapon, barrels);
                         this.life.current = 0;
                         //StarSystem.battle.removeParticipant(this.id)
                     };
@@ -98,7 +98,7 @@ Weapon.prototype = {
                         rocket_ship_down.route.to = target.position;
                     };
                     rocket_ship_down.arrive = function arrive() {
-                        this.target.GetDamage(this.weapons[0], barrels);
+                        this.target.GetDamage(this.slots[0].weapon, barrels);
                         this.life.current = 0;
                         //StarSystem.battle.removeParticipant(this.id)
                     };

@@ -351,19 +351,11 @@ function PrepareBattleMenu(ship/*,w_id*/) {
     $("#battle_energy").html(ship.energy);
     $("#battle_weapons").empty();
     //console.log(ship.weapons.length);
-    var weapons = currentShip.GetWeapons(),
-        counter =0,
-        w_count;
+    var weapons = currentShip.GetWeaponList();
 
     for (var i = 0, len = weapons.length; i < len; i += 1) {
-        counter = 1;
-        w_count = weapons[i].count;
-        do{
-            $('#battle_weapons').append('<option value="' + weapons[i].weapon.id + '_' + weapons[i].weapon.energy * counter + '" selected="selected">' + weapons[i].weapon.title + ' — ' + weapons[i].weapon.energy * counter + '</option>');
-            counter++;
-        }while(counter<=w_count)
+        $('#battle_weapons').append('<option value="' + weapons[i].id + '_' + weapons[i].energy + '" selected="selected">' + weapons[i].title + ' — ' + weapons[i].energy + '</option>');
     }
-
     CheckWeapons(ship, 0/*w_id*/);
 }
 
@@ -375,7 +367,7 @@ function HideBattleMenu() {
 function CheckWeapons(ship, w_id) {
     var disable_fire = true,//weapon_id_energy = w_id.split('_'),
         weapons_id = w_id,
-        wpns = ship.GetWeapons(),
+        wpns = ship.GetWeaponList(),
         tmp_energy,
         tmp_id;
     
@@ -384,8 +376,8 @@ function CheckWeapons(ship, w_id) {
     $("#battle_fire").prop('disabled', false);
 
     for (var i = 0, len = wpns.length; i < len; i += 1) {
-        tmp_energy = wpns[i].weapon.energy * wpns[i].count;
-        tmp_id = wpns[i].weapon.id + '_' + wpns[i].weapon.energy * wpns[i].count;
+        tmp_energy = wpns[i].energy;
+        tmp_id = wpns[i].id + '_' + wpns[i].energy;
 
         if (tmp_energy > ship.energy) {
             $('#battle_weapons option[value=' + tmp_id + ']').prop('disabled', true);
@@ -397,7 +389,7 @@ function CheckWeapons(ship, w_id) {
         else {
             $('#battle_weapons option[value=' + tmp_id + ']').prop('disabled', false);
             if (tmp_id == w_id) {
-                $('#battle_weapons option[value=' + ship.weapons[i].id + ']').prop('selected', true);
+                $('#battle_weapons option[value=' + tmp_id + ']').prop('selected', true);
             }
             disable_fire = false;
         }

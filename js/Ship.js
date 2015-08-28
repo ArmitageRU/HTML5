@@ -27,8 +27,8 @@
 
 	this.rot = -Math.PI;//начальный поворот
 	this.speed = 90; //pixel per second e.g.
-	this.energyСapacity = 1900;//это чтобы знать до куда восстанавливать
-	this.energy = 1900;//это значение изменяется во время боя
+	this.energyСapacity = 1400;//это чтобы знать до куда восстанавливать
+	this.energy = 1400;//это значение изменяется во время боя
 	this.recharge = 130;//скорость зарядки батареи
 	//this.weapons = [];
 	this.money=20000;
@@ -273,6 +273,27 @@ Ship.prototype = {
 	        }
 	    }
 	    return wpns;
+	},
+
+	GetWeaponList: function (){
+	    var weapons = this.GetWeapons(),
+            ret_wpns = [],
+            counter = 1,
+	        w_count;
+
+	    for (var i = 0, len = weapons.length; i < len; i += 1) {
+	        w_count = weapons[i].count;
+	        counter = 1;
+	        do{
+	            ret_wpns[ret_wpns.length] = {
+	                id: weapons[i].weapon.id,
+	                energy: weapons[i].weapon.energy * counter,
+	                title: weapons[i].weapon.title
+	            }
+	            counter++;
+	        }while(counter<=w_count)
+	    }
+	    return ret_wpns;
 	},
 
 	SetWeapon: function (slot, weapon) {

@@ -158,9 +158,7 @@ Application.prototype = {
 				this.openedWindows.prebattle = true;
 			}
 			if (this.battleInProcess) {
-                //PrepareForBattle(true, this.ship);
                 this.battle.beginPhase();
-			    //this.battleInProcess = true;
                 this.battle.render(elapsedTime, this.mouse);
             }
             
@@ -220,6 +218,9 @@ Application.prototype = {
 	    this.enemyShip.battlePrepare(new Point(this.canvas.width - 120, this.canvas.height / 2), -Math.PI / 2, null, 1);
 	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.ship, /*this.enemyShip,*/ this.ship.render);
 	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.enemyShip, /*this.ship,*/ this.enemyShip.render);
+	    this.battle.whenBattleEnd = function battleEnd() {
+	        HideBattleMenu();
+	    }
 	    var ai = new AI(this.enemyShip, this.battle.participants);
 	    this.enemyShip.phaseActive = function phaseActive() {
 	        ai.phaseActive.call(ai);

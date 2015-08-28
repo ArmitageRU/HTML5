@@ -12,6 +12,10 @@ function Battle(context) {
     this.winner = false;
     this.defeated = false;
     this.endTextPosY = 0;
+
+    this.phaseInAction = false;
+    //функция из вызывающего объекта (Application в данном случае)
+    this.whenBattleEnd;
 };
 
 Battle.prototype = {
@@ -33,7 +37,7 @@ Battle.prototype = {
                     }
                     else if (this.fires[j].ship.id === this.participants[i].object.id) {
                         //for (var k = 0, max_f = this.fires[j].ship.weapons.length; k < max_f; k += 1) {
-                        for (var k = 0, max_f = this.fires[j].slots.length; k < max_f; k += 1) {
+                        for (var k = 0, max_f = this.fires[j].ship.slots.length; k < max_f; k += 1) {
                             if (this.fires[j].weapon_id === this.fires[j].ship.slots[k].weapon.id) {
                                 this.fires[j].time = this.fires[j].ship.slots[k].weapon.renderAction(this.fires[j].time, time, this.ctx, this.fires[j].ship, this.fires[j].barrels, this.fires[j].target/*this.participants[i].object/*, /*this.participants[i].target*/);
                             }
@@ -101,6 +105,7 @@ Battle.prototype = {
 
     beginPhase: function () {
             //console.log("next is ", this.queue[0]);
+        if (!this.phaseInAction) {
             for (var i = 0, max = this.participants.length; i < max; i += 1) {
                 if (this.participants[i].object.id == this.queue[0] || this.participants[i].object.parentShipId == this.queue[0]) {
                     if (this.participants[i].object.id == this.queue[0]) {
@@ -108,12 +113,14 @@ Battle.prototype = {
                     }
                     this.participants[i].object.battleRestore();
                     this.participants[i].object.phaseActive.call(this.participants[i].object);
-                    
+
                 }
                 else {
                     this.refreshSelectedShip(this.participants[i].object.id);
                 }
             }
+            this.phaseInAction = true;
+        }
     },
 
     endPhase: function () {
@@ -123,6 +130,7 @@ Battle.prototype = {
         this.currentShip.phaseEnd.call(this.currentShip);
         //следующая фаза может и не начаться
         if (true) {
+            this.phaseInAction = false;
             this.beginPhase();
         }
     },
@@ -134,7 +142,7 @@ Battle.prototype = {
             barrels = 1;
         //for (var i = 0, len = this.currentShip.weapons.length; i < len; i += 1) {
         for (var i = 0, len = wpns.length; i < len; i += 1) {
-            if (w_idweapon_id_energy[0] == wpns[i].weapon.id) {
+            if (weapon_id_energy[0] == wpns[i].weapon.id) {
                 //узнаем из скольких орудий стреляли
                 for (var j = 0, max_barrels = wpns[i].count; j < max_barrels; j+=1){
                     if(weapon_id_energy[1] == wpns[i].weapon.energy*(j+1)){
