@@ -181,6 +181,7 @@ Battle.prototype = {
             this.defeated = true;
             this.endTextPosY = this.ctx.canvas.height;
         }
+		this.whenBattleEnd.call();
     }
 };
 

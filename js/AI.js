@@ -9,7 +9,7 @@ AI.prototype = {
         for (var i = 0, max = this.targets.length; i < max; i += 1) {
             if (this.targets[i].object.id != this.ship.id) {
                 StarSystem.battle.refreshSelectedShip(this.targets[i].object.id);
-                StarSystem.battle.fire(101);
+                StarSystem.battle.fire(this.ship.slots[0].weapon.id+'_'+this.ship.slots[0].weapon.energy);
             }
 
             //var t0 = performance.now(),
