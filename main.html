@@ -116,7 +116,7 @@
 			</div>
 			</div>
 		</div> -->
-		<div id="marketplace" class="dn centered_window">
+		<div id="marketplace" class="dn centered_window standart_size">
 			<!--<div id="marketplace_veil" class="dn veil"></div>-->			
 			<div id="marketplace_purchase" class="dn">
 				<div id="marketplace_purchase_buy" class="dn purchase_win">
@@ -181,18 +181,8 @@
 				<span id="marketplace_ship">Деньги <span id="ship_money">0</span>d | Груз <span id="ship_cargo_current">~</span>/<span id="ship_cargo_max">~</span></span>
 			</div>
 		</div>
-	    <div id="battle" class="dn">
-	        Энергия: <span id="battle_energy">1500</span>
-	        <hr/>
-	        <select id="battle_weapons">
-	            <option>Got you!</option>
-	        </select>
-	        <button id="battle_fire" onclick="Fire();">Использовать</button><br/>
-	        <button disabled="disabled">Побег</button>
-	        <button onclick="EndPhase();">Закончить</button>
-	    </div>
-	    <div id="outfit" class="dn centered_window">
-	        <div id="outfit_pack">
+        <div id="outfit" class="dn centered_window standart_size">
+            <div id="outfit_pack">
                 <div style="height:750px;">
                     <span>Корабль</span>
                     <select>
@@ -208,26 +198,43 @@
                     <button id="outfit_ready" onclick="PreBattleReady();">Готово</button>
                 </div>
             </div>
-	        <div id="outfit_weapon">
+            <div id="outfit_weapon">
                 <span>Класс</span>
                 <!--<div class="outfit_weapon_item">
-					<span class="cell-box">1</span>
-                    <label for="weapon_slot_0">Оружие 0</label>
-					<select id="weapon_slot_0">
-						<option></option>
-						<option></option>
-						<option></option>
-						<option></option>
-					</select>
-				</div>-->
-	        </div>
-	        <div id="outfit_specification">
-                Потребление энергии<span id ="outfit_specification_energy"></span><br />
+                <span class="cell-box">1</span>
+                <label for="weapon_slot_0">Оружие 0</label>
+                <select id="weapon_slot_0">
+                    <option></option>
+                    <option></option>
+                    <option></option>
+                    <option></option>
+                </select>
+            </div>-->
+            </div>
+            <div id="outfit_specification">
+                Потребление энергии<span id="outfit_specification_energy"></span><br />
                 Стоимость <span id="outfit_specification_cost"></span><br />
                 Тип <span id="outfit_specification_type"></span><br />
                 Масса <span id="outfit_specification_mass"></span>
             </div>
-	    </div>	
+        </div>
+        <div id="battle" class="dn">
+	        Энергия: <span id="battle_energy">1500</span>
+	        <hr/>
+	        <select id="battle_weapons">
+	            <option>Got you!</option>
+	        </select>
+	        <button id="battle_fire" onclick="Fire();">Использовать</button><br/>
+	        <button disabled="disabled">Побег</button>
+	        <button onclick="EndPhase();">Закончить</button>
+	    </div>
+        <div id="summary" class="dn centered_window small_size">
+            <div id="summary_stat">
+                получено денег —
+                рейтинг —
+            </div>
+            <button>Следующий бой</button>
+        </div>
 	</div>
 </body>
 </html>

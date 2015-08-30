@@ -30,7 +30,7 @@
 
 .centered_window{
     font-size: inherit;
-    margin-top: 50px;
+    
     padding-left: 0;
     padding-right: 0;
     margin-left: auto;
@@ -38,12 +38,19 @@
     display: block;
     background-color: #fff;   
     position:relative;
+    
+}
+
+.standart_size{
+    margin-top: 50px;
     height: 800px;
     width: 1200px;
-    /*left:120px;
-    top:50px;*/
+}
 
-    /*display:block;*/
+.small_size{
+    margin-top: 200px;
+    height: 200px;
+    width: 400px;
 }
 
 .veil {
@@ -220,6 +227,10 @@
 #marketplace_buttons button{
     margin-right: 5px;
 }
+
+#summary{
+    z-index:2;
+} 
 
 .page-title {
     font-size: 1.4em;

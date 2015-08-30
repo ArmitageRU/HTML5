@@ -15,7 +15,8 @@ function Battle(context) {
 
     this.phaseInAction = false;
     //функция из вызывающего объекта (Application в данном случае)
-    this.whenBattleEnd;
+    this.whenBattleEnding;
+    this.whenBattleEnded;
 };
 
 Battle.prototype = {
@@ -64,7 +65,10 @@ Battle.prototype = {
 
         if (this.winner) {
             this.endTextPosY += time*0.5;
-            if (this.endTextPosY >= this.ctx.canvas.height / 2) this.endTextPosY = this.ctx.canvas.height / 2;
+            if (this.endTextPosY >= this.ctx.canvas.height / 2) {
+                this.endTextPosY = this.ctx.canvas.height / 2;
+
+            }
             this.ctx.beginPath();
             this.ctx.rect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
             this.ctx.fillStyle = 'rgba(0,0,0,0.7)';
@@ -78,7 +82,10 @@ Battle.prototype = {
         }
         if (this.defeated) {
             this.endTextPosY -= time * 0.5;
-            if (this.endTextPosY <= this.ctx.canvas.height / 2) this.endTextPosY = this.ctx.canvas.height / 2;
+            if (this.endTextPosY <= this.ctx.canvas.height / 2) {
+                this.endTextPosY = this.ctx.canvas.height / 2;
+                this.whenBattleEnded.call();
+            }
             this.ctx.beginPath();
             this.ctx.rect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
             this.ctx.fillStyle = 'rgba(0,0,0,0.7)';
@@ -181,7 +188,7 @@ Battle.prototype = {
             this.defeated = true;
             this.endTextPosY = this.ctx.canvas.height;
         }
-		this.whenBattleEnd.call();
+		this.whenBattleEnding.call();
     }
 };
 

@@ -64,7 +64,6 @@ Weapon.prototype = {
                     rocket_ship_up.speed = 1500;
                     rocket_ship_up.life.current = 20;
                     rocket_ship_up.battlePrepare(new Point(from.position.x + 100, from.position.y - 100), Math.PI, null, 1);
-                    //rocket_ship_up.weapons[rocket_ship_up.weapons.length] = new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null);
                     rocket_ship_up.slots = [{
                         size: 1,
                         weapon: new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null)
@@ -87,7 +86,6 @@ Weapon.prototype = {
                     rocket_ship_down.speed = 1500;
                     rocket_ship_down.life.current = 20;
                     rocket_ship_down.battlePrepare(new Point(from.position.x + 100, from.position.y + 100), Math.PI, null, 1);
-                    //rocket_ship_down.weapons[rocket_ship_up.weapons.length] = new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null);
                     rocket_ship_up.slots = [{
                         size: 1,
                         weapon: new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null)

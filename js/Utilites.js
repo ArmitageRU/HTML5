@@ -313,11 +313,25 @@ function SelectOutfitWeapon(slot, obj) {
     ShowWeaponInfo(wpn);
 }
 
+//показ информации об оружии
 function ViewWeaponInfo(obj) {
     var o = $(obj),
         weapon_id = o.children("select option:selected").eq(0).val(),
         wpn = StarSystem.FAKE.GetWeaponById(weapon_id);
     ShowWeaponInfo(wpn);
+}
+
+function ShowSummaryStat(hide) {
+    if (hide) {
+        $("#summary").addClass("dn");
+        $("#veil").addClass("dn");
+    }
+    else {
+        //заполнить данными
+        //Function();
+        $("#summary").removeClass("dn");
+        $("#veil").removeClass("dn");
+    }
 }
 
 //клик по диву в котором выбор оружия (сильно не уверен что нужно)
