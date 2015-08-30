@@ -211,6 +211,7 @@ Application.prototype = {
 	    var random_ship = ~~(getRandomArbitrary(0, this.FAKE.ships.length));
 	    var enemy_ship = new Ship(this.ctx, this._images['ships'], new Rectangle(this.FAKE.ships[random_ship].x, this.FAKE.ships[random_ship].y, this.FAKE.ships[random_ship].width, this.FAKE.ships[random_ship].height, 0.3));
 	    this.FAKE.GenerateFakeWeapons(enemy_ship.slots, this.ctx, this._images['rocket']);
+		enemy_ship.life.current = 100;
 	    return enemy_ship;
 	},
 
