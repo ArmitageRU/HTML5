@@ -189,6 +189,18 @@ Battle.prototype = {
             this.endTextPosY = this.ctx.canvas.height;
         }
 		this.whenBattleEnding.call();
+    },
+
+    removeParticipant: function () {
+        for (var i = 0; i < this.participants.length; i += 1) {
+            if (this.participants[i].object.life.current <= 0) {
+
+                this.participants.splice(i, 1);
+                //if (this.participants.length == 1) {
+                    //this.battleEnd();
+                //}
+            }
+        }
     }
 };
 
