@@ -61,7 +61,7 @@
 
 Ship.prototype = {
 	render:function(time){
-		var path = this.speed*time*0.001;
+	    var path = this.speed * time * 0.001;
 		if(this.route != null && this.route.to!=null && this.route.to!=this.route.from){	
 		    this.rot = Math.atan2(this.position.y - this.route.to.y, this.position.x - this.route.to.x);//-Math.PI / 2; <-- я хз зачем это
 			var dir_vector = new Point(this.route.to.x-this.position.x, this.route.to.y-this.position.y);

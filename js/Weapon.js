@@ -19,7 +19,7 @@ function Weapon(energy, title, cost, size, mass, type, context, image) {
 };
 
 Weapon.prototype = {
-    renderAction: function (full_time, time, ctx, from, barrels, target) {
+    renderAction: function (full_time, time, ctx, fire/*from, barrels, target*/) {
         var ret_time = full_time + time,
             thickness = ~~(ret_time / (this.beamLasting / 10));
             //target = from.target;
@@ -28,12 +28,12 @@ Weapon.prototype = {
                 //full_time -= time;
                 if (ret_time > this.beamLasting) {
                     ret_time = -1;
-                    target.GetDamage(this);
+                    fire.target.object.GetDamage(this, fire.barrels);
                     break;
                 }
                 ctx.beginPath();
-                ctx.moveTo(from.position.x, from.position.y);
-                ctx.lineTo(target.position.x, target.position.y);
+                ctx.moveTo(fire.parent.object.position.x, fire.parent.object.position.y);
+                ctx.lineTo(fire.target.object.position.x, fire.target.object.position.y);
                 ctx.lineWidth = thickness;//10;
                 // set line color
                 ctx.strokeStyle = '#ff0000';
@@ -42,12 +42,12 @@ Weapon.prototype = {
             case 'plasma':
                 if (ret_time > this.plasmaLasting) {
                     ret_time = -1;
-                    target.GetDamage(this, barrels);
+                    fire.target.object.GetDamage(this, fire.barrels);
                     break;
                 }
-                var curr_x = (target.position.x - from.position.x) * ret_time / this.plasmaLasting;
+                var curr_x = (fire.target.object.position.x - fire.parent.object.position.x) * ret_time / this.plasmaLasting;
                 ctx.beginPath();
-                ctx.arc(from.position.x + curr_x, from.position.y, 30, 0, 2 * Math.PI, false);
+                ctx.arc(fire.parent.object.position.x + curr_x, fire.parent.object.position.y, 30, 0, 2 * Math.PI, false);
                 ctx.fillStyle = '#ff3333';
                 ctx.fill();
                 ctx.lineWidth = 5;
@@ -59,63 +59,68 @@ Weapon.prototype = {
                     curr_y = (/*from.position.y -*/ 100) * ret_time / this.rocketLasting;
                 if (ret_time > this.rocketLasting) {
                     var rocket_ship_up = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
-                    rocket_ship_up.id = -1
-                    rocket_ship_up.parentShipId = from.id;
+                    rocket_ship_up.id = StarSystem.battle.getNextId();//-1;
+                    rocket_ship_up.parentShipId = fire.parent.object.id;
                     rocket_ship_up.speed = 1500;
                     rocket_ship_up.life.current = 20;
-					if(from.rot == -Math.PI / 2){
-						rocket_ship_up.battlePrepare(new Point(from.position.x - 100, from.position.y - 100), 2*Math.PI, null, 1);
+					if(fire.parent.object.rot == -Math.PI / 2){
+					    rocket_ship_up.battlePrepare(new Point(fire.parent.object.position.x - 100, fire.parent.object.position.y - 100), 2 * Math.PI, null, 1);
 					}
 					else {
-						rocket_ship_up.battlePrepare(new Point(from.position.x + 100, from.position.y - 100), Math.PI, null, 1);
+					    rocket_ship_up.battlePrepare(new Point(fire.parent.object.position.x + 100, fire.parent.object.position.y - 100), Math.PI, null, 1);
 					}
                     rocket_ship_up.slots = [{
                         size: 1,
                         weapon: new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null)
                     }];
-                    rocket_ship_up.target = target;
+                    rocket_ship_up.target = fire.target.object;
                     rocket_ship_up.phaseActive = function phaseActive() {
                         rocket_ship_up.route = new Route(rocket_ship_up.position);
-                        rocket_ship_up.route.to = target.position;
+                        rocket_ship_up.route.to = fire.target.object.position;
                     };
                     rocket_ship_up.arrive = function arrive() {
-                        this.target.GetDamage(this.slots[0].weapon, barrels);
+                        this.target.GetDamage(this.slots[0].weapon, fire.barrels);
                         this.life.current = 0;
                         //StarSystem.battle.removeParticipant(this.id)
                     };
-
-                    StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship_up, /*target,*/ rocket_ship_up.render);
+                    StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship_up, fire.parent.align, rocket_ship_up.render);
                     var rocket_ship_down = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
-                    rocket_ship_down.id = -2
-                    rocket_ship_down.parentShipId = from.id;
+                    rocket_ship_down.id = StarSystem.battle.getNextId();//-2;
+                    rocket_ship_down.parentShipId = fire.parent.object.id;
                     rocket_ship_down.speed = 1500;
                     rocket_ship_down.life.current = 20;
-                    if(from.rot == -Math.PI / 2){
-						rocket_ship_down.battlePrepare(new Point(from.position.x - 100, from.position.y + 100), 2*Math.PI, null, 1);
+                    if (fire.parent.object.rot == -Math.PI / 2) {
+                        rocket_ship_down.battlePrepare(new Point(fire.parent.object.position.x - 100, fire.parent.object.position.y + 100), 2 * Math.PI, null, 1);
 					}
 					else {
-						rocket_ship_down.battlePrepare(new Point(from.position.x + 100, from.position.y + 100), Math.PI, null, 1);
+                        rocket_ship_down.battlePrepare(new Point(fire.parent.object.position.x + 100, fire.parent.object.position.y + 100), Math.PI, null, 1);
 					}
                     rocket_ship_up.slots = [{
                         size: 1,
                         weapon: new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null)
                     }];
-                    rocket_ship_down.target = target;
+                    rocket_ship_down.target = fire.target.object;
                     rocket_ship_down.phaseActive = function phaseActive() {
                         rocket_ship_down.route = new Route(rocket_ship_down.position);
-                        rocket_ship_down.route.to = target.position;
+                        rocket_ship_down.route.to = fire.target.object.position;
                     };
                     rocket_ship_down.arrive = function arrive() {
-                        this.target.GetDamage(this.slots[0].weapon, barrels);
+                        this.target.GetDamage(this.slots[0].weapon, fire.barrels);
                         this.life.current = 0;
                         //StarSystem.battle.removeParticipant(this.id)
                     };
-                    StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship_down, /*target,*/ rocket_ship_down.render);
+                    StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship_down, fire.parent.align, rocket_ship_down.render);
                     ret_time = -1;
                     break;
                 }
-                this.tile.draw(new Point(from.position.x + curr_x, from.position.y - curr_y), -Math.PI);
-                this.tile.draw(new Point(from.position.x + curr_x, from.position.y + curr_y), -Math.PI);
+                if (fire.parent.object.rot == -Math.PI / 2) {
+                    this.tile.draw(new Point(fire.parent.object.position.x - curr_x, fire.parent.object.position.y - curr_y), 2*Math.PI);
+                    this.tile.draw(new Point(fire.parent.object.position.x - curr_x, fire.parent.object.position.y + curr_y), 2*Math.PI);
+                }
+                else {
+                    this.tile.draw(new Point(fire.parent.object.position.x + curr_x, fire.parent.object.position.y - curr_y), -Math.PI);
+                    this.tile.draw(new Point(fire.parent.object.position.x + curr_x, fire.parent.object.position.y + curr_y), -Math.PI);
+                }
                 break;
             default:
                 break;

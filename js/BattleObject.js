@@ -1,10 +1,8 @@
 ﻿"use strict";
-function BattleObject(/*source, target,*/object, render) {
-    //this.source = source;
-    //this.target = target;
+function BattleObject(object, align, render) {
     this.object = object;
     this.render = render;
-    //this.live = true;
+    this.align = align || 0;//0 нейтрален, 1 — союзник, -1 — враг
 };
 
 BattleObject.prototype = {
