@@ -60,7 +60,7 @@ Battle.prototype = {
             this.endTextPosY += time*0.5;
             if (this.endTextPosY >= this.ctx.canvas.height / 2) {
                 this.endTextPosY = this.ctx.canvas.height / 2;
-
+				this.whenBattleEnded.call(StarSystem);
             }
             this.ctx.beginPath();
             this.ctx.rect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
@@ -77,7 +77,7 @@ Battle.prototype = {
             this.endTextPosY -= time * 0.5;
             if (this.endTextPosY <= this.ctx.canvas.height / 2) {
                 this.endTextPosY = this.ctx.canvas.height / 2;
-                this.whenBattleEnded.call();
+                this.whenBattleEnded.call(StarSystem);
             }
             this.ctx.beginPath();
             this.ctx.rect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);

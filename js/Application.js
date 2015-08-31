@@ -157,6 +157,9 @@ Application.prototype = {
 			if(!this.openedWindows.prebattle){
 				PrepareForBattle(true, this.ship);
 				this.openedWindows.prebattle = true;
+				this.battle.participants = [];
+				this.battle.participants[this.battle.participants.length] = new BattleObject(this.ship, 1, this.ship.render);
+				this.battle.participants[this.battle.participants.length] = new BattleObject(this.enemyShip, -1, this.enemyShip.render);
 			}
 			if (this.battleInProcess) {
                 this.battle.beginPhase();
@@ -220,8 +223,8 @@ Application.prototype = {
 	    this.battle = new Battle(this.ctx);
 	    this.ship.battlePrepare(new Point(120, this.canvas.height / 2), Math.PI / 2, null, 1);
 	    this.enemyShip.battlePrepare(new Point(this.canvas.width - 120, this.canvas.height / 2), -Math.PI / 2, null, 1);
-	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.ship, 1, this.ship.render);
-	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.enemyShip, -1, this.enemyShip.render);
+	    //this.battle.participants[this.battle.participants.length] = new BattleObject(this.ship, 1, this.ship.render);
+	    //this.battle.participants[this.battle.participants.length] = new BattleObject(this.enemyShip, -1, this.enemyShip.render);
 	    this.battle.whenBattleEnding = function battleEnding() {
 	        HideBattleMenu();
 	    };
