@@ -288,7 +288,7 @@ function FillPreBattle() {
         for (var j = 0, max_w = all_weapons.length; j < max_w; j += 1) {
             if (all_weapons[j].size <= currentShip.slots[i].size) {
                 suited_weapons += "<option value=\"" + all_weapons[j].id + "\" ";
-                if (all_weapons[j].id == currentShip.slots[i].weapon.id) {
+                if (currentShip.slots[i].weapon!=null && all_weapons[j].id == currentShip.slots[i].weapon.id) {
                     suited_weapons += " selected=\"selected\"";
                 }
                 suited_weapons += ">" + all_weapons[j].title + "</option>";
