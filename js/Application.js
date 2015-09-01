@@ -21,10 +21,16 @@ var Application = function(){
     //tmp
 	this.FAKE;
 	this.enemyShip;
-	this.openedWindows = {
+
+	//this.inBattle = false;
+	this.currentMode = {
+	    inBattle: false,
+	    afterBattle: false
+	};
+    /*this.openedWindows = {
 	    prebattle: false,
         summary:false
-	};
+	};*/
 	
 };
 
@@ -117,9 +123,11 @@ Application.prototype = {
 			}
 		}
 		this.mouse = new MouseController(this.canvas);
-		this.enemyShip = this.getEnemy();
-		this.enemyShip.id = 1;
-		this.initBattle();
+		//this.enemyShip = this.getEnemy();
+		//this.enemyShip.id = 1;
+	    //this.openedWindows.prebattle = true;
+		this.currentMode.inBattle = true;
+		//this.initBattle();
 	},
 	render: function(lastTime) {
         var curTime = new Date();
@@ -153,22 +161,24 @@ Application.prototype = {
             FillTabs(this.currentMainContent, this.currentMarketContent);
         }
         else if (this.battleActive) {
-            
-			if(!this.openedWindows.prebattle){
+            if (/*this.openedWindows.prebattle*/this.currentMode.inBattle) {
 				PrepareForBattle(true, this.ship);
-				this.openedWindows.prebattle = true;
-				this.battle.participants = [];
-				this.battle.participants[this.battle.participants.length] = new BattleObject(this.ship, 1, this.ship.render);
-				this.battle.participants[this.battle.participants.length] = new BattleObject(this.enemyShip, -1, this.enemyShip.render);
+                //this.openedWindows.prebattle = false;
+				//this.inBattle = false;
+				this.initBattle();
+				this.currentMode.inBattle = false;
+			    //this.battle.participants = [];
+				//this.battle.participants[this.battle.participants.length] = new BattleObject(this.ship, 1, this.ship.render);
+				//this.battle.participants[this.battle.participants.length] = new BattleObject(this.enemyShip, -1, this.enemyShip.render);
 			}
+			
 			if (this.battleInProcess) {
                 this.battle.beginPhase();
                 this.battle.render(elapsedTime, this.mouse);
                 //подразумевая что на этом моменте ни одно из этих окон не будет открыто
-                this.openedWindows.prebattle = false;
-                this.openedWindows.summary = false;
+                //this.openedWindows.prebattle = false;
+                //this.openedWindows.summary = false;
             }
-            
         }
 		/*GRID*/
 		/*
@@ -214,24 +224,28 @@ Application.prototype = {
 	    var random_ship = ~~(getRandomArbitrary(0, this.FAKE.ships.length));
 	    var enemy_ship = new Ship(this.ctx, this._images['ships'], new Rectangle(this.FAKE.ships[random_ship].x, this.FAKE.ships[random_ship].y, this.FAKE.ships[random_ship].width, this.FAKE.ships[random_ship].height, 0.3));
 	    this.FAKE.GenerateFakeWeapons(enemy_ship.slots, this.ctx, this._images['rocket']);
-		enemy_ship.life.current = 100;
-	    return enemy_ship;
+	    enemy_ship.life.current = 100;
+	    enemy_ship.id = 1;
+	    //return enemy_ship;
+	    this.enemyShip = enemy_ship;
 	},
 
     //только для теста
 	initBattle: function () {
+	    this.getEnemy();
+
 	    this.battle = new Battle(this.ctx);
 	    this.ship.battlePrepare(new Point(120, this.canvas.height / 2), Math.PI / 2, null, 1);
 	    this.enemyShip.battlePrepare(new Point(this.canvas.width - 120, this.canvas.height / 2), -Math.PI / 2, null, 1);
-	    //this.battle.participants[this.battle.participants.length] = new BattleObject(this.ship, 1, this.ship.render);
-	    //this.battle.participants[this.battle.participants.length] = new BattleObject(this.enemyShip, -1, this.enemyShip.render);
+	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.ship, 1, this.ship.render);
+	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.enemyShip, -1, this.enemyShip.render);
 	    this.battle.whenBattleEnding = function battleEnding() {
 	        HideBattleMenu();
 	    };
 	    this.battle.whenBattleEnded = function battleEnded() {
-	        if (!this.openedWindows.summary) {
+	        if (!this.currentMode.afterBattle) {
 	            ShowSummaryStat(false);
-	            this.openedWindows.summary = true;
+	            this.currentMode.afterBattle = true;
             }
 	    };
 	    var ai = new AI(this.enemyShip, this.battle.participants);

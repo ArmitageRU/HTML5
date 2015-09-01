@@ -30,10 +30,9 @@ Battle.prototype = {
                         this.fires.splice(j, 1);
                     }
                     else if (this.fires[j].parent.object.id === this.participants[i].object.id) {
-                        //for (var k = 0, max_f = this.fires[j].ship.weapons.length; k < max_f; k += 1) {
                         for (var k = 0, max_f = this.fires[j].parent.object.slots.length; k < max_f; k += 1) {
                             if (this.fires[j].weapon_id === this.fires[j].parent.object.slots[k].weapon.id) {
-                                this.fires[j].time = this.fires[j].parent.object.slots[k].weapon.renderAction(this.fires[j].time, time, this.ctx, this.fires[j]/*this.fires[j].ship, this.fires[j].barrels, this.fires[j].target/*this.participants[i].object/*, /*this.participants[i].target*/);
+                                this.fires[j].time = this.fires[j].parent.object.slots[k].weapon.renderAction(this.fires[j].time, time, this.ctx, this.fires[j]);
                             }
                         }
                         break;
@@ -242,6 +241,10 @@ Battle.prototype = {
         }
         if (!win && defeat) {
             this.defeated = true;
+        }
+
+        if (this.winner || this.defeated) {
+            this.fires = [];
         }
     }
 };

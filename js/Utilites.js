@@ -236,7 +236,6 @@ function PrepareForBattle(hide, ship) {
         PreBattle(!hide);
 		//PrepareBattleMenu(ship, 0);
         //CheckWeapons(ship);
-        
     }
 }
 
@@ -426,4 +425,10 @@ function Fire() {
 
 function EndPhase() {
     StarSystem.battle.wantEnd = true;//.endPhase();
+}
+
+function CloseBattleStat() {
+    ShowSummaryStat(true);
+    this.inbattle = false;
+    StarSystem.currentMode.inBattle = true;
 }

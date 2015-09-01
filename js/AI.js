@@ -16,15 +16,6 @@ AI.prototype = {
 				}
                 StarSystem.battle.fire(this.ship.slots[0].weapon.id+'_'+this.ship.slots[0].weapon.energy);
             }
-			//var t0 = performance.now(),
-            //    t1;
-            //console.log(t0);
-            //while (true) {
-            //    t1 = performance.now();
-            //    if ((t1 - t0) > 1000) break;
-            //}
-            
         }
-        //StarSystem.battle.endPhase();
     }
 };
