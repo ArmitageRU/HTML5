@@ -4,7 +4,7 @@ function Weapon(energy, title, cost, size, mass, type, context, image) {
         return new Weapon();
     }
     this.ctx = context;
-    this.tile = new Tile(this.ctx, image, null, null, 49, 19, 1);
+    this.tile = new Tile(this.ctx, image, null, null, /*49, 19,*/null, null, 1);
     this.energy = energy;
     this.title = title;
     this.primeCost = cost;//себестоимость, возможно не понадобится
@@ -46,13 +46,16 @@ Weapon.prototype = {
                     break;
                 }
                 var curr_x = (fire.target.object.position.x - fire.parent.object.position.x) * ret_time / this.plasmaLasting;
-                ctx.beginPath();
+                this.tile.draw(new Point(fire.parent.object.position.x + curr_x, fire.parent.object.position.y), 0);
+				/*
+				ctx.beginPath();
                 ctx.arc(fire.parent.object.position.x + curr_x, fire.parent.object.position.y, 30, 0, 2 * Math.PI, false);
                 ctx.fillStyle = '#ff3333';
                 ctx.fill();
                 ctx.lineWidth = 5;
                 ctx.strokeStyle = '#ff3333';
                 ctx.stroke();
+				*/
                 break;
             case 'rocket':
                 var curr_x = (/*from.position.x +*/ 100) * ret_time / this.rocketLasting,

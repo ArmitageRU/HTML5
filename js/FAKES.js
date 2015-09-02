@@ -5,7 +5,7 @@ function FAKES() {
 };
 
 FAKES.prototype = {
-    GenerateFakeWeapons: function (slots, context, rocket_image) {
+    GenerateFakeWeapons: function (slots, context, rocket_image, plasma_image) {
         var weapons = [];
         var w = new Weapon(200, 'Лазер', 500, 1, 10, 'beam', context, null);
         w.id = 101;
@@ -13,7 +13,7 @@ FAKES.prototype = {
         w = new Weapon(1000, 'Ракеты', 1500, 2, 40, 'rocket', context, rocket_image);
         w.id = 102;
         weapons[1] = w;
-        w = new Weapon(500, 'Плазма', 650, 1, 20, 'plasma', context, null);
+        w = new Weapon(500, 'Плазма', 650, 1, 20, 'plasma', context, plasma_image);
         w.id = 103;
         weapons[2] = w;
         this.weapons = weapons;

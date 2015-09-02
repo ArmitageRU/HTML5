@@ -91,6 +91,7 @@ Application.prototype = {
 		IM.add('img/planets/planet18.png', 'planet18');
         //rocket
 		IM.add('img/DiverWithMissleRocket.png', 'rocket');
+		IM.add('img/Plazma2.png', 'plasma');
 		
 		this.Star = new Star(globalCenter, 50)
 		this.Star.ctx = this.ctx;
@@ -100,7 +101,7 @@ Application.prototype = {
 		this.ship.position = new Point(this.canvas.width-100, this.canvas.height/2);
 		this.route = new Route(this.ship.position);
 		this.ship.route = this.route;
-		this.FAKE.GenerateFakeWeapons(this.ship.slots, this.ctx, this._images['rocket']); //устанавливаем оружие в слоты
+		this.FAKE.GenerateFakeWeapons(this.ship.slots, this.ctx, this._images['rocket'], this._images['plasma']); //устанавливаем оружие в слоты
 		this.ship.phaseActive = function phaseActive() {
 		    PrepareBattleMenu(this);
 		};
@@ -215,7 +216,7 @@ Application.prototype = {
 	getEnemy: function () {
 	    var random_ship = ~~(getRandomArbitrary(0, this.FAKE.ships.length));
 	    var enemy_ship = new Ship(this.ctx, this._images['ships'], new Rectangle(this.FAKE.ships[random_ship].x, this.FAKE.ships[random_ship].y, this.FAKE.ships[random_ship].width, this.FAKE.ships[random_ship].height, 0.3));
-	    this.FAKE.GenerateFakeWeapons(enemy_ship.slots, this.ctx, this._images['rocket']);
+	    this.FAKE.GenerateFakeWeapons(enemy_ship.slots, this.ctx, this._images['rocket'], this._images['plasma']);
 	    enemy_ship.life.current = 100;
 	    enemy_ship.id = 1;
 	    //return enemy_ship;
