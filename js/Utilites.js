@@ -234,8 +234,6 @@ function PrepareForBattle(hide, ship) {
         currentShip = ship;
         HideStandartHTMLUI(hide);
         PreBattle(!hide);
-		//PrepareBattleMenu(ship, 0);
-        //CheckWeapons(ship);
     }
 }
 
@@ -326,11 +324,15 @@ function ShowSummaryStat(hide) {
         $("#veil").addClass("dn");
     }
     else {
+        $("#summary_kills").html(currentShip.statistic.kills);
+        $("#summary_death").html(currentShip.statistic.death);
         //заполнить данными
         //Function();
         $("#summary").removeClass("dn");
         $("#veil").removeClass("dn");
     }
+
+
 }
 
 //клик по диву в котором выбор оружия (сильно не уверен что нужно)
@@ -351,10 +353,7 @@ function ShowWeaponInfo(weapon) {
 
 //После нажатия кнопки "Готово"
 function PreBattleReady() {
-    StarSystem.battleInProcess = true;
-    /*
-        логика по выбору того что выбрано. 
-    */
+    StarSystem.currentMode.inBattle = true;
     PreBattle(true);
 }
 
@@ -430,5 +429,6 @@ function EndPhase() {
 function CloseBattleStat() {
     ShowSummaryStat(true);
     this.inbattle = false;
-    StarSystem.currentMode.inBattle = true;
+    StarSystem.currentMode.preBattle = true;
+    currentShip.life.current = currentShip.life.max;
 }

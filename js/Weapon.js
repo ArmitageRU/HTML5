@@ -56,7 +56,9 @@ Weapon.prototype = {
                 break;
             case 'rocket':
                 var curr_x = (/*from.position.x +*/ 100) * ret_time / this.rocketLasting,
-                    curr_y = (/*from.position.y -*/ 100) * ret_time / this.rocketLasting;
+                    curr_y = (/*from.position.y -*/ 100) * ret_time / this.rocketLasting,
+                    up_r_bo,
+                    down_r_bo;
                 if (ret_time > this.rocketLasting) {
                     var rocket_ship_up = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
                     rocket_ship_up.id = StarSystem.battle.getNextId();//-1;
@@ -83,7 +85,9 @@ Weapon.prototype = {
                         this.life.current = 0;
                         //StarSystem.battle.removeParticipant(this.id)
                     };
-                    StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship_up, fire.parent.align, rocket_ship_up.render);
+                    up_r_bo = new BattleObject(rocket_ship_up, fire.parent.align, rocket_ship_up.render);
+                    up_r_bo.hide = false;
+                    StarSystem.battle.participants[StarSystem.battle.participants.length] = up_r_bo;//new BattleObject(rocket_ship_up, fire.parent.align, rocket_ship_up.render);
                     var rocket_ship_down = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
                     rocket_ship_down.id = StarSystem.battle.getNextId();//-2;
                     rocket_ship_down.parentShipId = fire.parent.object.id;
@@ -109,7 +113,9 @@ Weapon.prototype = {
                         this.life.current = 0;
                         //StarSystem.battle.removeParticipant(this.id)
                     };
-                    StarSystem.battle.participants[StarSystem.battle.participants.length] = new BattleObject(rocket_ship_down, fire.parent.align, rocket_ship_down.render);
+                    down_r_bo = new BattleObject(rocket_ship_down, fire.parent.align, rocket_ship_down.render);
+                    down_r_bo.hide = false;
+                    StarSystem.battle.participants[StarSystem.battle.participants.length] = down_r_bo;//new BattleObject(rocket_ship_down, fire.parent.align, rocket_ship_down.render);
                     ret_time = -1;
                     break;
                 }

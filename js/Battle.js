@@ -24,6 +24,10 @@ Battle.prototype = {
     render: function (time, mouse) {
         this.removeParticipant();
         for (var i = 0; i < this.participants.length; i += 1) {
+            if (this.participants[i].hide) {
+                continue;
+            }
+
             if (this.fires.length > 0) {
                 for (var j = 0; j < this.fires.length; j += 1) {
                     if (this.fires[j].time < 0) {
@@ -31,7 +35,7 @@ Battle.prototype = {
                     }
                     else if (this.fires[j].parent.object.id === this.participants[i].object.id) {
                         for (var k = 0, max_f = this.fires[j].parent.object.slots.length; k < max_f; k += 1) {
-                            if (this.fires[j].weapon_id === this.fires[j].parent.object.slots[k].weapon.id) {
+                            if (this.fires[j].parent.object.slots[k].weapon !=null && this.fires[j].weapon_id === this.fires[j].parent.object.slots[k].weapon.id) {
                                 this.fires[j].time = this.fires[j].parent.object.slots[k].weapon.renderAction(this.fires[j].time, time, this.ctx, this.fires[j]);
                             }
                         }
@@ -59,7 +63,7 @@ Battle.prototype = {
             this.endTextPosY += time*0.5;
             if (this.endTextPosY >= this.ctx.canvas.height / 2) {
                 this.endTextPosY = this.ctx.canvas.height / 2;
-				this.whenBattleEnded.call(StarSystem);
+                if (this.whenBattleEnded!=null) this.whenBattleEnded.call(StarSystem, 1);
             }
             this.ctx.beginPath();
             this.ctx.rect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
@@ -76,7 +80,7 @@ Battle.prototype = {
             this.endTextPosY -= time * 0.5;
             if (this.endTextPosY <= this.ctx.canvas.height / 2) {
                 this.endTextPosY = this.ctx.canvas.height / 2;
-                this.whenBattleEnded.call(StarSystem);
+                if (this.whenBattleEnded != null) this.whenBattleEnded.call(StarSystem, -1);
             }
             this.ctx.beginPath();
             this.ctx.rect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
@@ -139,7 +143,6 @@ Battle.prototype = {
             wpns = this.currentShip.GetWeapons(),
             weapon_id_energy = w_id.split('_'),
             barrels = 1;
-        //for (var i = 0, len = this.currentShip.weapons.length; i < len; i += 1) {
         for (var i = 0, len = wpns.length; i < len; i += 1) {
             if (weapon_id_energy[0] == wpns[i].weapon.id) {
                 //узнаем из скольких орудий стреляли
@@ -172,16 +175,16 @@ Battle.prototype = {
         return ship;
     },
 
-    battleEnd: function () {
-        if (this.participants[0].object.id == 0) {
-            this.winner = true;
-        }
-        else {
-            this.defeated = true;
-            this.endTextPosY = this.ctx.canvas.height;
-        }
-		this.whenBattleEnding.call();
-    },
+    //battleEnd: function () {
+    //    if (this.participants[0].object.id == 0) {
+    //        this.winner = true;
+    //    }
+    //    else {
+    //        this.defeated = true;
+    //        this.endTextPosY = this.ctx.canvas.height;
+    //    }
+	//	this.whenBattleEnding.call();
+    //},
 
     getParticipant: function (ship_id){
         for (var i = 0; i < this.participants.length; i += 1){
@@ -245,6 +248,12 @@ Battle.prototype = {
 
         if (this.winner || this.defeated) {
             this.fires = [];
+        }
+    },
+
+    showAllParticipants: function () {
+        for (var i = 0; i < this.participants.length; i += 1) {
+            this.participants[i].hide = false;
         }
     }
 };

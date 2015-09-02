@@ -16,22 +16,17 @@ var Application = function(){
 	this.currentMarketContent = null;
 	this.curentShipContent = null;
     //battle
-    this.battleActive = true;
+	this.battleActive = true;
     this.battleInProcess = false;//для единоразового приготовления, скрыть интерфейс например
     //tmp
 	this.FAKE;
 	this.enemyShip;
 
-	//this.inBattle = false;
 	this.currentMode = {
-	    inBattle: false,
+	    preBattle: false,
+        inBattle:false,
 	    afterBattle: false
 	};
-    /*this.openedWindows = {
-	    prebattle: false,
-        summary:false
-	};*/
-	
 };
 
 Application.prototype = {
@@ -106,7 +101,6 @@ Application.prototype = {
 		this.route = new Route(this.ship.position);
 		this.ship.route = this.route;
 		this.FAKE.GenerateFakeWeapons(this.ship.slots, this.ctx, this._images['rocket']); //устанавливаем оружие в слоты
-	    //this.ship.weapons = this.FAKE.GenerateFakeWeapons(this.ctx, this._images['rocket']);
 		this.ship.phaseActive = function phaseActive() {
 		    PrepareBattleMenu(this);
 		};
@@ -114,6 +108,7 @@ Application.prototype = {
 		    HideBattleMenu();
 		};
 		this.ship.id = 0;
+		
 		//system screen
 		for(var i = 0; i < 8; ++i){
 			var nextOrbit = this.generateOrbit();
@@ -123,11 +118,7 @@ Application.prototype = {
 			}
 		}
 		this.mouse = new MouseController(this.canvas);
-		//this.enemyShip = this.getEnemy();
-		//this.enemyShip.id = 1;
-	    //this.openedWindows.prebattle = true;
-		this.currentMode.inBattle = true;
-		//this.initBattle();
+		this.currentMode.preBattle = true;
 	},
 	render: function(lastTime) {
         var curTime = new Date();
@@ -161,23 +152,24 @@ Application.prototype = {
             FillTabs(this.currentMainContent, this.currentMarketContent);
         }
         else if (this.battleActive) {
-            if (/*this.openedWindows.prebattle*/this.currentMode.inBattle) {
+
+            if (this.currentMode.preBattle) {
 				PrepareForBattle(true, this.ship);
-                //this.openedWindows.prebattle = false;
-				//this.inBattle = false;
 				this.initBattle();
-				this.currentMode.inBattle = false;
-			    //this.battle.participants = [];
-				//this.battle.participants[this.battle.participants.length] = new BattleObject(this.ship, 1, this.ship.render);
-				//this.battle.participants[this.battle.participants.length] = new BattleObject(this.enemyShip, -1, this.enemyShip.render);
+				this.currentMode.preBattle = false;
 			}
-			
-			if (this.battleInProcess) {
+
+            this.battle.render(elapsedTime, this.mouse);
+            
+            if (this.currentMode.inBattle) {
+                this.battle.showAllParticipants();
                 this.battle.beginPhase();
-                this.battle.render(elapsedTime, this.mouse);
-                //подразумевая что на этом моменте ни одно из этих окон не будет открыто
-                //this.openedWindows.prebattle = false;
-                //this.openedWindows.summary = false;
+                this.currentMode.inBattle = false;
+            }
+
+            if (this.currentMode.afterBattle) {
+                ShowSummaryStat(false);
+                this.currentMode.afterBattle = false;
             }
         }
 		/*GRID*/
@@ -242,11 +234,15 @@ Application.prototype = {
 	    this.battle.whenBattleEnding = function battleEnding() {
 	        HideBattleMenu();
 	    };
-	    this.battle.whenBattleEnded = function battleEnded() {
-	        if (!this.currentMode.afterBattle) {
-	            ShowSummaryStat(false);
-	            this.currentMode.afterBattle = true;
-            }
+	    this.battle.whenBattleEnded = function battleEnded(result) {
+	        this.currentMode.afterBattle = true;
+	        if (result == 1) {
+	            this.ship.statistic.kills++;
+	        }
+	        if (result == -1) {
+	            this.ship.statistic.death++;
+	        }
+	        this.battle.whenBattleEnded = null;
 	    };
 	    var ai = new AI(this.enemyShip, this.battle.participants);
 	    this.enemyShip.phaseActive = function phaseActive() {

@@ -21,6 +21,8 @@
     this.phaseEnd;
     this.arrive;//когда добрался до точки
 
+    this.statistic = new Statistic();
+
     this.ctx = ctx;
     this.tile = new Tile(ctx, image, rectangle.x, rectangle.y, rectangle.width, rectangle.height, rectangle.scale);//new Tile(ctx, image, 28, 804, 199, 163, 0.3);//надо менять
 	this.route;

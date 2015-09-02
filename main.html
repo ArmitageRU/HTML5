@@ -33,6 +33,7 @@
     <script src="js/Battle.js?v=1" type="text/javascript"></script>
     <script src="js/BattleObject.js" type="text/javascript"></script>
     <script src="js/AI.js" type="text/javascript"></script>
+    <script src="js/Statistic.js" type="text/javascript"></script>
 </head>
 <body>
     <script>var StarSystem = new Application();</script>
@@ -188,6 +189,7 @@
                     <select>
                         <option disabled="disabled">Текущий</option>
                     </select>
+                    <!--<input id="outfit_restore" type="checkbox" checked="checked"/>восстановить здоровье-->
                     <p>
                         <span>скорость перезарядки </span><span id="outfit_recharge"></span><br />
                         <span>маневренность </span><span id="outfit_dodge"></span><br />
@@ -221,7 +223,8 @@
         <div id="summary" class="dn centered_window small_size">
             <div id="summary_stat">
                 получено денег — <br />
-                рейтинг — 
+                побед — <span id ="summary_kills"></span> <br />
+                поражений — <span id="summary_death"></span>
             </div>
             <button onclick="CloseBattleStat();">Следующий бой</button>
         </div>
