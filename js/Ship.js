@@ -165,7 +165,7 @@ Ship.prototype = {
 	RemoveCargo:function(id, quantity, cost){
 		for(var i = 0;i<this.cargo.length;i++){
 			if(this.cargo[i].id==id){
-				if(this.cargo[i].quantity ==quantity){
+				if(this.cargo[i].quantity == quantity){
 					this.cargo.splice(i,1);
 					break;
 				}

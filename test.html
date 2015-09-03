@@ -1,78 +1,104 @@
-﻿<!doctype html>
-<html lang="en">
+﻿<!DOCTYPE HTML>
+<html>
 <head>
-    <meta charset="utf-8">
-    <title>«Project ST»</title>
-    <link rel="stylesheet" href="css/style.css"/>
-	<link href="css/form.css" rel="stylesheet" type="text/css">
-	<link href="css/main.css" rel="stylesheet" type="text/css">
-	<script src="js/jquery-2.1.1.min.js" type="text/javascript"></script>
-	<script src="js/default.scripts.js" type="text/javascript"></script>
-	<script src="js/jquery.rt.plugins.js" type="text/javascript"></script>
-    <script src="js/Application.js" type="text/javascript"></script>
-    <script src="js/MouseController.js" type="text/javascript"></script>
-	<script src="js/Infobox.js" type="text/javascript"></script>
-	<script src="js/Infotab.js" type="text/javascript"></script>
-	<script src="js/MainContent.js" type="text/javascript"></script>
-	<script src="js/MarketContent.js" type="text/javascript"></script>
-	<script src="js/System.js" type="text/javascript"></script>
-    <script src="js/Point.js" type="text/javascript"></script>
-    <script src="js/Orbit.js" type="text/javascript"></script>
-	<script src="js/Tile.js" type="text/javascript"></script>
-	<script src="js/Ship.js" type="text/javascript"></script>
-	<script src="js/Planet.js" type="text/javascript"></script>
-	<script src="js/Route.js" type="text/javascript"></script>
-    <script src="js/Star.js" type="text/javascript"></script>
-	<script src="js/Utilites.js" type="text/javascript"></script>
-	<script src="js/Goods.js" type="text/javascript"></script>
+    <script type="text/javascript">
+window.onload = function()
+{
+	canv = document.getElementById("glow");
+
+	if (!canv || !canv.getContext)
+		return;
+
+	context = canv.getContext("2d");
+
+	// the glow colour
+	highlight = new Array(Math.round(Math.random()*255), Math.round(Math.random()*255), Math.round(Math.random()*255));
+	step = 7; // amount each movement of coord is in canvas pixels
+
+	// start and end coordinates for the line
+	x1 = new Array(random_coord('x'), -1, 'x');
+	y1 = new Array(random_coord('y'), 1, 'y');
+	x2 = new Array(random_coord('x'), -1.5, 'x');
+	y2 = new Array(random_coord('y'), -1.5, 'y');
+
+	// coordinates for the control points of the bezier curve
+	cx1 = new Array(random_coord('x'), 1, 'x');
+	cy1 = new Array(random_coord('y'), -1, 'y');
+	cx2 = new Array(random_coord('x'), -1, 'x');
+	cy2 = new Array(random_coord('y'), 1, 'y');
+
+	timer = window.setInterval(draw_line, 30);
+};
+
+function draw_line()
+{
+	// paint over the existing canvas
+	context.fillStyle = "#000";
+	context.fillRect(0, 0, canv.width, canv.height);
+
+	// get the new coords based on each ones current trajectory
+	get_bounce_coord(x1);
+	get_bounce_coord(y1);
+	get_bounce_coord(x2);
+	get_bounce_coord(y2);
+
+	get_bounce_coord(cx1);
+	get_bounce_coord(cy1);
+	get_bounce_coord(cx2);
+	get_bounce_coord(cy2);
+
+	for(i=5; i>=0; i--)
+	{
+		context.beginPath();
+
+		// draw each line, the last line in each is always white
+		context.lineWidth = (i+1)*4-2;
+		if(i==0)
+			context.strokeStyle = '#fff';
+		else
+		{
+			context.strokeStyle = 'rgba('+highlight[0]+','+highlight[1]+','+highlight[2]+',0.2)';
+		}
+		context.moveTo(x1[0], y1[0]);
+		context.bezierCurveTo(cx1[0],cy1[0],cx2[0],cy2[0],x2[0],y2[0]);
+		context.stroke();
+		context.closePath();
+	}
+	ClearInterval(timer);
+}
+
+/**
+ * update the position and direction of movement for an end point on the line or one of the control points
+ */
+function get_bounce_coord(coord_array)
+{
+	coord_array[0] += step * coord_array[1];
+
+	if( (coord_array[0] > (canv.height - 2*step) && coord_array[2] == 'y')
+		|| (coord_array[0] > (canv.width - 2*step) && coord_array[2] == 'x')
+		|| coord_array[0] < 2*step)
+	{
+		coord_array[1] *= -1;
+	}
+}
+
+/**
+ * get a random x or y coordinate
+ */
+function random_coord(type)
+{
+	dimension = (type == 'x')?canv.width:canv.height;
+
+	return Math.random() * (dimension - 2*step) + step;
+}
+    </script>
+
 </head>
 <body>
-	<div id="application">
-		<div id="marketplace">
-			<div id="marketplace_veil"></div>			
-			<div id="marketplace_purchase">
-				<div id="marketplace_purchase_buy">
-					<div id="marketplace_purchase_heading"><strong>Покупка</strong></div>
-					<span id="marketplace_purchase_title">Fruit and Vegetables [8779]</span>
-					<div id="marketplace_purchase_range">
-						<input type="range" min="1" max="500" value="250" id="marketplace_purchase_quantity"><button onclick="SetMaxQuantity('+');">макс.</button>
-					</div>
-					<div id="marketplace_purchase_max">
-						<output id="marketplace_purchase_input">255</output>
-					</div>
-					<div>
-						<strong>Деньги:</strong><span id="marketplace_purchase_money">11221</span><br/>
-						<strong>Груз:</strong><span id="marketplace_purchase_cargo">112/521</span>
-					</div>	
-					<hr />
-					<div id="marketplace_purchase_buttons">
-						<button>Отмена</button>
-						<button>купить</button>
-					</div>
-				</div>
-			</div>
-			<div id="goods_div">
-				<table id ="market_goods">
-					<thead>
-						<tr>
-							<th>Наименование</th>
-							<th>Покупка</th>
-							<th>Продажа</th>
-							<th>Количество</th>
-							<th colspan="3">На корабле</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-			</div>
-			<div id="marketplace_info">
-			</div>
-			<div id="marketplace_buttons">
-				<button onclick="ShowHideMarketPlace();">Закрыть</button><button onclick="ConfirmPurchases();">Подтвердить</button>
-				<span id="marketplace_ship">Деньги <span id="ship_money">0</span>d | Груз <span id="ship_cargo_current">~</span>/<span id="ship_cargo_max">~</span></span>
-			</div>
-		</div>
-	</div	
+
+    <canvas id="glow" width="1200" height="700">
+        Your browser does not support HTML5 Canvas.
+    </canvas>
+
 </body>
 </html>

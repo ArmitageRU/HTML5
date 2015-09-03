@@ -21,23 +21,37 @@ function Weapon(energy, title, cost, size, mass, type, context, image) {
 Weapon.prototype = {
     renderAction: function (full_time, time, ctx, fire/*from, barrels, target*/) {
         var ret_time = full_time + time,
+            thickness;// = ~~(ret_time / (this.beamLasting / 10));
+
+        if (fire.barrels == 1) {
             thickness = ~~(ret_time / (this.beamLasting / 10));
+        }
+        else {
+            thickness = ~~(ret_time / (this.beamLasting / 20));
+        }
             //target = from.target;
         switch (this.type) {
             case 'beam':
-                //full_time -= time;
                 if (ret_time > this.beamLasting) {
                     ret_time = -1;
+                    console.log('GetDamage+ '+StarSystem.battle.fires.length);
                     fire.target.object.GetDamage(this, fire.barrels);
                     break;
                 }
                 ctx.beginPath();
                 ctx.moveTo(fire.parent.object.position.x, fire.parent.object.position.y);
                 ctx.lineTo(fire.target.object.position.x, fire.target.object.position.y);
-                ctx.lineWidth = thickness;//10;
-                // set line color
-                ctx.strokeStyle = '#ff0000';
-                ctx.stroke();
+
+                for (var i = 5; i >= 0; i--) {
+                    ctx.lineWidth = thickness+ (i + 1) * 4 - 2;
+                    if (i == 0)
+                        ctx.strokeStyle = '#fff';
+                    else {
+                        ctx.strokeStyle = 'rgba(255, 0, 0 ,0.2)';
+                    }
+                    ctx.stroke();
+                }
+
                 break;
             case 'plasma':
                 if (ret_time > this.plasmaLasting) {
@@ -46,16 +60,19 @@ Weapon.prototype = {
                     break;
                 }
                 var curr_x = (fire.target.object.position.x - fire.parent.object.position.x) * ret_time / this.plasmaLasting;
-                this.tile.draw(new Point(fire.parent.object.position.x + curr_x, fire.parent.object.position.y), 0);
-				/*
-				ctx.beginPath();
-                ctx.arc(fire.parent.object.position.x + curr_x, fire.parent.object.position.y, 30, 0, 2 * Math.PI, false);
-                ctx.fillStyle = '#ff3333';
-                ctx.fill();
-                ctx.lineWidth = 5;
-                ctx.strokeStyle = '#ff3333';
-                ctx.stroke();
-				*/
+
+                
+
+                var curr_xx = ((fire.parent.object.position.x + curr_x) / fire.target.object.position.x) * Math.PI * 2;
+                var curr_yy = Math.sin(curr_xx)*100;
+                if (fire.barrels > 1) {
+                    this.tile.draw(new Point(fire.parent.object.position.x + curr_x, fire.parent.object.position.y + curr_yy), 0);
+                    this.tile.draw(new Point(fire.parent.object.position.x + curr_x, fire.parent.object.position.y - curr_yy), 0);
+                    console.log(curr_yy);
+                }
+                else {
+                    this.tile.draw(new Point(fire.parent.object.position.x + curr_x, fire.parent.object.position.y), 0);
+                }
                 break;
             case 'rocket':
                 var curr_x = (/*from.position.x +*/ 100) * ret_time / this.rocketLasting,
@@ -118,7 +135,7 @@ Weapon.prototype = {
                     };
                     down_r_bo = new BattleObject(rocket_ship_down, fire.parent.align, rocket_ship_down.render);
                     down_r_bo.hide = false;
-                    StarSystem.battle.participants[StarSystem.battle.participants.length] = down_r_bo;//new BattleObject(rocket_ship_down, fire.parent.align, rocket_ship_down.render);
+                    StarSystem.battle.participants[StarSystem.battle.participants.length] = down_r_bo;
                     ret_time = -1;
                     break;
                 }
