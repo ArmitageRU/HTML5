@@ -211,7 +211,10 @@ Ship.prototype = {
 	GetDamage: function (weapon) {
 	    var loss = ~~(Math.random() * (30 - 10) + 10);
 	    this.life.current -= loss;
-		console.log("GET DAMAGE");
+	    this.hud.notices[this.hud.notices.length] = {
+	        text: 'ПОПАЛ'
+	    }
+	    console.log("GET DAMAGE");
 	},
 
 	GetDodge: function () {
