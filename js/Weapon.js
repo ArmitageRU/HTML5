@@ -34,7 +34,6 @@ Weapon.prototype = {
             case 'beam':
                 if (ret_time > this.beamLasting) {
                     ret_time = -1;
-                    console.log('GetDamage+ '+StarSystem.battle.fires.length);
                     fire.target.object.GetDamage(this, fire.barrels);
                     break;
                 }

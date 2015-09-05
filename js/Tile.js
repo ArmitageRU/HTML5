@@ -29,6 +29,24 @@ Tile.prototype = {
 		    this.ctx.stroke();
 		}
 
+        //не работает в связи с невозможностью получить точные координаты
+		if (false) {
+		    var imageData = this.ctx.getImageData(0, 0, this.sWidth+300, this.sHeight+300);//(-this.sWidth / 2, -this.sHeight / 2, this.sWidth, this.sHeight);
+		    var data = imageData.data;
+
+		    for (var i = 0; i < data.length; i += 4) {
+		        //var brightness = 0.34 * data[i] + 0.5 * data[i + 1] + 0.16 * data[i + 2];
+		        // red
+		        data[i] = 255;//brightness;
+		        // green
+		        //data[i + 1] = 255;//brightness;
+		        // blue
+		        //data[i + 2] = 255;//brightness;
+		    }
+		    // overwrite original image
+		    this.ctx.putImageData(imageData, 0, 0);
+		}
+
         this.ctx.restore();
 	
 	},

@@ -40,15 +40,10 @@ HUD.prototype = {
 				this.notices[i].alpha =1;
             }
             this.notices[i].time += time/1000; 
-            this.notices[i].v -= time / 7;
+            this.notices[i].v -= time / 5;
             if (this.notices[i].v < 0) {
                 this.notices[i].v = 0;
-                console.log("0 v");
             }
-            //if (this.notices[i].time >= 2) {
-            //    this.notices.splice(i, 1);
-            //    continue;
-            //}
 			if(this.notices[i].v == 0) {
 				this.notices[i].alpha =this.notices[i].alpha-time/100;
 				if(this.notices[i].alpha<=0){
@@ -70,7 +65,7 @@ HUD.prototype = {
             this.ctx.shadowBlur = 5;
             text_length = this.ctx.measureText(this.notices[i].text).width;
             this.ctx.strokeText(this.notices[i].text, (position.x * scale) - text_length / 2, this.notices[i].posY);
-            console.log(this.ctx.strokeStyle);
+            //console.log(this.ctx.strokeStyle);
             this.ctx.restore();
             //console.log(this.notices[i].posY, " posY");
         }

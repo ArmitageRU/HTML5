@@ -6,7 +6,8 @@
     this.parentShipId = null;//если вспомогательный объект типа ракет
     this.target = null;//пока только корабль, возможно убрать или наоборот исользовать таргет из роута
     this.selected = false;
-	this.damaged = 0;//длительность анимации дамага
+    this.damagedDuration = 300; //константа для this.damaged
+    this.damaged = 0;//длительность анимации дамага
     this.prevMouseState = false;//нужно для выделения, не хочется держать её здесь, но пока не вижу другого выхода
     //this.origin = new Point(0, 0);
     //храним для возвращения из битвы
@@ -64,7 +65,9 @@
 
 Ship.prototype = {
 	render:function(time){
-	    var path = this.speed * time * 0.001;
+	    var path = this.speed * time * 0.001,
+            offset,
+            offset_point;
 		if(this.route != null && this.route.to!=null && this.route.to!=this.route.from){	
 		    this.rot = Math.atan2(this.position.y - this.route.to.y, this.position.x - this.route.to.x);//-Math.PI / 2; <-- я хз зачем это
 			var dir_vector = new Point(this.route.to.x-this.position.x, this.route.to.y-this.position.y);
@@ -79,7 +82,14 @@ Ship.prototype = {
 			}
 		}
 		if(this.damaged>0) {
-			//(this.damaged-time)
+		    offset = Math.sin((this.damagedDuration - this.damaged) / this.damagedDuration * 20 * Math.PI) * (20 * this.damaged / this.damagedDuration);
+		    offset_point = new Point(this.position.x - offset, this.position.y - offset);
+		    if (this.rot == -Math.PI / 2) {
+		        offset_point = new Point(this.position.x + offset, this.position.y - offset);
+		    }
+		    this.tile.draw(offset_point, this.rot, this.selected);
+		    this.damaged -= time;
+		    
 		}
 		else { 
 			this.tile.draw(this.position, this.rot, this.selected);
@@ -220,7 +230,7 @@ Ship.prototype = {
 	    this.hud.notices[this.hud.notices.length] = {
 	        text: 'ПОПАЛ'
 	    }
-	    this.damaged = 1000;
+	    this.damaged = this.damagedDuration;
 		console.log("GET DAMAGE");
 	},
 
