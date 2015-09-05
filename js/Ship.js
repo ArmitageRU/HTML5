@@ -6,6 +6,7 @@
     this.parentShipId = null;//если вспомогательный объект типа ракет
     this.target = null;//пока только корабль, возможно убрать или наоборот исользовать таргет из роута
     this.selected = false;
+	this.damaged = 0;//длительность анимации дамага
     this.prevMouseState = false;//нужно для выделения, не хочется держать её здесь, но пока не вижу другого выхода
     //this.origin = new Point(0, 0);
     //храним для возвращения из битвы
@@ -77,7 +78,12 @@ Ship.prototype = {
 			    }
 			}
 		}
-		this.tile.draw(this.position, this.rot, this.selected);
+		if(this.damaged>0) {
+			//(this.damaged-time)
+		}
+		else { 
+			this.tile.draw(this.position, this.rot, this.selected);
+		}
 		if (this.route != null) this.route.from = this.position;
 	},
 
@@ -214,7 +220,8 @@ Ship.prototype = {
 	    this.hud.notices[this.hud.notices.length] = {
 	        text: 'ПОПАЛ'
 	    }
-	    console.log("GET DAMAGE");
+	    this.damaged = 1000;
+		console.log("GET DAMAGE");
 	},
 
 	GetDodge: function () {

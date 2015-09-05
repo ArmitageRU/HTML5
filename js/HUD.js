@@ -36,24 +36,33 @@ HUD.prototype = {
             if (typeof this.notices[i].time === "undefined") {
                 this.notices[i].time = 0;
                 this.notices[i].v = 100;
-                this.notices[i].posY = (position.y - this.tile.sWidth / 2) * scale;
+                this.notices[i].posY = (position.y - this.tile.sWidth / 2) * scale-8;
+				this.notices[i].alpha =1;
             }
-            this.notices[i].time += time/1000;
-            this.notices[i].v -= time / 5;
+            this.notices[i].time += time/1000; 
+            this.notices[i].v -= time / 7;
             if (this.notices[i].v < 0) {
                 this.notices[i].v = 0;
                 console.log("0 v");
             }
-            if (this.notices[i].time >= 2) {
-                this.notices.splice(i, 1);
-                continue;
-            }
+            //if (this.notices[i].time >= 2) {
+            //    this.notices.splice(i, 1);
+            //    continue;
+            //}
+			if(this.notices[i].v == 0) {
+				this.notices[i].alpha =this.notices[i].alpha-time/100;
+				if(this.notices[i].alpha<=0){
+					this.notices.splice(i, 1);
+					continue;
+				}
+			}
+			
             this.notices[i].posY -= Math.pow(this.notices[i].time, 2) * this.notices[i].v*0.5;
 
             this.ctx.save();
             this.ctx.beginPath();
             this.ctx.font = 'bold 15pt sans-serif';
-            this.ctx.strokeStyle = "rgba(255,255,255," + (1-this.notices[i].time/2) + ")";
+            this.ctx.strokeStyle = "rgba(255,255,255," + this.notices[i].alpha.toFixed(1) + ")";
             this.ctx.lineWidth = 1;
             this.ctx.shadowColor = "#FFF";
             this.ctx.shadowOffsetX = 1;
