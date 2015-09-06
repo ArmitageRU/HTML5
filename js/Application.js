@@ -228,8 +228,8 @@ Application.prototype = {
 	    this.getEnemy();
 
 	    this.battle = new Battle(this.ctx);
-	    this.ship.battlePrepare(new Point(120, this.canvas.height / 2), Math.PI / 2, null, 1);
-	    this.enemyShip.battlePrepare(new Point(this.canvas.width - 120, this.canvas.height / 2), -Math.PI / 2, null, 1);
+	    this.ship.battlePrepare(new Point(this.canvas.width, this.canvas.height/*120, this.canvas.height / 2*/), Math.PI / 2, null, 1);
+	    this.enemyShip.battlePrepare(new Point(this.canvas.width, this.canvas.height/*this.canvas.width - 120, this.canvas.height / 2*/), -Math.PI / 2, null, 1);
 	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.ship, 1, this.ship.render);
 	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.enemyShip, -1, this.enemyShip.render);
 	    this.battle.whenBattleEnding = function battleEnding() {
