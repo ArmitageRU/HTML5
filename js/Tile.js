@@ -23,12 +23,24 @@ Tile.prototype = {
 
 		if (selected) {
 		    this.ctx.beginPath();
-		    this.ctx.rect(-this.sWidth / 2, -this.sHeight / 2, this.sWidth, this.sHeight);
+		    //this.ctx.rect(-this.sWidth / 2, -this.sHeight / 2, this.sWidth, this.sHeight);
+		    this.ctx.moveTo(-this.sWidth / 2, -this.sHeight / 2);
+		    this.ctx.lineTo(this.sWidth / 2, -this.sHeight / 2)
+		    this.ctx.moveTo(-this.sWidth / 2, -this.sHeight / 2);
+		    this.ctx.lineTo(this.sWidth / 2, -this.sHeight / 2)
 		    this.ctx.lineWidth = 1;
 		    this.ctx.strokeStyle = 'orange';
 		    this.ctx.stroke();
 		}
 
+		    this.ctx.scale(this.sWidth/this.sHeight, 1);
+		    this.ctx.beginPath();
+		    this.ctx.arc(0, 0, this.sHeight / 2, 0, 2 * Math.PI, false);
+		    this.ctx.fillStyle = 'rgba(142, 214, 255, 0.5)';
+		    this.ctx.fill();
+		    this.ctx.lineWidth = 1;
+		    this.ctx.strokeStyle = 'rgba(142, 214, 255, 0.5)';
+		    this.ctx.stroke();
         //не работает в связи с невозможностью получить точные координаты
 		if (false) {
 		    var imageData = this.ctx.getImageData(0, 0, this.sWidth+300, this.sHeight+300);//(-this.sWidth / 2, -this.sHeight / 2, this.sWidth, this.sHeight);

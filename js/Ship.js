@@ -8,6 +8,7 @@
     this.selected = false;
     this.damagedDuration = 300; //константа для this.damaged
     this.damaged = 0;//длительность анимации дамага
+    this.shieldDuration = 0;//для анисации щита
     this.prevMouseState = false;//нужно для выделения, не хочется держать её здесь, но пока не вижу другого выхода
     //this.origin = new Point(0, 0);
     //храним для возвращения из битвы
@@ -87,7 +88,7 @@ Ship.prototype = {
 		    if (this.rot == -Math.PI / 2) {
 		        offset_point = new Point(this.position.x + offset, this.position.y - offset);
 		    }
-		    this.tile.draw(offset_point, this.rot, this.selected);
+            this.tile.draw(offset_point, this.rot, this.selected);
 		    this.damaged -= time;
 		    
 		}
