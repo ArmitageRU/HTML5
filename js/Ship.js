@@ -42,16 +42,28 @@
     //оружейные (и не только) слоты
 	this.slots = [
                     {
-                        size: 1
+                        size: 1,
+                        type:"weapon"
                     },
 
                     {
-                        size: 2
-                        
+                        size: 2,
+                        type: "weapon"
                     },
 
                     {
-                        size: 1
+                        size: 1,
+                        type: "weapon"
+                    },
+
+                    {
+                        size: 2,
+                        type: "shield"
+                    },
+
+                    {
+                        size: 1,
+                        type: "MD"
                     }
 	             ];
 	this.mass = 95; //масса корабля
