@@ -43,27 +43,23 @@
 	this.slots = [
                     {
                         size: 1,
-                        type:"weapon"
+                        class:"weapon"
                     },
-
                     {
                         size: 2,
-                        type: "weapon"
+                        class: "weapon"
                     },
-
                     {
                         size: 1,
-                        type: "weapon"
+                        class: "weapon"
                     },
-
                     {
                         size: 2,
-                        type: "shield"
+                        class: "shield"
                     },
-
                     {
                         size: 1,
-                        type: "MD"
+                        class:"auto"
                     }
 	             ];
 	this.mass = 95; //масса корабля

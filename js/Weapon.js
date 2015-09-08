@@ -1,5 +1,5 @@
 ﻿"use strict";
-function Weapon(energy, title, cost, size, mass, type, context, image) {
+function Weapon(energy, title, cost, size, mass, type, context, image, class_, amount) {
     if (!(this instanceof Weapon)) {
         return new Weapon();
     }
@@ -12,7 +12,8 @@ function Weapon(energy, title, cost, size, mass, type, context, image) {
     this.id;
     this.type = type;
     this.mass = mass;
-
+    this.calss = class_;
+    this.amount = amount;
     this.beamLasting = 700;
     this.plasmaLasting = 1000;
     this.rocketLasting = 700;
@@ -60,8 +61,6 @@ Weapon.prototype = {
                 }
                 var curr_x = (fire.target.object.position.x - fire.parent.object.position.x) * ret_time / this.plasmaLasting;
 
-                
-
                 var curr_xx = ((fire.parent.object.position.x + curr_x) / fire.target.object.position.x) * Math.PI * 2;
                 var curr_yy = Math.sin(curr_xx)*100;
                 if (fire.barrels > 1) {
@@ -79,62 +78,69 @@ Weapon.prototype = {
                     up_r_bo,
                     down_r_bo;
                 if (ret_time > this.rocketLasting) {
-                    var rocket_ship_up = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
-                    rocket_ship_up.id = StarSystem.battle.getNextId();//-1;
-                    rocket_ship_up.parentShipId = fire.parent.object.id;
-                    rocket_ship_up.speed = 1500;
-                    rocket_ship_up.life.current = 20;
-					if(fire.parent.object.rot == -Math.PI / 2){
-					    rocket_ship_up.battlePrepare(new Point(fire.parent.object.position.x - 100, fire.parent.object.position.y - 100), 2 * Math.PI, null, 1);
-					}
-					else {
-					    rocket_ship_up.battlePrepare(new Point(fire.parent.object.position.x + 100, fire.parent.object.position.y - 100), Math.PI, null, 1);
-					}
-                    rocket_ship_up.slots = [{
-                        size: 1,
-                        weapon: new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null)
-                    }];
-                    rocket_ship_up.target = fire.target.object;
-                    rocket_ship_up.phaseActive = function phaseActive() {
-                        rocket_ship_up.route = new Route(rocket_ship_up.position);
-                        rocket_ship_up.route.to = fire.target.object.position;
-                    };
-                    rocket_ship_up.arrive = function arrive() {
-                        this.target.GetDamage(this.slots[0].weapon, fire.barrels);
-                        this.life.current = 0;
-                        //StarSystem.battle.removeParticipant(this.id)
-                    };
-                    up_r_bo = new BattleObject(rocket_ship_up, fire.parent.align, rocket_ship_up.render);
-                    up_r_bo.hide = false;
-                    StarSystem.battle.participants[StarSystem.battle.participants.length] = up_r_bo;//new BattleObject(rocket_ship_up, fire.parent.align, rocket_ship_up.render);
-                    var rocket_ship_down = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
-                    rocket_ship_down.id = StarSystem.battle.getNextId();//-2;
-                    rocket_ship_down.parentShipId = fire.parent.object.id;
-                    rocket_ship_down.speed = 1500;
-                    rocket_ship_down.life.current = 20;
-                    if (fire.parent.object.rot == -Math.PI / 2) {
-                        rocket_ship_down.battlePrepare(new Point(fire.parent.object.position.x - 100, fire.parent.object.position.y + 100), 2 * Math.PI, null, 1);
-					}
-					else {
-                        rocket_ship_down.battlePrepare(new Point(fire.parent.object.position.x + 100, fire.parent.object.position.y + 100), Math.PI, null, 1);
-					}
-                    rocket_ship_up.slots = [{
-                        size: 1,
-                        weapon: new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null)
-                    }];
-                    rocket_ship_down.target = fire.target.object;
-                    rocket_ship_down.phaseActive = function phaseActive() {
-                        rocket_ship_down.route = new Route(rocket_ship_down.position);
-                        rocket_ship_down.route.to = fire.target.object.position;
-                    };
-                    rocket_ship_down.arrive = function arrive() {
-                        this.target.GetDamage(this.slots[0].weapon, fire.barrels);
-                        this.life.current = 0;
-                        //StarSystem.battle.removeParticipant(this.id)
-                    };
-                    down_r_bo = new BattleObject(rocket_ship_down, fire.parent.align, rocket_ship_down.render);
-                    down_r_bo.hide = false;
-                    StarSystem.battle.participants[StarSystem.battle.participants.length] = down_r_bo;
+                    if (this.amount>0) {
+                        var rocket_ship_up = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
+                        rocket_ship_up.id = StarSystem.battle.getNextId();//-1;
+                        rocket_ship_up.parentShipId = fire.parent.object.id;
+                        rocket_ship_up.speed = 1500;
+                        rocket_ship_up.life.current = 20;
+                        if(fire.parent.object.rot == -Math.PI / 2){
+                            rocket_ship_up.battlePrepare(new Point(fire.parent.object.position.x - 100, fire.parent.object.position.y - 100), 2 * Math.PI, null, 1);
+                        }
+                        else {
+                            rocket_ship_up.battlePrepare(new Point(fire.parent.object.position.x + 100, fire.parent.object.position.y - 100), Math.PI, null, 1);
+                        }
+                        rocket_ship_up.slots = [{
+                            size: 1,
+                            weapon: new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null)
+                        }];
+                        rocket_ship_up.target = fire.target.object;
+                        rocket_ship_up.phaseActive = function phaseActive() {
+                            rocket_ship_up.route = new Route(rocket_ship_up.position);
+                            rocket_ship_up.route.to = fire.target.object.position;
+                        };
+                        rocket_ship_up.arrive = function arrive() {
+                            this.target.GetDamage(this.slots[0].weapon, fire.barrels);
+                            this.life.current = 0;
+                            //StarSystem.battle.removeParticipant(this.id)
+                        };
+                        up_r_bo = new BattleObject(rocket_ship_up, fire.parent.align, rocket_ship_up.render);
+                        up_r_bo.hide = false;
+                        StarSystem.battle.participants[StarSystem.battle.participants.length] = up_r_bo;
+                        this.amount--;
+                    }
+                    
+                    if (this.amount>0) {
+                        var rocket_ship_down = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
+                        rocket_ship_down.id = StarSystem.battle.getNextId();//-2;
+                        rocket_ship_down.parentShipId = fire.parent.object.id;
+                        rocket_ship_down.speed = 1500;
+                        rocket_ship_down.life.current = 20;
+                        if (fire.parent.object.rot == -Math.PI / 2) {
+                            rocket_ship_down.battlePrepare(new Point(fire.parent.object.position.x - 100, fire.parent.object.position.y + 100), 2 * Math.PI, null, 1);
+                        }
+                        else {
+                            rocket_ship_down.battlePrepare(new Point(fire.parent.object.position.x + 100, fire.parent.object.position.y + 100), Math.PI, null, 1);
+                        }
+                        rocket_ship_up.slots = [{
+                            size: 1,
+                            weapon: new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null)
+                        }];
+                        rocket_ship_down.target = fire.target.object;
+                        rocket_ship_down.phaseActive = function phaseActive() {
+                            rocket_ship_down.route = new Route(rocket_ship_down.position);
+                            rocket_ship_down.route.to = fire.target.object.position;
+                        };
+                        rocket_ship_down.arrive = function arrive() {
+                            this.target.GetDamage(this.slots[0].weapon, fire.barrels);
+                            this.life.current = 0;
+                            //StarSystem.battle.removeParticipant(this.id)
+                        };
+                        down_r_bo = new BattleObject(rocket_ship_down, fire.parent.align, rocket_ship_down.render);
+                        down_r_bo.hide = false;
+                        StarSystem.battle.participants[StarSystem.battle.participants.length] = down_r_bo;
+                        this.amount--;
+                    }
                     ret_time = -1;
                     break;
                 }
