@@ -12,7 +12,7 @@ function Weapon(energy, title, cost, size, mass, type, context, image, class_, a
     this.id;
     this.type = type;
     this.mass = mass;
-    this.calss = class_;
+    this.class = class_;
     this.amount = amount;
     this.beamLasting = 700;
     this.plasmaLasting = 1000;

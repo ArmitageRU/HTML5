@@ -270,23 +270,20 @@ function FillPreBattle() {
 		$("#outfit_energy").addClass("outfit_weapon_item_red");
 		$("#outfit_ready").prop('disabled', true);
 	}
-	else {
+	else if(energy>=0) {
 		$("#outfit_energy").removeClass("outfit_weapon_item_red");
 		$("#outfit_ready").prop('disabled', false);
 	}
-	
     
 	$("#outfit_slot_weapon").html("");
+	$("#outfit_slot_shield").html("");
+	$("#outfit_slot_auto").html("");
 
     var suited_weapons,
-        suited_shields,
-        suited_auto,
         all_weapons = StarSystem.FAKE.weapons;
     //оржие
     for (var i = 0, max = currentShip.slots.length; i < max; i += 1) {
         suited_weapons = "<select onclick=\"ViewWeaponInfo(this)\" onchange=\"SelectOutfitWeapon("+ i +", this);\"><option value=\"0\"></option>";
-        suited_shields = "<select onclick=\"ViewWeaponInfo(this)\" onchange=\"SelectOutfitWeapon(" + i + ", this);\"><option value=\"0\"></option>";
-        suited_auto = "<select onclick=\"ViewWeaponInfo(this)\" onchange=\"SelectOutfitWeapon(" + i + ", this);\"><option value=\"0\"></option>";
             for (var j = 0, max_w = all_weapons.length; j < max_w; j += 1) {
                 if (all_weapons[j].size <= currentShip.slots[i].size && all_weapons[j].class == currentShip.slots[i].class) {
                     suited_weapons += "<option value=\"" + all_weapons[j].id + "\" ";
@@ -297,16 +294,14 @@ function FillPreBattle() {
                 }
             }
         suited_weapons += "</select>";
-        suited_weapons += "</select>";
-        suited_weapons += "</select>";
         if (currentShip.slots[i].class == 'weapon') {
-            $("#outfit_slot_weapon").html("<span class=\"cell-box\">" + currentShip.slots[i].size + "</span>" + suited_weapons);
+            $("#outfit_slot_weapon").append("<div class=\"outfit_particular_item\"><span class=\"cell-box\">" + currentShip.slots[i].size + "</span>" + suited_weapons+"</div>");
         }
         if (currentShip.slots[i].class == 'shield') {
-            $("#outfit_slot_shield").html("<span class=\"cell-box\">" + currentShip.slots[i].size + "</span>" + suited_weapons);
+            $("#outfit_slot_shield").append("<div class=\"outfit_particular_item\"><span class=\"cell-box\">" + currentShip.slots[i].size + "</span>" + suited_weapons+"</div>");
         }
         if (currentShip.slots[i].class == 'auto') {
-            $("#outfit_slot_auto").html("<span class=\"cell-box\">" + currentShip.slots[i].size + "</span>" + suited_weapons);
+            $("#outfit_slot_auto").append("<div class=\"outfit_particular_item\"><span class=\"cell-box\">" + currentShip.slots[i].size + "</span>" + suited_weapons+"</div>");
         }
     }
 }
