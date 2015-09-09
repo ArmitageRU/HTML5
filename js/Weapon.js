@@ -40,7 +40,16 @@ Weapon.prototype = {
                 }
                 ctx.beginPath();
                 ctx.moveTo(fire.parent.object.position.x, fire.parent.object.position.y);
-                ctx.lineTo(fire.target.object.position.x, fire.target.object.position.y);
+                
+                var angle = Math.atan2(fire.target.object.position.y - fire.parent.object.position.y, fire.target.object.position.x - fire.parent.object.position.x);
+                var radius = fire.target.object.position.x - fire.parent.object.position.x;
+                angle+= Math.PI / 36;
+                var new_x = Math.cos(angle);
+                var new_y = Math.sin(angle);
+                
+                var angle_ (ret_time / this.beamLasting) * (Math.PI / 18);
+                //ctx.lineTo(fire.target.object.position.x, fire.target.object.position.y);
+                ctx.lineTo(fire.parent.object.position.x + new_x * radius, fire.parent.object.position.y + new_y * radius);
 
                 for (var i = 5; i >= 0; i--) {
                     ctx.lineWidth = thickness+ (i + 1) * 4 - 2;
@@ -62,14 +71,50 @@ Weapon.prototype = {
                 var curr_x = (fire.target.object.position.x - fire.parent.object.position.x) * ret_time / this.plasmaLasting;
 
                 var curr_xx = ((fire.parent.object.position.x + curr_x) / fire.target.object.position.x) * Math.PI * 2;
-                var curr_yy = Math.sin(curr_xx)*100;
+                var curr_yy = Math.sin(curr_xx) * 100;
+                var grd,
+                    grd2;
                 if (fire.barrels > 1) {
-                    this.tile.draw(new Point(fire.parent.object.position.x + curr_x, fire.parent.object.position.y + curr_yy), 0);
-                    this.tile.draw(new Point(fire.parent.object.position.x + curr_x, fire.parent.object.position.y - curr_yy), 0);
-                    console.log(curr_yy);
+                    //this.tile.draw(new Point(fire.parent.object.position.x + curr_x, fire.parent.object.position.y + curr_yy), 0);
+                    //this.tile.draw(new Point(fire.parent.object.position.x + curr_x, fire.parent.object.position.y - curr_yy), 0);
+                    grd = ctx.createRadialGradient(fire.parent.object.position.x + curr_x, fire.parent.object.position.y + curr_yy, 15,
+                                                   fire.parent.object.position.x + curr_x, fire.parent.object.position.y + curr_yy, 30);
+                    grd.addColorStop(0, '#f0f0FF');
+                    grd.addColorStop(0.2, 'rgba(150, 150, 255 ,0.7)');
+                    grd.addColorStop(0.5, 'rgba(150, 150, 255 ,0.6)');
+                    grd.addColorStop(0.75, 'rgba(150, 150, 255 ,0.5)');
+                    grd.addColorStop(0.9, 'rgba(150, 150, 255 ,0.3)');
+                    grd.addColorStop(1, 'rgba(150, 150, 255 ,0.2)');
+                    ctx.arc(fire.parent.object.position.x + curr_x, fire.parent.object.position.y + curr_yy, thickness + 15, 0, 2 * Math.PI, false);
+                    ctx.fillStyle = grd;
+                    ctx.fill();
+
+                    ctx.beginPath();
+                    grd2 = ctx.createRadialGradient(fire.parent.object.position.x + curr_x, fire.parent.object.position.y - curr_yy, 15,
+                                                    fire.parent.object.position.x + curr_x, fire.parent.object.position.y - curr_yy, 30);
+                    grd2.addColorStop(0, '#f0f0FF');
+                    grd2.addColorStop(0.2, 'rgba(150, 150, 255 ,0.7)');
+                    grd2.addColorStop(0.5, 'rgba(150, 150, 255 ,0.6)');
+                    grd2.addColorStop(0.75, 'rgba(150, 150, 255 ,0.5)');
+                    grd2.addColorStop(0.9, 'rgba(150, 150, 255 ,0.3)');
+                    grd2.addColorStop(1, 'rgba(150, 150, 255 ,0.2)');
+                    ctx.fillStyle = grd2;
+                    ctx.arc(fire.parent.object.position.x + curr_x, fire.parent.object.position.y - curr_yy, thickness + 15, 0, 2 * Math.PI, false);
+                    ctx.fill();
+                    //console.log(curr_yy);
                 }
                 else {
-                    this.tile.draw(new Point(fire.parent.object.position.x + curr_x, fire.parent.object.position.y), 0);
+                    grd = ctx.createRadialGradient(fire.parent.object.position.x + curr_x, fire.parent.object.position.y, 10, fire.parent.object.position.x + curr_x, fire.parent.object.position.y, 30);
+                    grd.addColorStop(0, '#f0f0FF');
+                    grd.addColorStop(0.2, 'rgba(150, 150, 255 ,0.7)');
+                    grd.addColorStop(0.5, 'rgba(150, 150, 255 ,0.6)');
+                    grd.addColorStop(0.75, 'rgba(150, 150, 255 ,0.5)');
+                    grd.addColorStop(0.9, 'rgba(150, 150, 255 ,0.3)');
+                    grd.addColorStop(1, 'rgba(150, 150, 255 ,0.2)');
+                    ctx.fillStyle = grd;
+                    ctx.arc(fire.parent.object.position.x + curr_x, fire.parent.object.position.y, thickness + 15, 0, 2 * Math.PI, false);
+                    ctx.fill();
+                    //this.tile.draw(new Point(fire.parent.object.position.x + curr_x, fire.parent.object.position.y), 0);
                 }
                 break;
             case 'rocket':

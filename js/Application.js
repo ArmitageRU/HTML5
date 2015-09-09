@@ -138,7 +138,7 @@ Application.prototype = {
             for (var j = 0; j < this.Orbits.length; j++) {
                 this.Orbits[j].Draw(elapsedTime);
                 if (this.mouse.pressed && Math.abs(this.mouse.pos.x - this.Orbits[j].planet.position.x) < 25 && Math.abs(this.mouse.pos.y - this.Orbits[j].planet.position.y) < 25) {
-                    this.selectPlanet(this.Orbits[j])
+                    this.selectPlanet(this.Orbits[j]);
                 }
                 if (this.Orbits[j].planet.selected) {
                     this.currentMainContent = this.Orbits[j].planet.MainContent;

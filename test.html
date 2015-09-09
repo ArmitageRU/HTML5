@@ -27,7 +27,19 @@ window.onload = function()
 	cx2 = new Array(random_coord('x'), -1, 'x');
 	cy2 = new Array(random_coord('y'), 1, 'y');
 
-	timer = window.setInterval(draw_line, 30);
+    //timer = window.setInterval(draw_line, 30);
+	if (!requestAnimationFrame) {
+	    requestAnimationFrame = (function () {
+	        return webkitRequestAnimationFrame ||
+                mozRequestAnimationFrame ||
+                oRequestAnimationFrame ||
+                msRequestAnimationFrame ||
+                function (callback, element) {
+                    setTimeout(callback, 1000 / 60);
+                };
+	    })();
+	}
+	render(new Date());
 };
 
 function draw_line()
@@ -67,6 +79,61 @@ function draw_line()
 	ClearInterval(timer);
 }
 
+
+function render(lastTime) {
+    var curTime = new Date();
+    var elapsedTime = curTime - lastTime;
+    requestAnimationFrame(function () {
+        render(curTime);
+    });
+
+    context.clearRect(0, 0, 1200, 700);
+    context.beginPath();
+    var grd = context.createRadialGradient(100, 100, 5, 100, 100, 20);
+    // light blue
+    grd.addColorStop(0, '#f0f0FF');
+    // dark blue
+    grd.addColorStop(0.2, 'rgba(150, 150, 255 ,0.7)');
+    grd.addColorStop(0.5, 'rgba(150, 150, 255 ,0.6)');
+    grd.addColorStop(0.75, 'rgba(150, 150, 255 ,0.5)');
+    grd.addColorStop(0.9, 'rgba(150, 150, 255 ,0.3)');
+    grd.addColorStop(1, 'rgba(150, 150, 255 ,0.2)');
+    context.fillStyle = grd;
+    //context.fillStyle = 'rgba(255, 0, 0 ,0.2)';
+    context.arc(100, 100, 30, 0, 2 * Math.PI, false);
+    context.fill();
+    context.beginPath();
+    var grd2 = context.createRadialGradient(200, 100, 5, 200, 100, 20);
+    // light blue
+    grd2.addColorStop(0, '#f0f0FF');
+    // dark blue
+    grd2.addColorStop(0.2, 'rgba(150, 150, 255 ,0.7)');
+    grd2.addColorStop(0.5, 'rgba(150, 150, 255 ,0.6)');
+    grd2.addColorStop(0.75, 'rgba(150, 150, 255 ,0.5)');
+    grd2.addColorStop(0.9, 'rgba(150, 150, 255 ,0.3)');
+    grd2.addColorStop(1, 'rgba(150, 150, 255 ,0.2)');
+    context.fillStyle = grd2;
+    //context.fillStyle = 'rgba(255, 0, 0 ,0.2)';
+    context.arc(200, 100, 30, 0, 2 * Math.PI, false);
+
+    context.fill();
+    
+    var rr = 20;
+    //for (var i = 5; i >= 0; i--) {
+    //    rr = (i + 1) * 4 - 2;
+    //    if (i == 0){
+    //        context.fillStyle = '#fff';
+    //        rr = 2;
+    //    }
+    //    else {
+    //        context.fillStyle = 'rgba(255, 0, 0 ,0.2)';
+    //    }
+    //    //ctx.stroke();
+    //    console.log(rr);
+    //    context.arc(100, 100, rr, 0, 2 * Math.PI, false);
+    //    context.fill();
+    //}
+}
 /**
  * update the position and direction of movement for an end point on the line or one of the control points
  */
@@ -94,7 +161,7 @@ function random_coord(type)
     </script>
 
 </head>
-<body>
+<body style="background-color: black;">
 
     <canvas id="glow" width="1200" height="700">
         Your browser does not support HTML5 Canvas.

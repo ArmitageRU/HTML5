@@ -25,10 +25,10 @@ FAKES.prototype = {
         weapons[4] = w;
         this.weapons = weapons;
         slots[0].weapon = weapons[0];
-        slots[1].weapon = weapons[1];
+        slots[1].weapon = weapons[2];
         slots[2].weapon = weapons[2];
-        slots[3].weapon = weapons[4];
-        slots[4].weapon = weapons[3];
+        //slots[3].weapon = weapons[4];
+        //slots[4].weapon = weapons[3];
         //return weapons;
     },
 
