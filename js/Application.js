@@ -226,10 +226,14 @@ Application.prototype = {
     //только для теста
 	initBattle: function () {
 	    this.getEnemy();
-
+		var our_pos,
+			enemy_pos;
+		
 	    this.battle = new Battle(this.ctx);
-	    this.ship.battlePrepare(new Point(this.canvas.width, this.canvas.height/*120, this.canvas.height / 2*/), Math.PI / 2, null, 1);
-	    this.enemyShip.battlePrepare(new Point(this.canvas.width, this.canvas.height/*this.canvas.width - 120, this.canvas.height / 2*/), -Math.PI / 2, null, 1);
+	    our_pos = this.calculateInBattlePosition(new Point(this.canvas.width, this.canvas.height), this.ship.tile, true);
+		enemy_pos = this.calculateInBattlePosition(new Point(this.canvas.width, this.canvas.height), this.enemyShip.tile, false);
+		this.ship.battlePrepare(our_pos, Math.PI / 2, null, 1);
+	    this.enemyShip.battlePrepare(enemy_pos, -Math.PI / 2, null, 1);
 	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.ship, 1, this.ship.render);
 	    this.battle.participants[this.battle.participants.length] = new BattleObject(this.enemyShip, -1, this.enemyShip.render);
 	    this.battle.whenBattleEnding = function battleEnding() {
@@ -253,5 +257,20 @@ Application.prototype = {
 	    this.enemyShip.phaseEnd = function phaseEnd() {
 	        console.log("enemy ship end phase");
 	    };
+	},
+	
+	calculateInBattlePosition: function(size, tile, left){
+		var x_offset = tile.sHeight/2+20,
+			pos;
+		if(x_offset<=110){
+			x_offset = 110;
+		}
+		if(!left){
+			pos = new Point(size.x-x_offset, size.y / 2)
+		}
+		else {
+			pos = new Point(x_offset, size.y / 2)
+		}
+		return pos;
 	}
 };

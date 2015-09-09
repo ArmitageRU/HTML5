@@ -113,12 +113,13 @@ Ship.prototype = {
 	//    }
 	//},
 	
-	battlePrepare: function (size, rot, route, scale) {
+	battlePrepare: function (pos, rot, route, scale) {
 	    this.prevPos = this.position;
 	    this.prevRot = this.rot;
 	    this.prevRoute = this.route;
 	    this.prevScale = this.tile.scale;
 		
+		/*
 		var x_offset = this.tile.sHeight/2+20;
 		if(x_offset<=110){
 			x_offset = 110;
@@ -129,8 +130,9 @@ Ship.prototype = {
 		else {
 			this.position = new Point(x_offset, size.y / 2)
 		}
+		*/
 		
-	    //this.position = pos;
+	    this.position = pos;
 	    this.rot = rot;
 	    this.route = route;
 	    this.tile.scale = scale;
