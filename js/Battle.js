@@ -117,7 +117,7 @@ Battle.prototype = {
                     if (this.participants[i].object.id == this.queue[0]) {
                         this.currentShip = this.participants[i].object;
                     }
-                    this.participants[i].object.battleRestore();
+                    this.participants[i].object.battleRestore();//с учетом щита
                     this.participants[i].object.phaseActive.call(this.participants[i].object);
 
                 }

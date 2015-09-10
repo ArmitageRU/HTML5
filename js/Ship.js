@@ -139,6 +139,7 @@ Ship.prototype = {
 
 	battleRestore: function() {
 	    this.energy = this.energyСapacity;
+		this.SwitchShield(true);
 	},
 
 	battleDebriefing: function() {
@@ -348,7 +349,7 @@ Ship.prototype = {
 
 	SwitchShield: function (operation) {
 	    var shield_disabled;
-	    if (operation) {
+	    if (operation) {//включить щит
 	        for (var i = 0, max = this.slots.length; i<max;i+=1){
 	            if (typeof this.slots[i].weapon !== "undefined" && this.slots[i].weapon.class == 'shield') {
 	                if (this.energy < this.slots[i].weapon.energy) {
@@ -364,11 +365,11 @@ Ship.prototype = {
 	            }
 	        }
 	    }
-	    else {
+	    else {//выключить
 	        for (var i = 0, max = this.slots.length; i < max; i += 1) {
 	            if (this.slots[i].weapon !== 'undefined' && this.slots[i].weapon.class == 'shield') {
-	                this.slots[i].weapon.disable = true;
-	                shield_disabled = true;
+	                //this.slots[i].weapon.disable = true;
+	                shield_disabled = false;
 	                this.energy += this.slots[i].weapon.energy;
                     break;
 	            }

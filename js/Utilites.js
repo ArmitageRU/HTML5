@@ -360,7 +360,7 @@ function ShowWeaponInfo(weapon) {
 function PreBattleReady() {
     StarSystem.currentMode.inBattle = true;
     PreBattle(true);
-    currentShip.SwitchShield(true);//чтобы сниалась энергия для статичных элементов
+    //currentShip.SwitchShield(true);//не нужно см battle.js
 }
 
 // Ship.js
@@ -442,7 +442,7 @@ function SwitchSubWeapon(obj) {
     var id = $(obj).prop('id');
     if (id === 'battle_shield_switch') {
         if ($(obj).is(':checked')) {
-            if(!currentShip.SwitchShield(true)) {
+            if(currentShip.SwitchShield(true)) {
                 $(obj).prop('disabled', true);
             }
             else {
@@ -452,6 +452,8 @@ function SwitchSubWeapon(obj) {
         else {
             currentShip.SwitchShield(false);
         }
+		//$("#battle_energy").html(currentShip.energy);
+		CheckWeapons(currentShip, 0);
     }
     if (id === 'battle_auto_switch') {
         if ($(obj).is(':checked')) {
