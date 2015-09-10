@@ -6,6 +6,7 @@ function Weapon(energy, title, cost, size, mass, type, context, image, class_, a
     this.ctx = context;
     this.tile = new Tile(this.ctx, image, null, null, /*49, 19,*/null, null, 1);
     this.energy = energy;
+    this.disabled = false;
     this.title = title;
     this.primeCost = cost;//себестоимость, возможно не понадобится
     this.size = size;//размер слота
@@ -42,7 +43,7 @@ Weapon.prototype = {
                 ctx.moveTo(fire.parent.object.position.x, fire.parent.object.position.y);
                 
                 var angle = Math.atan2(fire.target.object.position.y - fire.parent.object.position.y, fire.target.object.position.x - fire.parent.object.position.x);
-                var radius = fire.target.object.position.x - fire.parent.object.position.x;
+                var radius = Math.abs(fire.target.object.position.x - fire.parent.object.position.x);
                 angle+= Math.PI / 36;
                 angle -= (ret_time / this.beamLasting) * (Math.PI / 18);
 				var new_x = Math.cos(angle);
@@ -55,7 +56,7 @@ Weapon.prototype = {
                     if (i == 0)
                         ctx.strokeStyle = '#fff';
                     else {
-                        ctx.strokeStyle = 'rgba(255, 0, 0 ,0.2)';
+                        ctx.strokeStyle = 'rgba(255, 0, 0, 0.2)';
                     }
                     ctx.stroke();
                 }

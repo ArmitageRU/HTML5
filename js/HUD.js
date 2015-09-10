@@ -63,8 +63,10 @@ HUD.prototype = {
             this.ctx.shadowOffsetX = 1;
             this.ctx.shadowOffsetY = 1;
             this.ctx.shadowBlur = 5;
+            this.ctx.fillStyle = "rgba(255,255,255," + this.notices[i].alpha.toFixed(1) + ")";
             text_length = this.ctx.measureText(this.notices[i].text).width;
-            this.ctx.strokeText(this.notices[i].text, (position.x * scale) - text_length / 2, this.notices[i].posY);
+            //this.ctx.strokeText(this.notices[i].text, (position.x * scale) - text_length / 2, this.notices[i].posY);
+            this.ctx.fillText(this.notices[i].text, (position.x * scale) - text_length / 2, this.notices[i].posY);
             //console.log(this.ctx.strokeStyle);
             this.ctx.restore();
             //console.log(this.notices[i].posY, " posY");

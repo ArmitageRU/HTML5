@@ -43,9 +43,9 @@
         <div id="veil" class="dn veil"></div>
         <div id="main_ui">
             <div id="application_buttons">
-                <button onclick="ShowHideInfopanel();">Инфопанель</button>
-                <button onclick="ShowHideMarketPlace();" id="app_mrkt_btn" disabled>Рынок</button>
-                <button onclick="" id="app_shp_btn" disabled>Корабль</button>
+                <button onclick="ShowHideInfopanel();" class="btn">Инфопанель</button>
+                <button onclick="ShowHideMarketPlace();" id="app_mrkt_btn" disabled class="btn">Рынок</button>
+                <button onclick="" id="app_shp_btn" disabled class="btn">Корабль</button>
             </div>
             <div id="infobox">
                 <span id="origin_title"></span><img id="origin_avatar" src="avatar.png">
@@ -124,7 +124,7 @@
 					<div class="marketplace_purchase_heading"><strong>Покупка</strong></div>
 					<span class="marketplace_purchase_title"></span>
 					<div class="marketplace_purchase_range">
-						<input type="range" min="1" max="500" value="1" id="marketplace_purchase_quantity_b" class="marketplace_purchase_quantity" onchange="ShowQuantity(this.value, '+');"><button onclick="SetMaxQuantity('+');">макс.</button>
+						<input type="range" min="1" max="500" value="1" id="marketplace_purchase_quantity_b" class="marketplace_purchase_quantity" onchange="ShowQuantity(this.value, '+');"><button onclick="SetMaxQuantity('+');" class="btn">макс.</button>
 					</div>
 					<div class="marketplace_purchase_max">
 						<output class="marketplace_purchase_input">255</output>
@@ -135,15 +135,15 @@
 					</div>
 					<hr />
 					<div class="marketplace_purchase_buttons">
-						<button onclick="ClosePurchaseWindow('+');">Отмена</button>
-						<button onclick="ConfirmPurchase('+');">Купить</button>
+						<button onclick="ClosePurchaseWindow('+');" class="btn">Отмена</button>
+						<button onclick="ConfirmPurchase('+');" class="btn">Купить</button>
 					</div>
 				</div>
 				<div id="marketplace_purchase_sell" class="dn purchase_win">
 					<div class="marketplace_purchase_heading"><strong>Продажа</strong></div>
 					<span class="marketplace_purchase_title"></span>
 					<div class="marketplace_purchase_range">
-						<input type="range" min="1" max="500" value="1" id="marketplace_purchase_quantity_s" class="marketplace_purchase_quantity" onchange="ShowQuantity(this.value, '-');"><button onclick="SetMaxQuantity('-');">макс.</button>
+						<input type="range" min="1" max="500" value="1" id="marketplace_purchase_quantity_s" class="marketplace_purchase_quantity" onchange="ShowQuantity(this.value, '-');"><button onclick="SetMaxQuantity('-');" class="btn">макс.</button>
 					</div>
 					<div class="marketplace_purchase_max">
 						<output class="marketplace_purchase_input">255</output>
@@ -155,8 +155,8 @@
 					</div>
 					<hr />
 					<div class="marketplace_purchase_buttons" style="margin-top:20px;">
-						<button onclick="ClosePurchaseWindow('-');">Отмена</button>
-						<button onclick="ConfirmPurchase('-');">Продать</button>
+						<button onclick="ClosePurchaseWindow('-');" class="btn">Отмена</button>
+						<button onclick="ConfirmPurchase('-');" class="btn">Продать</button>
 					</div>
 				</div>
 			</div>
@@ -178,7 +178,7 @@
 			<div id="marketplace_info">
 			</div>
 			<div id="marketplace_buttons">
-				<button onclick="ShowHideMarketPlace();">Закрыть</button>
+				<button onclick="ShowHideMarketPlace();" class="btn">Закрыть</button>
 				<span id="marketplace_ship">Деньги <span id="ship_money">0</span>d | Груз <span id="ship_cargo_current">~</span>/<span id="ship_cargo_max">~</span></span>
 			</div>
 		</div>
@@ -197,7 +197,7 @@
                     </p>
                 </div>
                 <div class="outfit_buttons">
-                    <button id="outfit_ready" onclick="PreBattleReady();">Готово</button>
+                    <button id="outfit_ready" onclick="PreBattleReady();" class="btn">Готово</button>
                 </div>
             </div>
             <div id="outfit_weapon">
@@ -234,17 +234,36 @@
                 побед — <span id ="summary_kills"></span> <br />
                 поражений — <span id="summary_death"></span>
             </div>
-            <button onclick="CloseBattleStat();">Следующий бой</button>
+            <button onclick="CloseBattleStat();" class="btn">Следующий бой</button>
         </div>
 		<div id="battle" class="dn">
-	        Энергия: <span id="battle_energy">1500</span>
-	        <hr/>
-	        <select id="battle_weapons">
-	            <option>Got you!</option>
-	        </select>
-	        <button id="battle_fire" onclick="Fire();">Использовать</button><br/>
-	        <button disabled="disabled">Побег</button>
-	        <button onclick="EndPhase();">Закончить</button>
+		    <table style="width:100%;">
+		        <tr>
+		            <td style="border-bottom: 1px solid black;">Энергия: <span id="battle_energy">1500</span></td>
+		            <td rowspan="4" style="text-align: right;">
+                        <button id="battle_fire" onclick="Fire();" class="btn" style="margin-bottom: 10px;">Использовать</button><br />
+                        <button disabled="disabled" class="btn">Побег</button><br />
+                        <button onclick="EndPhase();" class="btn">Закончить</button>
+		            </td>
+		        </tr>
+		        <tr>
+		            <td>
+                        <select id="battle_weapons">
+                            <option>Got you!</option>
+                        </select>
+		            </td>
+		        </tr>
+		        <tr>
+		            <td>
+		                Щит: <span id="battle_shield">ЩИТ</span><input id="battle_shield_switch" type="checkbox" checked="checked" onchange="SwitchSubWeapon(this);"/>
+		            </td>
+		        </tr>
+		        <tr>
+		            <td>
+		                Авто: <span id="battle_auto">АВТО</span><input id="battle_auto_switch" type="checkbox" checked="checked" onchange="SwitchSubWeapon(this);"/>
+		            </td>
+		        </tr>
+		    </table>
 	    </div>
 	</div>
 </body>

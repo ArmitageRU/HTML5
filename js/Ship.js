@@ -118,7 +118,6 @@ Ship.prototype = {
 	    this.prevRot = this.rot;
 	    this.prevRoute = this.route;
 	    this.prevScale = this.tile.scale;
-		
 		/*
 		var x_offset = this.tile.sHeight/2+20;
 		if(x_offset<=110){
@@ -131,11 +130,11 @@ Ship.prototype = {
 			this.position = new Point(x_offset, size.y / 2)
 		}
 		*/
-		
 	    this.position = pos;
 	    this.rot = rot;
 	    this.route = route;
 	    this.tile.scale = scale;
+
 	},
 
 	battleRestore: function() {
@@ -250,7 +249,7 @@ Ship.prototype = {
 	    var loss = ~~(Math.random() * (30 - 10) + 10);
 	    this.life.current -= loss;
 	    this.hud.notices[this.hud.notices.length] = {
-	        text: 'ПОПАЛ'
+	        text: 'МИМО'
 	    }
 	    this.damaged = this.damagedDuration;
 		console.log("GET DAMAGE");
@@ -333,7 +332,9 @@ Ship.prototype = {
 	            ret_wpns[ret_wpns.length] = {
 	                id: weapons[i].weapon.id,
 	                energy: weapons[i].weapon.energy * counter,
-	                title: weapons[i].weapon.title
+	                title: weapons[i].weapon.title,
+	                cls: weapons[i].weapon.class,
+	                amount: weapons[i].weapon.amount
 	            }
 	            counter++;
 	        }while(counter<=w_count)
@@ -343,24 +344,36 @@ Ship.prototype = {
 
 	SetWeapon: function (slot, weapon) {
 	    this.slots[slot].weapon = weapon;
-	    //if (weapon != null && this.slots[slot].id == null) {
-			//this.weapons[this.weapons.length] = weapon;
-			//this.slots[slot].weapon = weapon;
-		//}
-		//else {
-		//	for (var i = 0, max = this.weapons.length; i < max; i += 1) {
-		//		if (this.weapons[i].id == this.slots[slot].id) {
-		//			if (weapon == null) {
-		//				this.weapons.splice(i, 1);
-		//				this.slots[slot].id = null;
-		//			}
-		//			else {
-		//				this.weapons[i] = weapon;
-		//				this.slots[slot].id = weapon.id;
-		//			}
-		//			break;
-		//		}
-		//	}
-		//}
+	},
+
+	SwitchShield: function (operation) {
+	    var shield_disabled;
+	    if (operation) {
+	        for (var i = 0, max = this.slots.length; i<max;i+=1){
+	            if (typeof this.slots[i].weapon !== "undefined" && this.slots[i].weapon.class == 'shield') {
+	                if (this.energy < this.slots[i].weapon.energy) {
+	                    this.slots[i].weapon.disable = true;
+	                    shield_disabled = true;
+	                }
+	                else {
+	                    this.energy -= this.slots[i].weapon.energy;
+	                    this.slots[i].weapon.disable = false;
+	                    shield_disabled = false;
+	                }
+                    break;
+	            }
+	        }
+	    }
+	    else {
+	        for (var i = 0, max = this.slots.length; i < max; i += 1) {
+	            if (this.slots[i].weapon !== 'undefined' && this.slots[i].weapon.class == 'shield') {
+	                this.slots[i].weapon.disable = true;
+	                shield_disabled = true;
+	                this.energy += this.slots[i].weapon.energy;
+                    break;
+	            }
+	        }
+	    }
+	    return shield_disabled;
 	}
 };

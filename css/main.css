@@ -76,7 +76,7 @@
     background-color:#fff;
     margin-top:790px;
     padding:5px;
-    width: 350px;
+    max-width: 400px;
     height: 100px;
     left: 0;
     bottom: 0;
@@ -133,7 +133,7 @@
     /*position: relative;*/
 }
 
-#market_goods table, td{
+#market_goods table > td{
     border: 1px solid orange;
 }
 
@@ -268,4 +268,51 @@
 
 .dn {
 	display:none !important;
+}
+
+.btn
+{
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+    color: #232323;
+    background-color: #F8F8F8;
+    border: 1px solid #CECECE;
+    border-radius: 4px;
+    padding: 5px 8px;
+    margin:0 2px 3px 2px;
+    height: 17px;
+    min-width: 30px;
+    font-size: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    text-align: center;
+    box-sizing: content-box;
+    box-shadow: 0 2px 2px -2px #4A4A4A;
+    -webkit-box-shadow: 0 2px 3px -2px #4A4A4A;
+    -moz-box-shadow: 0 2px 3px -2px #4A4A4A;
+    -o-box-shadow: 0 2px 3px -2px #4A4A4A;
+}
+.btn:focus {
+    outline:none;
+}
+.btn:hover 
+{
+    color: #000;
+    background-color: #FFF;
+    border-color: #D6D6D6;
+    box-shadow: 0 2px 3px -2px #848484;
+    -webkit-box-shadow: 0 2px 3px -2px #848484;
+    -moz-box-shadow: 0 2px 3px -2px #848484;
+    -o-box-shadow: 0 2px 3px -2px #848484;
+}
+.btn:active
+{
+    color: #000;
+    background-color: #f5f5f5;
+    border-color: #D6D6D6;
+    box-shadow: 0 0 0 #DFDFDF;
+    -webkit-box-shadow: 0 0 0 #DFDFDF;
+    -moz-box-shadow: 0 0 0 #DFDFDF;
+    -o-box-shadow: 0 0 0 #DFDFDF;
 }

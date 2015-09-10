@@ -360,6 +360,7 @@ function ShowWeaponInfo(weapon) {
 function PreBattleReady() {
     StarSystem.currentMode.inBattle = true;
     PreBattle(true);
+    currentShip.SwitchShield(true);//чтобы сниалась энергия для статичных элементов
 }
 
 // Ship.js
@@ -368,10 +369,20 @@ function PrepareBattleMenu(ship/*,w_id*/) {
     $("#battle_energy").html(ship.energy);
     $("#battle_weapons").empty();
     //console.log(ship.weapons.length);
-    var weapons = currentShip.GetWeaponList();
+    var weapons = currentShip.GetWeaponList(),
+        w_amount;
 
     for (var i = 0, len = weapons.length; i < len; i += 1) {
-        $('#battle_weapons').append('<option value="' + weapons[i].id + '_' + weapons[i].energy + '" selected="selected">' + weapons[i].title + ' — ' + weapons[i].energy + '</option>');
+        w_amount = weapons[i].amount == -1 ? "" : " [" + weapons[i].amount + "]";
+        if (weapons[i].cls == 'weapon') {
+            $('#battle_weapons').append('<option value="' + weapons[i].id + '_' + weapons[i].energy + '" selected="selected">' + weapons[i].title + ' — ' + weapons[i].energy + w_amount + '</option>');
+        }
+        if (weapons[i].cls == 'shield') {
+            $('#battle_shield').html(weapons[i].title + ' — ' + weapons[i].energy);
+        }
+        if (weapons[i].cls == 'auto') {
+            $('#battle_auto').html(weapons[i].title + ' — ' + weapons[i].energy + w_amount);
+        }
     }
     CheckWeapons(ship, 0/*w_id*/);
 }
@@ -387,7 +398,6 @@ function CheckWeapons(ship, w_id) {
         wpns = ship.GetWeaponList(),
         tmp_energy,
         tmp_id;
-    
 
     $("#battle_energy").html(ship.energy);
     $("#battle_fire").prop('disabled', false);
@@ -396,11 +406,18 @@ function CheckWeapons(ship, w_id) {
         tmp_energy = wpns[i].energy;
         tmp_id = wpns[i].id + '_' + wpns[i].energy;
 
-        if (tmp_energy > ship.energy) {
+        if (wpns[i].amount > -1) {
             $('#battle_weapons option[value=' + tmp_id + ']').prop('disabled', true);
-
+            $('#battle_weapons option[value=' + tmp_id + ']').text(wpns[i].title + ' — ' + wpns[i].energy + ' [' + wpns[i].amount + ']');
             if (tmp_id == weapons_id) {
                 weapons_id = 0;
+            }
+        }
+
+        if (tmp_energy > ship.energy || wpns[i].amount == 0) {
+            $('#battle_weapons option[value=' + tmp_id + ']').prop('disabled', true);
+            if (tmp_id == weapons_id) {
+                weapons_id = 0;//снять выделение если был выделен
             }
         }
         else {
@@ -418,6 +435,28 @@ function CheckWeapons(ship, w_id) {
 
     if (disable_fire) {
         $("#battle_fire").prop('disabled', true);
+    }
+}
+
+function SwitchSubWeapon(obj) {
+    var id = $(obj).prop('id');
+    if (id === 'battle_shield_switch') {
+        if ($(obj).is(':checked')) {
+            if(!currentShip.SwitchShield(true)) {
+                $(obj).prop('disabled', true);
+            }
+            else {
+                $(obj).prop('disabled', false);
+            }
+        }
+        else {
+            currentShip.SwitchShield(false);
+        }
+    }
+    if (id === 'battle_auto_switch') {
+        if ($(obj).is(':checked')) {
+
+        }
     }
 }
 

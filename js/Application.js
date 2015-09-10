@@ -103,10 +103,10 @@ Application.prototype = {
 		this.ship.route = this.route;
 		this.FAKE.GenerateFakeWeapons(this.ship.slots, this.ctx, this._images['rocket'], this._images['plasma']); //устанавливаем оружие в слоты
 		this.ship.phaseActive = function phaseActive() {
-		    PrepareBattleMenu(this);
+		    //PrepareBattleMenu(this);
 		};
 		this.ship.phaseEnd = function phaseEnd() {
-		    HideBattleMenu();
+		    //HideBattleMenu();
 		};
 		this.ship.id = 0;
 		
@@ -164,6 +164,9 @@ Application.prototype = {
             
             if (this.currentMode.inBattle) {
                 this.battle.showAllParticipants();
+                PrepareBattleMenu(this.ship);
+                //
+
                 this.battle.beginPhase();
                 this.currentMode.inBattle = false;
             }

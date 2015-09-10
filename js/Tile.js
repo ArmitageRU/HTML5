@@ -25,25 +25,25 @@ Tile.prototype = {
 		    this.ctx.beginPath();
 		    //this.ctx.rect(-this.sWidth / 2, -this.sHeight / 2, this.sWidth, this.sHeight);
 		    this.ctx.moveTo(-this.sWidth / 2, -this.sHeight / 2);
-		    this.ctx.lineTo(-this.sWidth / 2+this.sWidth/10, -this.sHeight / 2)
+		    this.ctx.lineTo(-this.sWidth / 2 + this.sWidth / 10, -this.sHeight / 2);
 			this.ctx.moveTo(this.sWidth / 2-this.sWidth/10, -this.sHeight / 2);
-		    this.ctx.lineTo(this.sWidth / 2, -this.sHeight / 2)
+			this.ctx.lineTo(this.sWidth / 2, -this.sHeight / 2);
 			
 			this.ctx.moveTo(-this.sWidth / 2, this.sHeight / 2);
-		    this.ctx.lineTo(-this.sWidth / 2+this.sWidth/10, this.sHeight / 2)
+			this.ctx.lineTo(-this.sWidth / 2 + this.sWidth / 10, this.sHeight / 2);
 			this.ctx.moveTo(this.sWidth / 2-this.sWidth/10, this.sHeight / 2);
-		    this.ctx.lineTo(this.sWidth / 2, this.sHeight / 2)
+			this.ctx.lineTo(this.sWidth / 2, this.sHeight / 2);
 		    
 			
 			this.ctx.moveTo(this.sWidth / 2, -this.sHeight / 2);
-		    this.ctx.lineTo(this.sWidth / 2, -this.sHeight / 2+this.sHeight / 10)
+			this.ctx.lineTo(this.sWidth / 2, -this.sHeight / 2 + this.sHeight / 10);
 			this.ctx.moveTo(this.sWidth / 2, this.sHeight / 2-this.sHeight / 10);
-		    this.ctx.lineTo(this.sWidth / 2, this.sHeight / 2)
+			this.ctx.lineTo(this.sWidth / 2, this.sHeight / 2);
 		    
 			this.ctx.moveTo(-this.sWidth / 2, -this.sHeight / 2);
-		    this.ctx.lineTo(-this.sWidth / 2, -this.sHeight / 2+this.sHeight / 10)
+			this.ctx.lineTo(-this.sWidth / 2, -this.sHeight / 2 + this.sHeight / 10);
 			this.ctx.moveTo(-this.sWidth / 2, this.sHeight / 2-this.sHeight / 10);
-		    this.ctx.lineTo(-this.sWidth / 2, this.sHeight / 2)
+			this.ctx.lineTo(-this.sWidth / 2, this.sHeight / 2);
 			
 			this.ctx.lineWidth = 2;
 		    this.ctx.strokeStyle = 'orange';
