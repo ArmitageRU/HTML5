@@ -270,6 +270,10 @@
 	display:none !important;
 }
 
+.gray {
+    color:#848484;
+}
+
 .btn
 {
     display: inline-block;
@@ -311,6 +315,18 @@
     color: #000;
     background-color: #f5f5f5;
     border-color: #D6D6D6;
+    box-shadow: 0 0 0 #DFDFDF;
+    -webkit-box-shadow: 0 0 0 #DFDFDF;
+    -moz-box-shadow: 0 0 0 #DFDFDF;
+    -o-box-shadow: 0 0 0 #DFDFDF;
+}
+
+.btn.disabled,.btn:disabled
+{
+    color: #808080;
+    background-color: #EAEAEA;/* #EBEBE4;*/
+    border-color:#CECECE;
+    cursor: default;
     box-shadow: 0 0 0 #DFDFDF;
     -webkit-box-shadow: 0 0 0 #DFDFDF;
     -moz-box-shadow: 0 0 0 #DFDFDF;

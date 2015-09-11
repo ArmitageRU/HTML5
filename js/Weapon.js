@@ -198,6 +198,9 @@ Weapon.prototype = {
                     this.tile.draw(new Point(fire.parent.object.position.x + curr_x, fire.parent.object.position.y + curr_y), -Math.PI);
                 }
                 break;
+            case 'pulse_beam':
+                console.log("пиу пиу");
+                break;
             default:
                 break;
         }

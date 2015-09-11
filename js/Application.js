@@ -104,6 +104,11 @@ Application.prototype = {
 		this.FAKE.GenerateFakeWeapons(this.ship.slots, this.ctx, this._images['rocket'], this._images['plasma']); //устанавливаем оружие в слоты
 		this.ship.phaseActive = function phaseActive() {
 		    PrepareBattleMenu(this);
+		    var autos = this.GetAuto();
+		    if (autos.length > 0) {
+		        StarSystem.battle.fire(autos[0]+'_0');//чтобы метод отработал, как-то криво выглядит
+		    }
+
 		};
 		this.ship.phaseEnd = function phaseEnd() {
 		    HideBattleMenu();
@@ -164,8 +169,7 @@ Application.prototype = {
             
             if (this.currentMode.inBattle) {
                 this.battle.showAllParticipants();
-                PrepareBattleMenu(this.ship);
-                //
+                //PrepareBattleMenu(this.ship);
 
                 this.battle.beginPhase();
                 this.currentMode.inBattle = false;

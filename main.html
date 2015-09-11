@@ -239,7 +239,7 @@
 		<div id="battle" class="dn">
 		    <table style="width:100%;">
 		        <tr>
-		            <td style="border-bottom: 1px solid black;">Энергия: <span id="battle_energy">1500</span></td>
+		            <td style="border-bottom: 1px solid black;">Энергия: <span id="battle_energy">EEEE</span></td>
 		            <td rowspan="4" style="text-align: right;">
                         <button id="battle_fire" onclick="Fire();" class="btn" style="margin-bottom: 10px;">Использовать</button><br />
                         <button disabled="disabled" class="btn">Побег</button><br />
@@ -255,12 +255,12 @@
 		        </tr>
 		        <tr>
 		            <td>
-		                Щит: <span id="battle_shield">ЩИТ</span><input id="battle_shield_switch" type="checkbox" checked="checked" onchange="SwitchSubWeapon(this);"/>
+		                Щит: <span id="battle_shield">ЩИТ</span><input id="battle_shield_switch" type="checkbox" checked="checked" onchange="SwitchSubWeapon(event, this);"/>
 		            </td>
 		        </tr>
 		        <tr>
 		            <td>
-		                Авто: <span id="battle_auto">АВТО</span><input id="battle_auto_switch" type="checkbox" checked="checked" onchange="SwitchSubWeapon(this);"/>
+		                Авто: <span id="battle_auto">АВТО</span><input id="battle_auto_switch" type="checkbox" checked="checked" onchange="SwitchSubWeapon(event, this);"/>
 		            </td>
 		        </tr>
 		    </table>

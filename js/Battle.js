@@ -170,6 +170,11 @@ Battle.prototype = {
                         this.currentShip.energy -= weapon_id_energy[1];//this.currentShip.weapons[i].energy;
                         break;
                     }
+                    //
+                    if (wpns[i].weapon.class == 'shield' && wpns[i].weapon.amount > 0 && this.participants[j].object.parentShipId != null && this.participants[j].align == -1) {
+                        fire.target = this.participants[j];//.object;
+                        this.fires[this.fires.length] = fire;
+                    }
                 }
                 ship = this.currentShip;
                 break;

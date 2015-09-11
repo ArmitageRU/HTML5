@@ -351,7 +351,7 @@ Ship.prototype = {
 	    var shield_disabled;
 	    if (operation) {//включить щит
 	        for (var i = 0, max = this.slots.length; i<max;i+=1){
-	            if (typeof this.slots[i].weapon !== "undefined" && this.slots[i].weapon.class == 'shield') {
+	            if (typeof this.slots[i].weapon !== "undefined" && this.slots[i].weapon!=null && this.slots[i].weapon.class == 'shield') {
 	                if (this.energy < this.slots[i].weapon.energy) {
 	                    this.slots[i].weapon.disable = true;
 	                    shield_disabled = true;
@@ -367,7 +367,7 @@ Ship.prototype = {
 	    }
 	    else {//выключить
 	        for (var i = 0, max = this.slots.length; i < max; i += 1) {
-	            if (this.slots[i].weapon !== 'undefined' && this.slots[i].weapon.class == 'shield') {
+	            if (typeof this.slots[i].weapon !== 'undefined' && this.slots[i].weapon.class == 'shield') {
 	                //this.slots[i].weapon.disable = true;
 	                shield_disabled = false;
 	                this.energy += this.slots[i].weapon.energy;
@@ -376,5 +376,16 @@ Ship.prototype = {
 	        }
 	    }
 	    return shield_disabled;
+	},
+
+	GetAuto: function () {
+	    var autos = [];
+	    for (var i = 0, max = this.slots.length; i < max; i += 1) {
+	        if (typeof this.slots[i].weapon !== 'undefined' && this.slots[i].weapon.class == 'auto') {
+	            autos[autos.length] = this.slots[i].weapon.id;
+	            //break;
+	        }
+	    }
+	    return autos;
 	}
 };
