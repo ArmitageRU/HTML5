@@ -35,8 +35,11 @@ Battle.prototype = {
                         this.fires.splice(j, 1);
                         continue;
                     }
-                    else if (this.fires[j].parent.object.id === this.participants[i].object.id) {
+					else if (this.fires[j].parent.object.id === this.participants[i].object.id) {
                         for (var k = 0, max_f = this.fires[j].parent.object.slots.length; k < max_f; k += 1) {
+							if(this.fires[j].weapon_id == 104){
+								console.log(this.fires[j].weapon_id, " w_id ", this.fires[j].target.object.id);
+							}
                             if (this.fires[j].parent.object.slots[k].weapon !=null && this.fires[j].weapon_id === this.fires[j].parent.object.slots[k].weapon.id) {
                                 this.fires[j].time = this.fires[j].parent.object.slots[k].weapon.renderAction(this.fires[j].time, time, this.ctx, this.fires[j]);
                                 break;
@@ -145,7 +148,8 @@ Battle.prototype = {
         var ship = null,
             wpns = this.currentShip.GetWeapons(),
             weapon_id_energy = w_id.split('_'),
-            barrels = 1;
+            barrels = 1,
+			fire;
         for (var i = 0, len = wpns.length; i < len; i += 1) {
             if (weapon_id_energy[0] == wpns[i].weapon.id) {
                 //узнаем из скольких орудий стреляли
@@ -156,24 +160,34 @@ Battle.prototype = {
                     }
                 }
 
-                var fire = {
-                    parent: this.getParticipant(this.currentShip.id),//this.currentShip,
-                    weapon_id: wpns[i].weapon.id,
-                    time: 0,
-                    barrels: barrels
-                };
-
                 for (var j = 0, max_p = this.participants.length; j < max_p; j += 1) {
-                    if (this.participants[j].object.selected) {
-                        fire.target = this.participants[j];//.object;
+                    
+					if (this.participants[j].object.selected && wpns[i].weapon.class == 'weapon') {
+                        
+						fire = {
+								parent: this.getParticipant(this.currentShip.id),//this.currentShip,
+								weapon_id: wpns[i].weapon.id,
+								time: 0,
+								barrels: barrels,
+								target: this.participants[j]
+								};
+						
+						fire.target = this.participants[j];//.object;
                         this.fires[this.fires.length] = fire;
                         this.currentShip.energy -= weapon_id_energy[1];//this.currentShip.weapons[i].energy;
                         break;
                     }
-                    //
-                    if (wpns[i].weapon.class == 'shield' && wpns[i].weapon.amount > 0 && this.participants[j].object.parentShipId != null && this.participants[j].align == -1) {
-                        fire.target = this.participants[j];//.object;
-                        this.fires[this.fires.length] = fire;
+                    
+                    if (wpns[i].weapon.class == 'auto' && wpns[i].weapon.amount > 0 && this.participants[j].object.parentShipId != null && this.participants[j].align == -1) {
+                        fire = {
+								parent: this.getParticipant(this.currentShip.id),//this.currentShip,
+								weapon_id: wpns[i].weapon.id,
+								time: 0,
+								barrels: barrels,
+								target: this.participants[j]
+								};
+						this.fires[this.fires.length] = fire;
+						console.log(fire.weapon_id, " add w_id ", this.fires[this.fires.length-1].target.object.id)
                     }
                 }
                 ship = this.currentShip;

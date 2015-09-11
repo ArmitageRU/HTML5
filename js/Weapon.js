@@ -199,7 +199,12 @@ Weapon.prototype = {
                 }
                 break;
             case 'pulse_beam':
-                console.log("пиу пиу");
+                if (ret_time > this.beamLasting) {
+                    ret_time = -1;
+                    //fire.target.object.GetDamage(this, fire.barrels);
+					console.log("пиу пиу ", fire.target.object.id);
+                    break;
+                }
                 break;
             default:
                 break;
