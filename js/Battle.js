@@ -32,14 +32,15 @@ Battle.prototype = {
                 //console.log("fires.length ", this.fires.length);
                 for (var j = 0; j < this.fires.length; j += 1) {
                     if (this.fires[j].time < 0) {
+                        var wpn = StarSystem.GetWeaponById(this.fires[j].weapon_id);
+                        if (wpn != null && wpn.class == 'auto') {
+                            UpdateAuto();
+                        }
                         this.fires.splice(j, 1);
                         continue;
                     }
 					else if (this.fires[j].parent.object.id === this.participants[i].object.id) {
                         for (var k = 0, max_f = this.fires[j].parent.object.slots.length; k < max_f; k += 1) {
-							if(this.fires[j].weapon_id == 104){
-								console.log(this.fires[j].weapon_id, " w_id ", this.fires[j].target.object.id);
-							}
                             if (this.fires[j].parent.object.slots[k].weapon !=null && this.fires[j].weapon_id === this.fires[j].parent.object.slots[k].weapon.id) {
                                 this.fires[j].time = this.fires[j].parent.object.slots[k].weapon.renderAction(this.fires[j].time, time, this.ctx, this.fires[j]);
                                 break;
@@ -174,7 +175,7 @@ Battle.prototype = {
 						
 						fire.target = this.participants[j];//.object;
                         this.fires[this.fires.length] = fire;
-                        this.currentShip.energy -= weapon_id_energy[1];//this.currentShip.weapons[i].energy;
+                        this.currentShip.energy -= weapon_id_energy[1];
                         break;
                     }
                     
@@ -187,7 +188,7 @@ Battle.prototype = {
 								target: this.participants[j]
 								};
 						this.fires[this.fires.length] = fire;
-						console.log(fire.weapon_id, " add w_id ", this.fires[this.fires.length-1].target.object.id)
+						//console.log(fire.weapon_id, " add w_id ", this.fires[this.fires.length-1].target.object.id)
                     }
                 }
                 ship = this.currentShip;

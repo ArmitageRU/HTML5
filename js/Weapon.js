@@ -24,7 +24,8 @@ Weapon.prototype = {
     renderAction: function (full_time, time, ctx, fire/*from, barrels, target*/) {
         var ret_time = full_time + time,
             thickness,// = ~~(ret_time / (this.beamLasting / 10));
-			tg = fire.target.object.position.y-fire.parent.object.position.y/ fire.target.object.position.x-fire.parent.object.position.x;
+			tg = (fire.target.object.position.y-fire.parent.object.position.y)/ (fire.target.object.position.x-fire.parent.object.position.x),
+            radius = Math.abs(fire.target.object.position.x - fire.parent.object.position.x);
 
         if (fire.barrels == 1) {
             thickness = ~~(ret_time / (this.beamLasting / 10));
@@ -44,7 +45,7 @@ Weapon.prototype = {
                 ctx.moveTo(fire.parent.object.position.x, fire.parent.object.position.y);
                 
                 var angle = Math.atan2(fire.target.object.position.y - fire.parent.object.position.y, fire.target.object.position.x - fire.parent.object.position.x);
-                var radius = Math.abs(fire.target.object.position.x - fire.parent.object.position.x);
+                //var 
                 angle+= Math.PI / 36;
                 angle -= (ret_time / this.beamLasting) * (Math.PI / 18);
 				var new_x = Math.cos(angle);
@@ -203,12 +204,52 @@ Weapon.prototype = {
                 if (ret_time > this.beamLasting) {
                     ret_time = -1;
                     //fire.target.object.GetDamage(this, fire.barrels);
-					console.log("пиу пиу ", fire.target.object.id);
+                    //console.log("пиу пиу ", fire.target.object.id);
+                    this.amount--;
                     break;
                 }
 				//y=kx+b[]
-                var y = tg*fire.target.object.position.x*(this.beamLasting/ret_time);
-				break;
+                var x1 = fire.target.object.position.x * (ret_time / this.beamLasting),
+                    x0 = (x1 - 30) < 0 ? 0 : x1 - 30,
+                    x1_2 =(x0 - 100)< 0 ? 0 : x0 - 100,
+                    x0_2 = (x1_2 - 30) < 0 ? 0 : x1_2 - 30,
+                    x1_3 =(x0_2 - 100)< 0 ? 0 : x0_2 - 100,
+                    x0_3 = (x1_3 - 30) < 0 ? 0 : x1_3 - 30;
+                //var y0 = tg * fire.target.object.position.x * (ret_time / this.beamLasting) + fire.parent.object.position.y;
+                var y0 = tg * x0 + fire.parent.object.position.y;
+                var y1 = tg * x1 + fire.parent.object.position.y;
+
+                var y0_2 = tg * x0_2 + fire.parent.object.position.y;
+                var y1_2 = tg * x1_2 + fire.parent.object.position.y;
+
+                var y0_3 = tg * x0_3 + fire.parent.object.position.y;
+                var y1_3 = tg * x1_3 + fire.parent.object.position.y;
+                
+                ctx.beginPath();
+                ctx.moveTo(x0,y0);
+                ctx.lineTo(x1, y1);
+                if (x0_2 > 0) {
+                    ctx.moveTo(x0_2, y0_2);
+                    ctx.lineTo(x1_2, y1_2);
+                }
+                if (x0_3 > 0) {
+                    ctx.moveTo(x0_3, y0_3);
+                    ctx.lineTo(x1_3, y1_3);
+                }
+                ctx.lineCap = 'round';
+                //ctx.lineWidth = 5;
+                //ctx.strokeStyle = '#fff';
+                for (var i = 5; i >= 0; i--) {
+                    ctx.lineWidth = /*thickness + */(i + 1) * 4 - 2;
+                    if (i == 0)
+                        ctx.strokeStyle = '#fff';
+                    else {
+                        ctx.strokeStyle = 'rgba(255, 0, 0, 0.2)';
+                    }
+                    ctx.stroke();
+                }
+                //ctx.stroke();
+                break;
             default:
                 break;
         }

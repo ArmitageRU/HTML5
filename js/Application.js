@@ -279,5 +279,9 @@ Application.prototype = {
 			pos = new Point(x_offset, size.y / 2)
 		}
 		return pos;
+	},
+
+	GetWeaponById: function (w_id) {
+	    return this.FAKE.GetWeaponById(w_id);
 	}
 };
