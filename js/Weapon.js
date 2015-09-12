@@ -23,7 +23,8 @@ function Weapon(energy, title, cost, size, mass, type, context, image, class_, a
 Weapon.prototype = {
     renderAction: function (full_time, time, ctx, fire/*from, barrels, target*/) {
         var ret_time = full_time + time,
-            thickness;// = ~~(ret_time / (this.beamLasting / 10));
+            thickness,// = ~~(ret_time / (this.beamLasting / 10));
+			tg = fire.target.object.position.y-fire.parent.object.position.y/ fire.target.object.position.x-fire.parent.object.position.x;
 
         if (fire.barrels == 1) {
             thickness = ~~(ret_time / (this.beamLasting / 10));
@@ -205,7 +206,9 @@ Weapon.prototype = {
 					console.log("пиу пиу ", fire.target.object.id);
                     break;
                 }
-                break;
+				//y=kx+b[]
+                var y = tg*fire.target.object.position.x*(this.beamLasting/ret_time);
+				break;
             default:
                 break;
         }
