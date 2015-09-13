@@ -106,7 +106,7 @@ Application.prototype = {
 		    PrepareBattleMenu(this);
 		    var autos = this.GetAuto();
 		    if (autos.length > 0) {
-		        StarSystem.battle.fire(autos[0]+'_0');//чтобы метод отработал, как-то криво выглядит
+		        StarSystem.battle.fire(autos[0].id+'_0');//чтобы метод отработал, как-то криво выглядит
 		    }
 
 		};

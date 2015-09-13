@@ -209,13 +209,34 @@ Weapon.prototype = {
                     break;
                 }
 				//y=kx+b[]
-                var x1 = fire.target.object.position.x * (ret_time / this.beamLasting),
-                    x0 = (x1 - 30) < 0 ? 0 : x1 - 30,
-                    x1_2 =(x0 - 100)< 0 ? 0 : x0 - 100,
-                    x0_2 = (x1_2 - 30) < 0 ? 0 : x1_2 - 30,
-                    x1_3 =(x0_2 - 100)< 0 ? 0 : x0_2 - 100,
-                    x0_3 = (x1_3 - 30) < 0 ? 0 : x1_3 - 30;
-                //var y0 = tg * fire.target.object.position.x * (ret_time / this.beamLasting) + fire.parent.object.position.y;
+                var x1 = fire.target.object.position.x * (ret_time / (this.beamLasting / 3)),
+                    x0 = (x1 - 30) < fire.parent.object.position.x ? fire.parent.object.position.x : x1 - 30,
+                    x1_2 = 0,
+                    x0_2 = 0,
+                    x1_3 = 0,
+                    x0_3 = 0;
+
+                if (x1 > fire.target.object.position.x) {
+                    x1 = fire.target.object.position.x;
+                }
+
+                if (ret_time > (this.beamLasting / 3)) {
+                    x1_2 = fire.target.object.position.x * ((ret_time - this.beamLasting / 3) / (this.beamLasting / 3));
+                    x0_2 = (x1_2 - 30) < fire.parent.object.position.x ? fire.parent.object.position.x : x1_2 - 30;
+                    if (x1_2 > fire.target.object.position.x) {
+                        x1_2 = fire.target.object.position.x;
+                    }
+                }
+
+                if (ret_time > (this.beamLasting*2 / 3)) {
+                    x1_3 = fire.target.object.position.x * ((ret_time - this.beamLasting * 2 / 3) / (this.beamLasting / 3));
+                    x0_3 = (x1_3 - 30) < fire.parent.object.position.x ? fire.parent.object.position.x : x1_3 - 30;
+                    if (x1_3 > fire.target.object.position.x) {
+                        x1_3 = fire.target.object.position.x;
+                    }
+                }
+                
+
                 var y0 = tg * x0 + fire.parent.object.position.y;
                 var y1 = tg * x1 + fire.parent.object.position.y;
 
@@ -226,21 +247,25 @@ Weapon.prototype = {
                 var y1_3 = tg * x1_3 + fire.parent.object.position.y;
                 
                 ctx.beginPath();
-                ctx.moveTo(x0,y0);
-                ctx.lineTo(x1, y1);
-                if (x0_2 > 0) {
+                if (x0 < fire.target.object.position.x) {
+                    ctx.moveTo(x0, y0);
+                    ctx.lineTo(x1, y1);
+                }
+                if (x0_2 > fire.parent.object.position.x && x0_2 < fire.target.object.position.x) {
                     ctx.moveTo(x0_2, y0_2);
                     ctx.lineTo(x1_2, y1_2);
+                    console.log(ret_time, " 2");
                 }
-                if (x0_3 > 0) {
+                if (x0_3 > fire.parent.object.position.x && x0_3 < fire.target.object.position.x) {
                     ctx.moveTo(x0_3, y0_3);
                     ctx.lineTo(x1_3, y1_3);
+                    console.log(ret_time, " 3");
                 }
                 ctx.lineCap = 'round';
-                //ctx.lineWidth = 5;
-                //ctx.strokeStyle = '#fff';
+                
+
                 for (var i = 5; i >= 0; i--) {
-                    ctx.lineWidth = /*thickness + */(i + 1) * 4 - 2;
+                    ctx.lineWidth = (i + 1) * 4 - 2;
                     if (i == 0)
                         ctx.strokeStyle = '#fff';
                     else {
@@ -248,7 +273,6 @@ Weapon.prototype = {
                     }
                     ctx.stroke();
                 }
-                //ctx.stroke();
                 break;
             default:
                 break;

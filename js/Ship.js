@@ -382,7 +382,7 @@ Ship.prototype = {
 	    var autos = [];
 	    for (var i = 0, max = this.slots.length; i < max; i += 1) {
 	        if (typeof this.slots[i].weapon !== 'undefined' && this.slots[i].weapon.class == 'auto') {
-	            autos[autos.length] = this.slots[i].weapon.id;
+	            autos[autos.length] = this.slots[i].weapon;
 	            //break;
 	        }
 	    }

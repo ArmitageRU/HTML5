@@ -309,7 +309,7 @@ function FillPreBattle() {
 //выбор оружия из списка
 function SelectOutfitWeapon(slot, obj) {
     var weapon_id = $(obj).val(),
-        wpn = StarSystemGetWeaponById(weapon_id);
+        wpn = StarSystem.GetWeaponById(weapon_id);
     currentShip.SetWeapon(slot, wpn);
     FillPreBattle(null);
     ShowWeaponInfo(wpn);
@@ -395,7 +395,7 @@ function PrepareBattleMenu(ship/*,w_id*/) {
 function UpdateAuto() {
     var autos = currentShip.GetAuto();
     if(autos.length>0){
-        $('#battle_auto').html(autos[0].title + ' — ' + autos[0].energy + autos[0].amount);
+        $('#battle_auto').html(autos[0].title + ' — ' + autos[0].energy +' ['+autos[0].amount+']');
     }
 }
 
