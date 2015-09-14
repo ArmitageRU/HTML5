@@ -14,7 +14,11 @@ function Weapon(energy, title, cost, size, mass, type, context, image, class_, a
     this.type = type;
     this.mass = mass;
     this.class = class_;
-    this.amount = amount;
+    this.amount = {
+        stock: amount,
+        current: amount
+        };
+        
     this.beamLasting = 700;
     this.plasmaLasting = 1000;
     this.rocketLasting = 700;
@@ -125,7 +129,7 @@ Weapon.prototype = {
                     up_r_bo,
                     down_r_bo;
                 if (ret_time > this.rocketLasting) {
-                    if (this.amount>0) {
+                    if (this.amount.current>0) {
                         var rocket_ship_up = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
                         rocket_ship_up.id = StarSystem.battle.getNextId();//-1;
                         rocket_ship_up.parentShipId = fire.parent.object.id;
@@ -154,10 +158,10 @@ Weapon.prototype = {
                         up_r_bo = new BattleObject(rocket_ship_up, fire.parent.align, rocket_ship_up.render);
                         up_r_bo.hide = false;
                         StarSystem.battle.participants[StarSystem.battle.participants.length] = up_r_bo;
-                        this.amount--;
+                        this.amount.current--;
                     }
                     
-                    if (this.amount>0) {
+                    if (this.amount.curent>0) {
                         var rocket_ship_down = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
                         rocket_ship_down.id = StarSystem.battle.getNextId();//-2;
                         rocket_ship_down.parentShipId = fire.parent.object.id;
@@ -186,7 +190,7 @@ Weapon.prototype = {
                         down_r_bo = new BattleObject(rocket_ship_down, fire.parent.align, rocket_ship_down.render);
                         down_r_bo.hide = false;
                         StarSystem.battle.participants[StarSystem.battle.participants.length] = down_r_bo;
-                        this.amount--;
+                        this.amount.current--;
                     }
                     ret_time = -1;
                     break;

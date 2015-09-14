@@ -348,18 +348,18 @@ Ship.prototype = {
 	},
 
 	SwitchShield: function (operation) {
-	    var shield_disabled;
+	    //var shield_disabled;
 	    if (operation) {//включить щит
 	        for (var i = 0, max = this.slots.length; i<max;i+=1){
 	            if (typeof this.slots[i].weapon !== "undefined" && this.slots[i].weapon!=null && this.slots[i].weapon.class == 'shield') {
 	                if (this.energy < this.slots[i].weapon.energy) {
-	                    this.slots[i].weapon.disable = true;
-	                    shield_disabled = true;
+	                    this.slots[i].weapon.disabled = true;
+	                    //shield_disabled = true;
 	                }
 	                else {
 	                    this.energy -= this.slots[i].weapon.energy;
-	                    this.slots[i].weapon.disable = false;
-	                    shield_disabled = false;
+	                    this.slots[i].weapon.disabled = false;
+	                    //shield_disabled = false;
 	                }
                     break;
 	            }
@@ -368,20 +368,41 @@ Ship.prototype = {
 	    else {//выключить
 	        for (var i = 0, max = this.slots.length; i < max; i += 1) {
 	            if (typeof this.slots[i].weapon !== 'undefined' && this.slots[i].weapon.class == 'shield') {
-	                //this.slots[i].weapon.disable = true;
-	                shield_disabled = false;
+	                this.slots[i].weapon.disabled = true;
+	                //shield_disabled = false;
 	                this.energy += this.slots[i].weapon.energy;
                     break;
 	            }
 	        }
 	    }
-	    return shield_disabled;
+	    //return shield_disabled;
+	},
+
+	SwitchAuto: function (operation) {
+	    var AM = this.GetAuto();
+        if (AM.length > 0) {
+	        if (operation) {//включить auto
+	        
+	                if (this.energy < AM[0].energy) {
+	                    AM[0].disabled = true;
+	                }
+	                else {
+	                    this.energy -= AM[0].energy;
+	                    AM[0].disabled = false;
+	                }
+	       
+	        }
+	        else {//выключить
+	            this.energy += AM[0].energy;
+	            AM[0].disabled = true;
+	        }
+        }
 	},
 
 	GetAuto: function () {
 	    var autos = [];
 	    for (var i = 0, max = this.slots.length; i < max; i += 1) {
-	        if (typeof this.slots[i].weapon !== 'undefined' && this.slots[i].weapon.class == 'auto') {
+	        if (this.slots[i].weapon!=null && typeof this.slots[i].weapon !== 'undefined' && this.slots[i].weapon.class == 'auto') {
 	            autos[autos.length] = this.slots[i].weapon;
 	            //break;
 	        }

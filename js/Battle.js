@@ -179,7 +179,7 @@ Battle.prototype = {
                         break;
                     }
                     
-                    if (wpns[i].weapon.class == 'auto' && wpns[i].weapon.amount > 0 && this.participants[j].object.parentShipId != null && this.participants[j].align == -1) {
+					if (wpns[i].weapon.class == 'auto' && !wpns[i].weapon.disabled && wpns[i].weapon.amount.current > 0 && this.participants[j].object.parentShipId != null && this.participants[j].align == -1) {
                         fire = {
 								parent: this.getParticipant(this.currentShip.id),//this.currentShip,
 								weapon_id: wpns[i].weapon.id,

@@ -228,6 +228,8 @@ function ConfirmPurchase(operation){
 }
 
 /************************************Режим боя********************************************/
+
+//Вызывается первой в начале битвы
 function PrepareForBattle(hide, ship) {
     if (!inbattle) {
         inbattle = true;
@@ -277,7 +279,9 @@ function FillPreBattle() {
     
 	$("#outfit_slot_weapon").html("");
 	$("#outfit_slot_shield").html("");
+	$('#battle_shield_switch').prop('checked', true);
 	$("#outfit_slot_auto").html("");
+	$('#battle_auto_switch').prop('checked', true);
 
     var suited_weapons,
         all_weapons = StarSystem.FAKE.weapons;
@@ -323,6 +327,7 @@ function ViewWeaponInfo(obj) {
     ShowWeaponInfo(wpn);
 }
 
+//после битвы показать окно
 function ShowSummaryStat(hide) {
     if (hide) {
         $("#summary").addClass("dn");
@@ -368,12 +373,21 @@ function PrepareBattleMenu(ship/*,w_id*/) {
     $("#battle").removeClass("dn");
     $("#battle_energy").html(ship.energy);
     $("#battle_weapons").empty();
+    $('#battle_shield').html("—none—");
+    $('#battle_shield').addClass('gray');
+    $('#battle_shield_switch').addClass('gray');
+    $('#battle_shield_switch').prop('disabled', true);
+    $('#battle_auto').html("—none—");
+    $('#battle_auto').addClass('gray');
+    $('#battle_auto_switch').addClass('gray');
+    $('#battle_auto_switch').prop('disabled', true);
+
     //console.log(ship.weapons.length);
     var weapons = currentShip.GetWeaponList(),
         w_amount;
 
     for (var i = 0, len = weapons.length; i < len; i += 1) {
-        w_amount = weapons[i].amount == -1 ? "" : " [" + weapons[i].amount + "]";
+        w_amount = weapons[i].amount.current == -1 ? "" : " [" + weapons[i].amount.current + "]";
         if (weapons[i].cls == 'weapon') {
             $('#battle_weapons').append('<option value="' + weapons[i].id + '_' + weapons[i].energy + '" selected="selected">' + weapons[i].title + ' — ' + weapons[i].energy + w_amount + '</option>');
         }
@@ -382,22 +396,36 @@ function PrepareBattleMenu(ship/*,w_id*/) {
             $('#battle_shield').removeClass('gray');
             $('#battle_shield_switch').removeClass('gray');
             $('#battle_shield_switch').prop('disabled', false);
-            $('#battle_shield_switch').prop('checked', true);
+            //$('#battle_shield_switch').prop('checked', true);
 
         }
         if (weapons[i].cls == 'auto') {
             $('#battle_auto').html(weapons[i].title + ' — ' + weapons[i].energy + w_amount);
+            $('#battle_auto').removeClass('gray');
+            $('#battle_auto_switch').removeClass('gray');
+            $('#battle_auto_switch').prop('disabled', false);
+            //$('#battle_auto_switch').prop('checked', true);
         }
     }
     CheckWeapons(ship, 0/*w_id*/);
 }
 
+function EnableAuto(option) {
+    
+}
+
+//обновить окно с UI выбора оружия
 function UpdateAuto() {
     var autos = currentShip.GetAuto();
-    if(autos.length>0){
-        $('#battle_auto').html(autos[0].title + ' — ' + autos[0].energy +' ['+autos[0].amount+']');
+    if (autos.length > 0) {
+        $('#battle_auto').html(autos[0].title + ' — ' + autos[0].energy + ' [' + autos[0].amount.current + ']');
+    }
+    else {
+        $('#battle_auto_switch').prop('disabled', true);
+        $('#battle_auto').addClass('gray');
     }
 }
+
 
 function HideBattleMenu() {
     $("#battle").addClass("dn");
@@ -418,15 +446,15 @@ function CheckWeapons(ship, w_id) {
         tmp_energy = wpns[i].energy;
         tmp_id = wpns[i].id + '_' + wpns[i].energy;
 
-        if (wpns[i].amount > -1) {
+        if (wpns[i].amount.current > -1) {
             $('#battle_weapons option[value=' + tmp_id + ']').prop('disabled', true);
-            $('#battle_weapons option[value=' + tmp_id + ']').text(wpns[i].title + ' — ' + wpns[i].energy + ' [' + wpns[i].amount + ']');
+            $('#battle_weapons option[value=' + tmp_id + ']').text(wpns[i].title + ' — ' + wpns[i].energy + ' [' + wpns[i].amount.current + ']');
             if (tmp_id == weapons_id) {
                 weapons_id = 0;
             }
         }
 
-        if (tmp_energy > ship.energy || wpns[i].amount == 0) {
+        if (tmp_energy > ship.energy || wpns[i].amount.current == 0) {
             $('#battle_weapons option[value=' + tmp_id + ']').prop('disabled', true);
             if (tmp_id == weapons_id) {
                 weapons_id = 0;//снять выделение если был выделен
@@ -442,8 +470,14 @@ function CheckWeapons(ship, w_id) {
         //  если щит                и    энергии корабля меньше     и   он не выделен
         if (wpns[i].cls == 'shield' && ship.energy < wpns[i].energy && !$('#battle_shield_switch').is(':checked')) {
             $('#battle_shield_switch').prop('disabled', true);
-            $('#battle_shield').prop('disabled', true);
+            //$('#battle_shield').prop('disabled', true);
             $('#battle_shield').addClass('gray');
+        }
+
+        if (wpns[i].cls == 'auto' && ship.energy < wpns[i].energy && !$('#battle_auto_switch').is(':checked')) {
+            $('#battle_auto_switch').prop('disabled', true);
+            //$('#battle_auto').prop('disabled', true);
+            $('#battle_auto').addClass('gray');
         }
     }
 
@@ -456,6 +490,7 @@ function CheckWeapons(ship, w_id) {
     }
 }
 
+//галочки напротив щитв и авто
 function SwitchSubWeapon(e, obj) {
     var id = $(obj).prop('id');
     if (id === 'battle_shield_switch') {
@@ -465,13 +500,16 @@ function SwitchSubWeapon(e, obj) {
         else {
             currentShip.SwitchShield(false);
         }
-		CheckWeapons(currentShip, 0);
     }
     if (id === 'battle_auto_switch') {
         if ($(obj).is(':checked')) {
-
+            currentShip.SwitchAuto(true);
+        }
+        else {
+            currentShip.SwitchAuto(false);
         }
     }
+    CheckWeapons(currentShip, 0);
 }
 
 function Fire() {
