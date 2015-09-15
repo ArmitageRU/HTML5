@@ -139,7 +139,9 @@ Ship.prototype = {
 
 	battleRestore: function() {
 	    this.energy = this.energyСapacity;
-		this.SwitchShield(true);
+	    this.SwitchShield(true);
+	    this.damaged = 0;
+	    this.hud.notices = [];
 	},
 
 	battleDebriefing: function() {

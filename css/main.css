@@ -126,11 +126,12 @@
 }
 
 #outfit_specification{
-    width:380px;
+    width:370px;
     display: inline-block;
     overflow: scroll;
     height: 795px;
 	float:right;
+    padding:5px;
     /*position: relative;*/
 }
 
@@ -236,6 +237,7 @@
 
 #summary{
     z-index:2;
+    padding:5px;
 } 
 
 #summary_stat{

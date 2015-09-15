@@ -161,7 +161,7 @@ Weapon.prototype = {
                         this.amount.current--;
                     }
                     
-                    if (this.amount.curent>0) {
+                    if (this.amount.current>0) {
                         var rocket_ship_down = new Ship(this.ctx, this.tile.img, new Rectangle(0, 0, null, null, 1));
                         rocket_ship_down.id = StarSystem.battle.getNextId();//-2;
                         rocket_ship_down.parentShipId = fire.parent.object.id;
@@ -209,7 +209,7 @@ Weapon.prototype = {
                     ret_time = -1;
                     //fire.target.object.GetDamage(this, fire.barrels);
                     //console.log("пиу пиу ", fire.target.object.id);
-                    this.amount--;
+                    this.amount.current--;
                     break;
                 }
 				//y=kx+b[]
