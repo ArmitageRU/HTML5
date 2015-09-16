@@ -160,7 +160,9 @@ Application.prototype = {
         else if (this.battleActive) {
 
             if (this.currentMode.preBattle) {
-				PrepareForBattle(true, this.ship);
+                this.ship.ResetWeapons();
+                this.ship.battleRestore();
+                PrepareForBattle(true, this.ship);
 				this.initBattle();
 				this.currentMode.preBattle = false;
 			}
@@ -176,7 +178,7 @@ Application.prototype = {
             }
 
             if (this.currentMode.afterBattle) {
-                ShowSummaryStat(false);
+                HideSummaryStat(false);
                 this.currentMode.afterBattle = false;
             }
         }

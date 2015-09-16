@@ -328,7 +328,7 @@ function ViewWeaponInfo(obj) {
 }
 
 //после битвы показать окно
-function ShowSummaryStat(hide) {
+function HideSummaryStat(hide) {
     if (hide) {
         $("#summary").addClass("dn");
         $("#veil").addClass("dn");
@@ -419,13 +419,12 @@ function UpdateAuto() {
     var autos = currentShip.GetAuto();
     if (autos.length > 0) {
         $('#battle_auto').html(autos[0].title + ' — ' + autos[0].energy + ' [' + autos[0].amount.current + ']');
-    }
-    else {
-        $('#battle_auto_switch').prop('disabled', true);
-        $('#battle_auto').addClass('gray');
+        if (autos[0].amount.current == 0) {
+            $('#battle_auto_switch').prop('disabled', true);
+            $('#battle_auto').addClass('gray');
+        }
     }
 }
-
 
 function HideBattleMenu() {
     $("#battle").addClass("dn");
@@ -523,7 +522,7 @@ function EndPhase() {
 }
 
 function CloseBattleStat() {
-    ShowSummaryStat(true);
+    HideSummaryStat(true);
     this.inbattle = false;
     StarSystem.currentMode.preBattle = true;
     currentShip.life.current = currentShip.life.max;

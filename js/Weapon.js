@@ -283,5 +283,9 @@ Weapon.prototype = {
         }
         //console.log(ret_time);
         return ret_time;
+    },
+
+    reset: function () {
+        this.amount.current = this.amount.stock;
     }
 };

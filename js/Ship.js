@@ -140,6 +140,7 @@ Ship.prototype = {
 	battleRestore: function() {
 	    this.energy = this.energyСapacity;
 	    this.SwitchShield(true);
+	    this.SwitchAuto(true);
 	    this.damaged = 0;
 	    this.hud.notices = [];
 	},
@@ -343,6 +344,13 @@ Ship.prototype = {
 	        }while(counter<=w_count)
 	    }
 	    return ret_wpns;
+	},
+
+	ResetWeapons: function(){
+	    var weapons = this.GetWeapons();
+	    for(var i = 0, max = weapons.length;i < max; i+=1) {
+	        weapons[i].weapon.reset();
+	    }
 	},
 
 	SetWeapon: function (slot, weapon) {
