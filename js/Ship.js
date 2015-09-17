@@ -8,6 +8,7 @@
     this.selected = false;
     this.damagedDuration = 300; //константа для this.damaged
     this.damaged = 0;//длительность анимации дамага
+    this.shieldOpaque = 0;
     this.shieldDuration = 0;//для анисации щита
     this.prevMouseState = false;//нужно для выделения, не хочется держать её здесь, но пока не вижу другого выхода
     //this.origin = new Point(0, 0);
@@ -96,23 +97,16 @@ Ship.prototype = {
 		    if (this.rot == -Math.PI / 2) {
 		        offset_point = new Point(this.position.x + offset, this.position.y - offset);
 		    }
-            this.tile.draw(offset_point, this.rot, this.selected);
+            this.tile.draw(offset_point, this.rot, this.selected, this.shieldOpaque);
 		    this.damaged -= time;
 		    
 		}
 		else { 
-			this.tile.draw(this.position, this.rot, this.selected);
+		    this.tile.draw(this.position, this.rot, this.selected, this.shieldOpaque);
 		}
 		if (this.route != null) this.route.from = this.position;
 	},
 
-	//renderBattleMode: function (time) {
-	//    if (!this.inBattle) {
-	//        this.battlePrepare(pos, rot, route, scale);
-	//        this.inBattle = true;
-	//    }
-	//},
-	
 	battlePrepare: function (pos, rot, route, scale) {
 	    this.prevPos = this.position;
 	    this.prevRot = this.rot;
@@ -251,12 +245,30 @@ Ship.prototype = {
 
 	GetDamage: function (weapon) {
 	    var loss = ~~(Math.random() * (30 - 10) + 10);
-	    this.life.current -= loss;
+	    this.life.current -= this.GedDamageByShield(loss);
 	    this.hud.notices[this.hud.notices.length] = {
 	        text: 'МИМО'
 	    }
 	    this.damaged = this.damagedDuration;
 		console.log("GET DAMAGE");
+	},
+
+	GedDamageByShield: function(damage) {
+	    var shield = this.GetShield(),
+            residual_damage = 0,
+            residual_shield;
+	    if (shield != null && shield.amount.current>0) {
+	        residual_damage = ~~(getRandomArbitrary(1, damage));
+	        residual_shield = shield.amount.current - residual_damage;
+	        shield.amount.current = residual_shield;
+	        if (residual_shield < 0) {
+	            residual_damage += residual_shield;
+	            shield.amount.current = 0;
+	        }
+	        this.shieldOpaque = 0.1 * Math.ceil(shield.amount.current * 5 / shield.amount.stock);
+	        console.log(this.shieldOpaque);
+	    }
+	    return damage - residual_damage;
 	},
 
 	GetDodge: function () {
@@ -369,6 +381,7 @@ Ship.prototype = {
 	                else {
 	                    this.energy -= this.slots[i].weapon.energy;
 	                    this.slots[i].weapon.disabled = false;
+	                    this.shieldOpaque = 0.1 * Math.ceil(this.slots[i].weapon.amount.current * 5 / this.slots[i].weapon.amount.stock);
 	                    //shield_disabled = false;
 	                }
                     break;
@@ -418,5 +431,16 @@ Ship.prototype = {
 	        }
 	    }
 	    return autos;
+	},
+
+	GetShield: function () {
+	    var shield = null;
+	    for (var i = 0, max = this.slots.length; i < max; i += 1) {
+	        if (this.slots[i].weapon != null && typeof this.slots[i].weapon !== 'undefined' && this.slots[i].weapon.class == 'shield') {
+	            shield = this.slots[i].weapon;
+	            break;
+	        }
+	    }
+	    return shield;
 	}
 };

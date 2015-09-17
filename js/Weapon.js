@@ -210,6 +210,7 @@ Weapon.prototype = {
                     //fire.target.object.GetDamage(this, fire.barrels);
                     //console.log("пиу пиу ", fire.target.object.id);
                     this.amount.current--;
+                    fire.target.object.GetDamage(this, fire.barrels);
                     break;
                 }
 				//y=kx+b[]

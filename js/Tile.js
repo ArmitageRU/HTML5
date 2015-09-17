@@ -14,7 +14,7 @@ function Tile(ctx, image, sx, sy, sw, sh, scale){
 };
 
 Tile.prototype = {
-	draw:function(pos, rot, selected){
+	draw:function(pos, rot, selected, shield_opaque){
 		this.ctx.save();
         this.ctx.translate(pos.x, pos.y);
 		this.ctx.rotate(rot);
@@ -49,14 +49,14 @@ Tile.prototype = {
 		    this.ctx.strokeStyle = 'orange';
 		    this.ctx.stroke();
 		}
-			if(false) {
+		if (shield_opaque>0) {
 				this.ctx.scale(this.sWidth/this.sHeight, 1);
 				this.ctx.beginPath();
 				this.ctx.arc(0, 0, this.sHeight / 2, 0, 2 * Math.PI, false);
-				this.ctx.fillStyle = 'rgba(142, 214, 255, 0.5)';
+				this.ctx.fillStyle = 'rgba(142, 214, 255, ' + shield_opaque + ')';
 				this.ctx.fill();
 				this.ctx.lineWidth = 1;
-				this.ctx.strokeStyle = 'rgba(142, 214, 255, 0.5)';
+				this.ctx.strokeStyle = 'rgba(142, 214, 255, ' + shield_opaque + ')';
 				this.ctx.stroke();
 			}
         //не работает в связи с невозможностью получить точные координаты
