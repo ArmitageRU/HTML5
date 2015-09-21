@@ -70,6 +70,7 @@ Application.prototype = {
             app: this
         }
 		IM.add('img/ships.png', 'ships');
+		IM.add('img/bigshipshaded.png', 'bigship');
 		//planets
 		IM.add('img/planets/planet1.png', 'planet1');
 		IM.add('img/planets/planet2.png', 'planet2');
@@ -97,7 +98,7 @@ Application.prototype = {
 		this.Star.ctx = this.ctx;
 		this.currentMainContent = this.Star.MainContent;
         //ship section
-		this.ship = new Ship(this.ctx, this._images['ships'], new Rectangle(28, 804, 199, 163, 0.3));
+		this.ship = new Ship(this.ctx, this._images['bigship'], new Rectangle(0, 0, 64, 64, 1));
 		this.ship.position = new Point(this.canvas.width-100, this.canvas.height/2);
 		this.route = new Route(this.ship.position);
 		this.ship.route = this.route;

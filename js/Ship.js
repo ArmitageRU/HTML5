@@ -273,9 +273,6 @@ Ship.prototype = {
 	            console.log('КРИТИЧЕСКИЙ УРОН');
 	            break;
 	        default:
-	            this.hud.notices[this.hud.notices.length] = {
-	                text: 'ПРОСТ...'
-	            }
 	            break;
 	    }
 
