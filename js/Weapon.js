@@ -49,12 +49,10 @@ Weapon.prototype = {
                 ctx.moveTo(fire.parent.object.position.x, fire.parent.object.position.y);
                 
                 var angle = Math.atan2(fire.target.object.position.y - fire.parent.object.position.y, fire.target.object.position.x - fire.parent.object.position.x);
-                //var 
                 angle+= Math.PI / 36;
                 angle -= (ret_time / this.beamLasting) * (Math.PI / 18);
 				var new_x = Math.cos(angle);
                 var new_y = Math.sin(angle);
-                //ctx.lineTo(fire.target.object.position.x, fire.target.object.position.y);
                 ctx.lineTo(fire.parent.object.position.x + new_x * radius, fire.parent.object.position.y + new_y * radius);
 				ctx.lineCap = 'round';
                 for (var i = 5; i >= 0; i--) {
@@ -66,7 +64,7 @@ Weapon.prototype = {
                     }
                     ctx.stroke();
                 }
-
+                
                 break;
             case 'plasma':
                 if (ret_time > this.plasmaLasting) {
@@ -146,6 +144,9 @@ Weapon.prototype = {
                         //    weapon: new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null)
                         //}];
                         rocket_ship_up.target = fire.target.object;
+                        rocket_ship_up.slots[0].weapon = new Weapon();
+                        rocket_ship_up.slots[0].weapon.type = 'rocket';
+
                         rocket_ship_up.phaseActive = function phaseActive() {
                             rocket_ship_up.route = new Route(rocket_ship_up.position);
                             rocket_ship_up.route.to = fire.target.object.position;
@@ -178,6 +179,8 @@ Weapon.prototype = {
                         //    weapon: new Weapon(1000, 'Ракеты', 1500, 2, 'rocket', this.ctx, null)
                         //}];
                         rocket_ship_down.target = fire.target.object;
+                        rocket_ship_down.slots[0].weapon = new Weapon();
+                        rocket_ship_down.slots[0].weapon.type = 'rocket';
                         rocket_ship_down.phaseActive = function phaseActive() {
                             rocket_ship_down.route = new Route(rocket_ship_down.position);
                             rocket_ship_down.route.to = fire.target.object.position;

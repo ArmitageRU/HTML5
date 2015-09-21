@@ -67,7 +67,7 @@ HUD.prototype = {
             text_length = this.ctx.measureText(this.notices[i].text).width;
             //this.ctx.strokeText(this.notices[i].text, (position.x * scale) - text_length / 2, this.notices[i].posY);
             this.ctx.fillText(this.notices[i].text, (position.x * scale) - text_length / 2, this.notices[i].posY);
-            //console.log(this.ctx.strokeStyle);
+            console.log(this.notices[i].posY, " position ", time, " time");
             this.ctx.restore();
             //console.log(this.notices[i].posY, " posY");
         }

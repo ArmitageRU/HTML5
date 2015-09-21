@@ -525,5 +525,5 @@ function CloseBattleStat() {
     HideSummaryStat(true);
     this.inbattle = false;
     StarSystem.currentMode.preBattle = true;
-    currentShip.life.current = currentShip.life.max;
+    currentShip.life.current = currentShip.life.max; //очень плохо, передеать на свежую голову
 }

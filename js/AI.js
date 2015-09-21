@@ -11,7 +11,7 @@ AI.prototype = {
 		    if (this.targets[i].object.id != this.ship.id && this.targets[i].align==1) {
 				StarSystem.battle.refreshSelectedShip(this.targets[i].object.id);
 				if(first){
-					StarSystem.battle.fire(this.ship.slots[1].weapon.id+'_'+this.ship.slots[1].weapon.energy);
+					//StarSystem.battle.fire(this.ship.slots[1].weapon.id+'_'+this.ship.slots[1].weapon.energy);
 					first=false;
 				}
                 StarSystem.battle.fire(this.ship.slots[0].weapon.id+'_'+this.ship.slots[0].weapon.energy);

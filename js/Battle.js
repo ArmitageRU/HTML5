@@ -23,13 +23,14 @@ Battle.prototype = {
 
     render: function (time, mouse) {
         this.removeParticipant();
+        var claim_end_phase = false,//если кто-то из участников изъявил желание закончит фазу
+            permission_end_phase = true;//если кто-то из участников не возражает чтобы фаза была закончена
+
         for (var i = 0; i < this.participants.length; i += 1) {
             if (this.participants[i].hide) {
                 continue;
             }
-
             if (this.fires.length > 0) {
-                //console.log("fires.length ", this.fires.length);
                 for (var j = 0; j < this.fires.length; j += 1) {
                     if (this.fires[j].time < 0) {
                         var wpn = StarSystem.GetWeaponById(this.fires[j].weapon_id);
@@ -51,11 +52,14 @@ Battle.prototype = {
                 }
             }
             else if (this.wantEnd) {
-                //console.log("WE", this.currentShip.id, this.fires.length);
-                this.wantEnd = null;
-                this.endPhase();
+                claim_end_phase = true;
+                //this.endPhase();
             }
-            //console.log(this.participants[i].object);
+
+            if (!this.participants[i].object.CanEnd()) {
+                permission_end_phase = false;
+            }
+
             this.participants[i].render.call(this.participants[i].object, time);
             if (this.participants[i].object.inBound(mouse)) {
                 this.refreshSelectedShip(this.participants[i].object.id);
@@ -64,6 +68,11 @@ Battle.prototype = {
             if (this.participants[i].object.parentShipId == null) {
                 this.participants[i].object.hud.render(time, this.participants[i].object.position, 1);
             }
+        }
+
+        if (claim_end_phase && permission_end_phase) {
+            this.wantEnd = null;
+            this.endPhase();
         }
 
         if (this.winner) {
@@ -233,7 +242,7 @@ Battle.prototype = {
             defeat = false;
         //собираем информацию о тех кто отжил своё
         for (var i = 0; i < this.participants.length; i += 1) {
-            if (this.participants[i].object.life.current <= 0) {
+            if (this.participants[i].object.death/*.life.current <= 0*/) {
                 //this.participants[i] = null;
                 lost_partivcples[lost_partivcples.length] = this.participants[i].object.id;
                 this.participants.splice(i, 1);
@@ -244,13 +253,13 @@ Battle.prototype = {
         for (var j = 0, max = lost_partivcples.length; j < max; j += 1) {
             for (var k = 0; k < this.participants.length; k += 1) {
                 if(this.participants[k].object.parentShipId!=null && this.participants[k].object.target !=null && this.participants[k].object.target.id == lost_partivcples[j]) {
-                    this.participants[k].object.life.current = 0;
+                    this.participants[k].object.death = true;//life.current = 0;
                 }
             }
         }
         //и еще раз обновляем
         for (var i = 0; i < this.participants.length; i += 1) {
-            if (this.participants[i].object.life.current <= 0) {
+            if (this.participants[i].object.death/*life.current <= 0*/) {
                 this.participants.splice(i, 1);
                 continue;
             }

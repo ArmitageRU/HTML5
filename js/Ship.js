@@ -8,6 +8,7 @@
     this.selected = false;
     this.damagedDuration = 300; //константа для this.damaged
     this.damaged = 0;//длительность анимации дамага
+    this.death = false;
     this.shieldOpaque = 0;
     this.shieldDuration = 0;//для анисации щита
     this.prevMouseState = false;//нужно для выделения, не хочется держать её здесь, но пока не вижу другого выхода
@@ -26,6 +27,7 @@
     this.arrive;//когда добрался до точки
 
     this.statistic = new Statistic();
+    this.Damage = new Damage();
 
     this.ctx = ctx;
     this.tile = new Tile(ctx, image, rectangle.x, rectangle.y, rectangle.width, rectangle.height, rectangle.scale);//new Tile(ctx, image, 28, 804, 199, 163, 0.3);//надо менять
@@ -66,8 +68,8 @@
 	this.mass = 95; //масса корабля
 
 	this.life = {
-	    max:100,
-        current:100
+	    max:1000,
+        current:1000
 	};
 	this.hud = new HUD(ctx, this.tile, this.life);
 	//this.boundingBox = new Rectangle(this.position.x - this.tile.width / 2, this.position.y - this.tile.height / 2, this.tile.width, this.tile.height);//x, y, width, height, scale
@@ -91,7 +93,7 @@ Ship.prototype = {
 			    }
 			}
 		}
-		if(this.damaged>0) {
+		if (this.damaged > 0) {
 		    offset = Math.sin((this.damagedDuration - this.damaged) / this.damagedDuration * 20 * Math.PI) * (20 * this.damaged / this.damagedDuration);
 		    offset_point = new Point(this.position.x - offset, this.position.y - offset);
 		    if (this.rot == -Math.PI / 2) {
@@ -99,12 +101,15 @@ Ship.prototype = {
 		    }
             this.tile.draw(offset_point, this.rot, this.selected, this.shieldOpaque);
 		    this.damaged -= time;
-		    
 		}
 		else { 
 		    this.tile.draw(this.position, this.rot, this.selected, this.shieldOpaque);
 		}
 		if (this.route != null) this.route.from = this.position;
+
+		if (this.life.current <= 0 && this.damaged <= 0) {
+		    this.death = true;
+		}
 	},
 
 	battlePrepare: function (pos, rot, route, scale) {
@@ -135,8 +140,9 @@ Ship.prototype = {
 	    this.energy = this.energyСapacity;
 	    this.SwitchShield(true);
 	    this.SwitchAuto(true);
-	    this.damaged = 0;
+	    this.death = false;
 	    this.hud.notices = [];
+	    //console.log("BR damaged ", this.damaged, " id ", this.id);
 	},
 
 	battleDebriefing: function() {
@@ -243,14 +249,39 @@ Ship.prototype = {
 		return profit;
 	},
 
-	GetDamage: function (weapon) {
-	    var loss = ~~(Math.random() * (30 - 10) + 10);
-	    this.life.current -= this.GedDamageByShield(loss);
-	    this.hud.notices[this.hud.notices.length] = {
-	        text: 'МИМО'
+	GetDamage: function (weapon, barrels) {
+	    var loss = this.Damage.GetDamage(this, weapon, barrels);//~~(Math.random() * (30 - 10) + 10);
+	    this.life.current -= loss.damage;//this.GedDamageByShield(loss);
+
+	    switch (loss.hint) {
+	        case 'miss':
+	            this.hud.notices[this.hud.notices.length] = {
+	                text: 'МИМО'
+	            }
+	            console.log('МИМО');
+	            break;
+	        case 'guard':
+	            this.hud.notices[this.hud.notices.length] = {
+	                text: 'БРОНЯ'
+	            }
+	            console.log('БРОНЯ');
+	            break;
+	        case 'crit':
+	            this.hud.notices[this.hud.notices.length] = {
+	                text: 'КРИТИЧЕСКИЙ УРОН'
+	            }
+	            console.log('КРИТИЧЕСКИЙ УРОН');
+	            break;
+	        default:
+	            this.hud.notices[this.hud.notices.length] = {
+	                text: 'ПРОСТ...'
+	            }
+	            break;
 	    }
-	    this.damaged = this.damagedDuration;
-		console.log("GET DAMAGE");
+
+	    if(loss.damage>0) {
+	        this.damaged = this.damagedDuration;
+	    }
 	},
 
 	GedDamageByShield: function(damage) {
@@ -442,5 +473,9 @@ Ship.prototype = {
 	        }
 	    }
 	    return shield;
+	},
+
+	CanEnd: function () {
+	    return this.damaged <= 0 && this.hud.notices.length == 0;
 	}
 };
