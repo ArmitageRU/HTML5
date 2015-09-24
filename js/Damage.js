@@ -16,12 +16,11 @@ Damage.prototype = {
             case 'beam':
                 var roll1 = this.RollDice(2, 8) - 3,
                     roll2 = this.RollDice(2, 8) - 3,
-                    //roll3 = this.RollDice(1, 8) - 3,
                     lazer_dmg = 150;
+                if (barrels > 1) {
+                    lazer_dmg += (barrels - 1) * lazer_dmg * 0.5;
+                }
 
-                //damage = roll1 + roll2 + roll3;
-
-                //damage = damage -Math.min(Math.min(roll1, roll2), roll3) + this.RollDice(1, 8);
                 damage = Math.min(roll1, roll2);
                 if (damage < 0) {
                     return_struct.hint = 'guard';
@@ -30,21 +29,38 @@ Damage.prototype = {
                 else if (damage == 0) {
                     return_struct.hint = 'miss';
                 }
-                if (Math.round(getRandomArbitrary(0,100)) < 5) {
-                    //Console.Write("CRITICAL HIT");
+
+                if (Math.round(getRandomArbitrary(0, 100)) < 5*(barrels-1)) {
                     return_struct.hint = 'crit';
                     damage += this.RollDice(1, 8) + 10;
                 }
-                /*ship.life.current*/damage = damage * lazer_dmg * 0.1;
-                break;
-            case 'beam':
-                damage = 0;
+                damage = damage * lazer_dmg * 0.1;
                 break;
             case 'rocket':
                 damage = 0;
                 break;
             case 'plasma':
-                damage = 0;
+                var roll1 = this.RollDice(3, 8) + 0,
+                    roll2 = this.RollDice(3, 8) - 6,
+                    plasma_dmg = 250;
+                if (barrels > 1) {
+                    plasma_dmg += (barrels - 1) * plasma_dmg * 0.5;
+                }
+
+                damage = Math.min(roll1, roll2);
+                if (damage < 0) {
+                    return_struct.hint = 'guard';
+                    damage = 0;
+                }
+                else if (damage == 0) {
+                    return_struct.hint = 'miss';
+                }
+
+                if (Math.round(getRandomArbitrary(0, 100)) < 10 * (barrels)) {
+                    return_struct.hint = 'crit';
+                    damage += this.RollDice(7, 4) + 10;
+                }
+                damage = damage * plasma_dmg * 0.1;
                 break;
             case 'pulse_beam':
                 damage = 0;
